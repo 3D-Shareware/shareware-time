@@ -2,7 +2,6 @@
 
 [ext_resource type="Script" uid="uid://bt8mw0x7olnpa" path="res://MultiplayerStuff/Server/Lobby/lobby_container.gd" id="1_mv773"]
 [ext_resource type="Script" uid="uid://5fglh17poklv" path="res://MultiplayerStuff/Server/Lobby/lobby_viewer.gd" id="2_yi4sf"]
-[ext_resource type="PackedScene" uid="uid://dqhs1etxa5bos" path="res://MultiplayerStuff/Server/Lobby/lobby_info.tscn" id="3_6sr8i"]
 
 [node name="LobbyContainer" type="Node" unique_id=1974402244 groups=["LobbyContainer"]]
 script = ExtResource("1_mv773")
@@ -65,9 +64,6 @@ grow_vertical = 2
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
-
-[node name="LobbyInfo" parent="LobbyViewer/Panel/ScrollContainer/VBoxContainer" unique_id=1771511531 instance=ExtResource("3_6sr8i")]
-layout_mode = 2
 
 [node name="create_lobby_button" type="Button" parent="LobbyViewer/Panel" unique_id=742597945]
 layout_mode = 1

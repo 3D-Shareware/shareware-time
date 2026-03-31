@@ -20,10 +20,9 @@ func _ready() -> void:
 	multiplayer.peer_connected.connect(_on_client_connected)
 	multiplayer.peer_disconnected.connect(_on_client_disconnected)
 	
-	await get_tree().create_timer(.5).timeout #debug server lobby
-	create_new_lobby("server_lobby_" + str(randi_range(1,9999)))
 
-func create_new_lobby(id : String):
+
+func create_new_lobby(id : String): #TODO delete this?
 	lobby_container.create_new_lobby(id, []) #not exactly needed, you could call it local since we know this zastard is the server but idk this could do some cool stuff lol
 
 func _on_client_connected(peer_id : int):

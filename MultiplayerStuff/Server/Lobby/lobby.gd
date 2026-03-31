@@ -1,4 +1,4 @@
-extends Node
+extends Node3D
 class_name Lobby
 
 @onready var spawner: MultiplayerSpawner = $MultiplayerSpawner
@@ -10,7 +10,10 @@ var current_map : Map
 
 func _ready() -> void:
 	register_spawnable_maps()
+	if not multiplayer.is_server(): return
 	
+	await get_tree().create_timer(1.0).timeout 
+	call_deferred("change_map", 'lobby')
 
 func register_spawnable_maps(): #<ALL>
 	spawner.clear_spawnable_scenes()

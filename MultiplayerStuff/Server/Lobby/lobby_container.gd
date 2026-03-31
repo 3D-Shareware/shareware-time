@@ -27,40 +27,53 @@ func _ready():
 func create_new_lobby(lobby_id: String, players_in_lobby: Array[int]):
 	if multiplayer.is_server():
 		var data = { "id": lobby_id, "players": players_in_lobby }
-		$MultiplayerSpawner.spawn(data)
+		
 		lobbies[lobby_id] = players_in_lobby
 		ServerDatabase.update_lobbies(lobbies)
-
+		$MultiplayerSpawner.spawn(data)
+	
 # This runs on EVERY machine when the lobby spawns
 func _custom_lobby_spawn(data: Dictionary) -> Node:
 	var lobby_scene: Lobby = LOBBY.instantiate()
 	lobby_scene.name = str(data["id"]).validate_node_name()
 	lobby_scene.players_ids = data["players"]
 	
-	# THE HACK: If I am a client, and I am not in this lobby's player list...
+	var offset = ServerDatabase.lobbies.size() * 10000
+	
+	lobby_scene.position = Vector3(offset, 0, 0)
 	if not multiplayer.is_server() and multiplayer.get_unique_id() not in data["players"]:
-		# Turn off rendering
-		#lobby_scene.visible = false #TODO
-		# Completely disable physics, _process, and interactions
-		lobby_scene.process_mode = Node.PROCESS_MODE_DISABLED     
+		lobby_scene.hide() #HACK here we start >;,}
+		lobby_scene.process_mode = Node.PROCESS_MODE_DISABLED
+		
 	return lobby_scene
 
 @rpc("any_peer","call_remote",'reliable')
 func add_player_to_lobby(lobby_id : String, player_id : int):
-	print('button')
+
 	if !multiplayer.is_server():
-		print('playerp ressed')
+
 		add_player_to_lobby.rpc_id(1, lobby_id, player_id)
 		return
-	print('server  ressed')
+
 	if lobbies.has(lobby_id):
-		lobbies[lobby_id].append(player_id)
-		ServerDatabase.update_lobbies(lobbies)
-		print('joined lobby ', lobby_id)
+		if player_id not in lobbies[lobby_id]:
+			lobbies[lobby_id].append(player_id)
+			ServerDatabase.update_lobbies(lobbies)
+			wake_up_lobby.rpc_id(player_id, lobby_id)
+			
+			
+		else: print(str(player_id) + ' already joined')
 	else:
 		print("lobby does not exist :(")
 
-
+@rpc("authority", "call_remote", "reliable")
+func wake_up_lobby(lobby_id: String): #wakey waky, its time for schoo
+	var active_lobby :Lobby = get_node_or_null(lobby_id.validate_node_name())
+	if active_lobby:
+		active_lobby.show()
+		#print("position = ", active_lobby.position, " ", lobby_id)
+		active_lobby.process_mode = Node.PROCESS_MODE_INHERIT
+	
 func _on_create_lobby_button_pressed() -> void:
 	if !multiplayer.is_server():
 		var array_of_player :Array[int] = []

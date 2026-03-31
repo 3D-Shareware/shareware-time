@@ -3,7 +3,7 @@
 [ext_resource type="Script" uid="uid://01fq2mp8vd8q" path="res://MultiplayerStuff/Server/Lobby/lobby.gd" id="1_j3nwk"]
 [ext_resource type="Script" uid="uid://cv604ucylqjo0" path="res://MultiplayerStuff/Server/Lobby/map_voting.gd" id="2_jbcu6"]
 
-[node name="Lobby" type="Node" unique_id=1972131471]
+[node name="Lobby" type="Node3D" unique_id=850969054]
 script = ExtResource("1_j3nwk")
 
 [node name="MultiplayerSpawner" type="MultiplayerSpawner" parent="." unique_id=895859345]
