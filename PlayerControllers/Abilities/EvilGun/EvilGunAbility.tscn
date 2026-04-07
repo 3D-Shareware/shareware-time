@@ -1,6 +1,31 @@
 [gd_scene format=3 uid="uid://bwbfmr1nmjwg"]
 
 [ext_resource type="Script" uid="uid://by2qbhuc53ljj" path="res://PlayerControllers/Abilities/EvilGun/evil_gun_ability.gd" id="1_1hc3p"]
+[ext_resource type="PackedScene" uid="uid://csb4yvqgyptju" path="res://PlayerControllers/Abilities/EvilGun/firstanimation.glb" id="2_57y61"]
+[ext_resource type="PackedScene" uid="uid://chc6mck8aov7f" path="res://PlayerControllers/Abilities/EvilGun/tracer_effect.tscn" id="3_ukojc"]
+[ext_resource type="Script" uid="uid://cdj48p1ymi673" path="res://PlayerControllers/Abilities/EvilGun/tracer_effect.gd" id="4_1ebml"]
 
-[node name="AbilityBasePlate" type="Node3D" unique_id=1600695075]
+[node name="EvilGun" type="Node3D" unique_id=1600695075]
 script = ExtResource("1_1hc3p")
+trigger_key = "1"
+
+[node name="firstanimation" parent="." unique_id=1754485602 instance=ExtResource("2_57y61")]
+transform = Transform3D(-1.5954656e-08, 0, -0.365, 0, 0.365, 0, 0.365, 0, -1.5954656e-08, 0, -0.52469325, -1.76882)
+
+[node name="Skeleton3D" parent="firstanimation/Armature" parent_id_path=PackedInt32Array(1754485602, 1722798876) index="0" unique_id=892069068]
+bones/0/position = Vector3(6.0834007, 0.1328843, 0.8187318)
+bones/0/rotation = Quaternion(0.021230225, 0.01821004, -0.009326542, 0.99956524)
+bones/1/position = Vector3(0.30517885, 1.5603468, 0.20145948)
+bones/2/position = Vector3(6.2779555, 0.054309607, 0.8083483)
+bones/2/rotation = Quaternion(0.021230225, 0.018210037, -0.009326542, 0.99956524)
+
+[node name="BulletRayCast" type="RayCast3D" parent="." unique_id=1097835970]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.59079814, -0.1720166, -1.8837852)
+target_position = Vector3(0, 0, -30)
+
+[node name="TracerEffect" parent="BulletRayCast" unique_id=1482231535 instance=ExtResource("3_ukojc")]
+script = ExtResource("4_1ebml")
+
+[node name="FireAttackSpeed" type="Timer" parent="." unique_id=1953361202]
+
+[editable path="firstanimation"]

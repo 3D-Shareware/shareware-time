@@ -1,6 +1,7 @@
 [gd_scene format=3 uid="uid://bcx63mqj80yes"]
 
 [ext_resource type="Script" uid="uid://bk51phcq14oxy" path="res://PlayerControllers/Mercs/Default/first_person_controller.gd" id="1_sjy6i"]
+[ext_resource type="PackedScene" uid="uid://bwbfmr1nmjwg" path="res://PlayerControllers/Abilities/EvilGun/EvilGunAbility.tscn" id="2_4fgnm"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_lwjk5"]
 
@@ -11,10 +12,13 @@ properties/0/path = NodePath(".:position")
 properties/0/spawn = true
 properties/0/replication_mode = 1
 
-[node name="Player" type="CharacterBody3D" unique_id=728258314 node_paths=PackedStringArray("camera")]
+[node name="Player" type="CharacterBody3D" unique_id=728258314 node_paths=PackedStringArray("camera", "abilities")]
 collision_layer = 0
 script = ExtResource("1_sjy6i")
 camera = NodePath("Camera3D")
+abilities = [NodePath("EvilGun")]
+
+[node name="EvilGun" parent="." unique_id=1600695075 instance=ExtResource("2_4fgnm")]
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=1977683154]
 shape = SubResource("CapsuleShape3D_lwjk5")

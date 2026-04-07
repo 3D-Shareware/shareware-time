@@ -95,14 +95,19 @@ func _input(event: InputEvent) -> void:
 		camera.rotate_x(-event.relative.y * .005)
 		camera.rotation.x = clamp(camera.rotation.x, -PI/2, PI/2)
 
+#merc
 func check_abilities() -> void:
+	if abilities.size() <= 0: return
 	for i in abilities:
+		if !i.is_multiplayer_authority():
+			i.set_multiplayer_authority(int(name), true)
+		
 		# Convert "Q" to the integer keycode (e.g., 81)
 		var key_code = OS.find_keycode_from_string(i.trigger_key)
 		
 		# Finally, check the hardware state
 		if Input.is_physical_key_pressed(key_code):
-			i.activate(get_physics_process_delta_time(), abilities)
+			i.activate(abilities, self)
 
 @rpc("any_peer","call_remote", 'reliable')
 func take_damage(damage):
