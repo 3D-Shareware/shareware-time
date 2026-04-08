@@ -15,14 +15,14 @@ var Characters : Dictionary [String, PackedScene] = {} #DNS
 var Players : Dictionary [int, Dictionary] #id, [gamertag, lobby]
 var lobbies : Dictionary[String, Array] = {} #lobbyid = [player_id, ...]
 
-var port = "10.42.0.1"
-var address = 6789
+var port = 6789
+var address = "10.42.0.1"
 #var chat 
 #endregion
 
 #region PRESET DATABASE
 var PRESETMAPS : Dictionary [String, PackedScene] = {
-	"lobby" = load("res://MapsAndGamemodes/Maps/Lobby/sb_lobby.tscn")
+	"lobby" = load("res://MapsAndGamemodes/Maps/sb_Lobby/sb_lobby.tscn")
 	
 }
 

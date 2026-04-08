@@ -2,10 +2,6 @@ extends Map
 class_name SB
 #sandbox
 
-@onready var sandbox_leaderboard_ui: Control = $"."
-
-@onready var leader_board: Panel = $SBUI/LeaderBoard
-
 @export var player_spawn : Node3D
 @export var respawn_delay : float = 5.0 # How long they wait in seconds
 

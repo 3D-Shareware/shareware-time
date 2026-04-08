@@ -1,10 +1,10 @@
 [gd_scene format=3 uid="uid://27dxcrv3ostv"]
 
-[ext_resource type="Script" uid="uid://c8vcha0bpxltm" path="res://MapsAndGamemodes/Gamemodes/sb/sb.gd" id="1_2ogcd"]
-[ext_resource type="Texture2D" uid="uid://b7b8tego25aq3" path="res://PrototypeAssets/PrototypeMapAssets/Vector/texture_02.svg" id="2_ikp14"]
+[ext_resource type="Script" uid="uid://c8vcha0bpxltm" path="res://MapsAndGamemodes/Gamemodes/sb/sb.gd" id="1_5cp0e"]
+[ext_resource type="Texture2D" uid="uid://b7b8tego25aq3" path="res://PrototypeAssets/PrototypeMapAssets/Vector/texture_02.svg" id="2_wjog0"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_qt646"]
-albedo_texture = ExtResource("2_ikp14")
+albedo_texture = ExtResource("2_wjog0")
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_qt646"]
 
@@ -18,7 +18,7 @@ sky = SubResource("Sky_firbl")
 ambient_light_color = Color(0.63375676, 0.6337568, 0.63375676, 1)
 
 [node name="Lobby" type="Node3D" unique_id=678425904 node_paths=PackedStringArray("player_spawn", "player_spawner")]
-script = ExtResource("1_2ogcd")
+script = ExtResource("1_5cp0e")
 player_spawn = NodePath("PlayerSpawner")
 player_spawner = NodePath("MultiplayerSpawner")
 
@@ -40,16 +40,3 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.3790727, 0)
 
 [node name="Camera3D" type="Camera3D" parent="." unique_id=937780086]
 transform = Transform3D(1, 0, 0, 0, 0.49999997, 0.86602545, 0, -0.86602545, 0.49999997, -17.34317, 34.01458, 34.429657)
-
-[node name="SBUI" type="CanvasLayer" parent="." unique_id=1354951390]
-
-[node name="LeaderBoard" type="Panel" parent="SBUI" unique_id=1625038412]
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = 86.0
-offset_top = 63.0
-offset_right = -100.0
-offset_bottom = -82.0
-grow_horizontal = 2
-grow_vertical = 2
