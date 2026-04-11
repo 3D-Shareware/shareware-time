@@ -19,4 +19,5 @@ func _setup_client():
 	get_window().position.x += ceil(get_window().size.x / 2.0 + 8)
 	get_window().position.y += ceil(get_window().size.y / 2.0 + randf_range(-8,8))
 	var client_logic = ClientLogic.new()
+	client_logic.lobby_container = lobby_container
 	add_child(client_logic)

@@ -13,7 +13,8 @@ func _ready():
 	multiplayer_spawner.spawn_function = _custom_lobby_spawn
 	if !multiplayer.is_server(): return
 	multiplayer.peer_disconnected.connect(_on_player_disconnected)
-
+	
+	
 # The server calls this to build the lobby package
 @rpc("any_peer", "call_remote", "reliable")
 func create_new_lobby(lobby_id: String, players_in_lobby: Array[int]):
@@ -22,7 +23,10 @@ func create_new_lobby(lobby_id: String, players_in_lobby: Array[int]):
 		
 		lobbies[lobby_id] = players_in_lobby
 		ServerDatabase.update_lobbies(lobbies)
-		multiplayer_spawner.spawn(data)
+		var lob : Lobby = multiplayer_spawner.spawn(data)
+		
+		if lobbies.size() == 1:
+			lob.call_deferred("change_map", "hm_home")
 
 # This runs on EVERY machine when the lobby spawns
 func _custom_lobby_spawn(data: Dictionary) -> Node:

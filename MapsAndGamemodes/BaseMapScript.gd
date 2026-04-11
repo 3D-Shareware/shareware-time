@@ -24,6 +24,7 @@ func _ready() -> void:
 	var parent_lobby = get_parent()
 	if parent_lobby is Lobby:
 		# Connect directly to your abstract functions now! No queue needed.
+		
 		parent_lobby.player_joined_lobby.connect(_on_player_joined)
 		parent_lobby.player_left_lobby.connect(_on_player_left)
 	

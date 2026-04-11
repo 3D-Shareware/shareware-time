@@ -10,7 +10,6 @@ var sandbox_leaderboard
 
 var player_stats : Dictionary[int, Dictionary]
 
-
 func custom_ready():
 	sandbox_leaderboard = SANDBOX_LEADERBOARD_UI.instantiate()
 	add_child(sandbox_leaderboard)
