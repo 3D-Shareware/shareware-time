@@ -129,12 +129,12 @@ func start_client_camera_transition(old_lobby_id: String, new_lobby_id: String):
 	
 	var old_lobby : Lobby = get_node_or_null(old_lobby_id.validate_node_name())
 	var new_lobby : Lobby = get_node_or_null(new_lobby_id.validate_node_name())
-	var old_path = old_lobby.camera_follow_path
-	var new_path = new_lobby.camera_follow_path
+	var old_path : CameraFollowPath = old_lobby.camera_follow_path
+	var new_path : CameraFollowPath = new_lobby.camera_follow_path
 	
 	if old_lobby_id == "home":
 		old_path = old_lobby.get_node('home').trans_out_path #maps have same name as lobby
-	
+		old_path.set_last_dolley_point(new_path)
 	if old_path and new_path:
 		lobby_changer_camera.set_dolley_sequence([old_path, new_path])
 		await lobby_changer_camera.finished_with_all_camera_transitions
