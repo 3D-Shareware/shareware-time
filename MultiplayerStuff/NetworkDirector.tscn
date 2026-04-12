@@ -11,6 +11,5 @@ script = ExtResource("1_ubnqp")
 
 [node name="LobbyChangerCamera" type="Camera3D" parent="LobbyContainer" unique_id=154608724]
 script = ExtResource("3_e1cqa")
-transition_duration = null
 
 [editable path="LobbyContainer"]

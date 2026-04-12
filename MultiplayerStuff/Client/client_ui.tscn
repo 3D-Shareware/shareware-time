@@ -2,7 +2,71 @@
 
 [ext_resource type="Script" uid="uid://citp50pf2ul2s" path="res://MultiplayerStuff/Client/client_ui.gd" id="1_erp88"]
 [ext_resource type="Script" uid="uid://bwv3skhkt52ki" path="res://MultiplayerStuff/Client/menu_ui.gd" id="2_c7bsp"]
-[ext_resource type="Script" uid="uid://c8i0a53aap31q" path="res://MultiplayerStuff/Client/chat.gd" id="3_ty0e6"]
+[ext_resource type="Script" path="res://MultiplayerStuff/Client/chat.gd" id="3_ty0e6"]
+[ext_resource type="Texture2D" uid="uid://btcwv6lmydfjx" path="res://MultiplayerStuff/home -._-/vhsoff-Sheet.png" id="4_ogf0i"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_b2t23"]
+atlas = ExtResource("4_ogf0i")
+region = Rect2(0, 0, 120, 72)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_7186l"]
+atlas = ExtResource("4_ogf0i")
+region = Rect2(120, 0, 120, 72)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_kgyih"]
+atlas = ExtResource("4_ogf0i")
+region = Rect2(240, 0, 120, 72)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_qlpsn"]
+atlas = ExtResource("4_ogf0i")
+region = Rect2(360, 0, 120, 72)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_5jdun"]
+atlas = ExtResource("4_ogf0i")
+region = Rect2(480, 0, 120, 72)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_fuq0t"]
+atlas = ExtResource("4_ogf0i")
+region = Rect2(600, 0, 120, 72)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_85wug"]
+atlas = ExtResource("4_ogf0i")
+region = Rect2(720, 0, 120, 72)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_q52u8"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_b2t23")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_b2t23")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_7186l")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_kgyih")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_qlpsn")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_5jdun")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_fuq0t")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_fuq0t")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_85wug")
+}],
+"loop": false,
+"name": &"off",
+"speed": 24.0
+}]
 
 [node name="ClientUI" type="Control" unique_id=198181679]
 layout_mode = 3
@@ -72,5 +136,11 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 script = ExtResource("3_ty0e6")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1959811198]
+position = Vector2(639, 363.99997)
+scale = Vector2(10.6203575, 10.6203575)
+sprite_frames = SubResource("SpriteFrames_q52u8")
+animation = &"off"
 
 [connection signal="pressed" from="Menu/Panel/LobbyStatus/LeaveLobby" to="Menu" method="_on_leave_lobby_pressed"]

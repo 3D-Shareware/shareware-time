@@ -9,6 +9,7 @@ signal map_ready # The signal the Lobby is waiting for
 var player_spawner : MultiplayerSpawner
 var player_data_base : Dictionary[int, Dictionary]
 var is_map_ready : bool = false # Lobby checks this for mid-game joiners
+@export var map_name : String = 'default'
 
 func _ready() -> void:
 	player_spawner = MultiplayerSpawner.new()

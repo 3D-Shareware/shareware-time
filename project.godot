@@ -23,6 +23,13 @@ config/icon="uid://tw5h2tr05v4x"
 
 Director="*res://Misc/director.gd"
 ServerDatabase="*uid://vp0x81lmogrn"
+ClientUI="*uid://wv5shiqbwe6w"
+
+[display]
+
+window/size/viewport_width=1280
+window/size/viewport_height=720
+window/stretch/mode="canvas_items"
 
 [file_customization]
 
@@ -32,6 +39,7 @@ folder_colors={
 "res://MapsAndGamemodes/Maps/": "yellow",
 "res://Misc/": "gray",
 "res://MultiplayerStuff/": "green",
+"res://MultiplayerStuff/home -._-/": "orange",
 "res://PlayerControllers/": "blue",
 "res://PlayerControllers/Abilities/": "purple",
 "res://PlayerControllers/Abilities/AbilityBasePlates/": "gray",
@@ -42,6 +50,10 @@ folder_colors={
 [global_group]
 
 LobbyContainer=""
+
+[gui]
+
+theme/custom="uid://bqxkokut137fe"
 
 [input]
 

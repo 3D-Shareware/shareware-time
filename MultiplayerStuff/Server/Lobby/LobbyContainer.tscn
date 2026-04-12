@@ -2,6 +2,72 @@
 
 [ext_resource type="Script" uid="uid://bt8mw0x7olnpa" path="res://MultiplayerStuff/Server/Lobby/lobby_container.gd" id="1_mv773"]
 [ext_resource type="Script" uid="uid://5fglh17poklv" path="res://MultiplayerStuff/Server/Lobby/lobby_viewer.gd" id="2_yi4sf"]
+[ext_resource type="Texture2D" uid="uid://5tjw6xmeggdj" path="res://MultiplayerStuff/home -._-/vhson-Sheet.png" id="3_6sr8i"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_bcmkj"]
+atlas = ExtResource("3_6sr8i")
+region = Rect2(600, 0, 120, 72)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_5v37j"]
+atlas = ExtResource("3_6sr8i")
+region = Rect2(0, 0, 120, 72)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_gx0aj"]
+atlas = ExtResource("3_6sr8i")
+region = Rect2(120, 0, 120, 72)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ck8gw"]
+atlas = ExtResource("3_6sr8i")
+region = Rect2(240, 0, 120, 72)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_fnw2m"]
+atlas = ExtResource("3_6sr8i")
+region = Rect2(360, 0, 120, 72)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_c2ohu"]
+atlas = ExtResource("3_6sr8i")
+region = Rect2(480, 0, 120, 72)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_sy81q"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_bcmkj")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_5v37j")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_gx0aj")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_gx0aj")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_gx0aj")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_gx0aj")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ck8gw")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_fnw2m")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_c2ohu")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_c2ohu")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_bcmkj")
+}],
+"loop": false,
+"name": &"on",
+"speed": 24.0
+}]
 
 [node name="LobbyContainer" type="Node" unique_id=1974402244 groups=["LobbyContainer"]]
 script = ExtResource("1_mv773")
@@ -20,7 +86,15 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("2_yi4sf")
 
+[node name="Background" type="ColorRect" parent="LobbyViewer" unique_id=1977787038]
+modulate = Color(1, 1, 1, 0)
+layout_mode = 0
+offset_right = 1279.0
+offset_bottom = 716.0
+color = Color(0, 0, 0, 1)
+
 [node name="Panel" type="Panel" parent="LobbyViewer" unique_id=875913062]
+visible = false
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -78,5 +152,11 @@ offset_bottom = -34.620003
 grow_horizontal = 2
 grow_vertical = 2
 text = "create_lobby"
+
+[node name="Animation" type="AnimatedSprite2D" parent="LobbyViewer" unique_id=1473041187]
+position = Vector2(648.00006, 369.00003)
+scale = Vector2(10.799522, 10.799522)
+sprite_frames = SubResource("SpriteFrames_sy81q")
+animation = &"on"
 
 [connection signal="pressed" from="LobbyViewer/Panel/create_lobby_button" to="LobbyViewer" method="_on_create_lobby_button_pressed"]

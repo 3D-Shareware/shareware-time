@@ -15,16 +15,17 @@ var Maps : Dictionary [String, PackedScene] = {
 } 
 
 var Mercs : Dictionary [String, PackedScene] = {
-	"default" = load("res://PlayerControllers/Mercs/Default/FirstPersonController.tscn")
-} 
+	"default" = load("res://PlayerControllers/Mercs/Default/FirstPersonController.tscn"),
+	"homebody" = load("res://PlayerControllers/Mercs/HomeBody/HomeBody.tscn")
+}
 
 var Characters : Dictionary [String, PackedScene] = {} 
 var Players : Dictionary [int, Dictionary] #id, [gamertag, lobby]
 var Lobbies : Dictionary[String, Array] = {} #lobbyid = [player_id, ...]
 
 var port = 6789
-#var address = "localhost"
-var address = "csdev03.d.umn.edu"
+var address = "localhost"
+#var address = "csdev03.d.umn.edu"
 #var chat 
 #endregion
 

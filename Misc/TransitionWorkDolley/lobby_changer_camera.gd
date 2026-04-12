@@ -8,7 +8,7 @@ var camera_queue : Array[CameraFollowPath] = []
 var current_path_following : CameraFollowPath
 
 # Exposed so you can easily tweak transition times in the inspector
-@export var transition_duration: float = 1.5 
+@export var transition_duration: float = 1.0
 
 func _process(delta: float) -> void:
 	if current_path_following:
@@ -28,25 +28,34 @@ func _process(delta: float) -> void:
 			var target_quat = ideal_transform.basis.get_rotation_quaternion()
 			quaternion = quaternion.slerp(target_quat, delta * 12)
 
-
 func set_dolley_sequence(queue: Array[CameraFollowPath]):
+	# BUG FIX: Prevent crash if array is empty
+	if queue == null or queue.is_empty(): 
+		finished_with_all_camera_transitions.emit()
+		return
+		
+	global_position = queue[0].path_follow_3d.global_position
 	make_current()
-	for i in queue:
-		transition_to_next_dolley(i)
+	
+	# Loop using the array's size so we know our index
+	for i in range(queue.size()):
+		var current_dolley = queue[i]
+		var is_last_index = (i == queue.size() - 1)
+		
+		transition_to_next_dolley(current_dolley)
 		await done_transfering_dollies
 		
-		# Now that the tween is done and we are at the new dolley, 
-		# hand control over to _process so it sticks to the path
-		current_path_following = i
+		current_path_following = current_dolley
 		
-		i.ease_dolley(2.0)
-		await i.done_dolley
+		# ---- NEW: Show text if we are on the final map ----
+		if is_last_index:
+			current_dolley.display_lobby_name()
 		
-		# Clear the current path so _process stops moving the camera 
-		# while we wait for the next transition to start.
+		current_dolley.ease_dolley()
+		await current_dolley.done_dolley
+		
 		current_path_following = null
 	
-	print('byeeee')
 	finished_with_all_camera_transitions.emit()
 
 
