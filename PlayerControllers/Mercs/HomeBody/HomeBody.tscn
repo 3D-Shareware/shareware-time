@@ -2,6 +2,7 @@
 
 [ext_resource type="Script" uid="uid://bsf55tn5c3yh4" path="res://PlayerControllers/Mercs/HomeBody/homebody.gd" id="1_c4nve"]
 [ext_resource type="PackedScene" uid="uid://0dr7xw7mcvp6" path="res://PlayerControllers/Abilities/HomeBodyHand/HomeBodyHand.tscn" id="2_6lw5w"]
+[ext_resource type="PackedScene" uid="uid://l6sian0yldb7" path="res://PlayerControllers/Abilities/Grenade/GrenadeAbility.tscn" id="2_ksmpc"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_lwjk5"]
 
@@ -12,7 +13,13 @@ collision_layer = 2
 script = ExtResource("1_c4nve")
 camera = NodePath("Camera3D")
 visual_body = NodePath("MeshInstance3D")
-abilities = [NodePath("HomeBodyHand")]
+abilities = [NodePath("HomeBodyHand"), NodePath("GrenadeAbility")]
+
+[node name="GrenadeAbility" parent="." unique_id=1600695075 instance=ExtResource("2_ksmpc")]
+cool_down = 5.0
+fuse_time = 4.0
+throw_strength = 5.0
+damage = 70.0
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=1977683154]
 shape = SubResource("CapsuleShape3D_lwjk5")

@@ -20,14 +20,13 @@ func _process(_delta: float) -> void:
 	if Input.is_action_just_pressed("left_click") and not thrown:
 		holding_about_to_throw = true
 		anim_player.play("hold_to_throw")
+		fuse_timer.start(fuse_time)
 		
-	if Input.is_action_just_released("left_click") and holding_about_to_throw:
+	if Input.is_action_just_released("left_click") and holding_about_to_throw and !thrown:
 		holding_about_to_throw = false
 		thrown = true
-		anim_player.play("throw")
-		
 		shoot()
-		fuse_timer.start(fuse_time)
+	
 
 func shoot():
 	# Detach the grenade from the hand and throw it
@@ -49,23 +48,24 @@ func dequip():
 
 @rpc("any_peer", "call_local", "reliable")
 func explode():
-	for i in explosion_radius.get_overlapping_bodies():
-		if i != null and i is Merc:
-			i.take_damage.rpc_id(i.name.to_int(), damage) 
-
+	# Only the authority should calculate and send damage
+	if is_multiplayer_authority():
+		for i in explosion_radius.get_overlapping_bodies():
+			if i != null and i is Merc:
+				i.take_damage.rpc_id(i.name.to_int(), damage) 
+	
+	# Everything below this runs locally for all clients (Visuals/Cleanup)
 	if cpu_particles_3d:
 		cpu_particles_3d.emitting = true
-		
-	grenade.visible = false
+		print('emitting')
+	
 	grenade.set_deferred("freeze", true)
 	
 	await cpu_particles_3d.finished
-	
-	# Call the reset function instead of queue_free()
 	reset_grenade()
 
 func reset_grenade():
-		
+	
 	#Kill leftover momentum so it doesn't fly off when un-frozen later
 	grenade.linear_velocity = Vector3.ZERO
 	grenade.angular_velocity = Vector3.ZERO
@@ -82,5 +82,5 @@ func reset_grenade():
 	equip()
 
 func _on_fuse_timer_timeout() -> void:
-	if grenade:
+	if grenade and is_multiplayer_authority():
 		explode.rpc()
