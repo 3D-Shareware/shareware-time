@@ -243,10 +243,11 @@ bind/3/name = &"Bone"
 bind/3/bone = -1
 bind/3/pose = Transform3D(1.0627444, 0, 0, 0, 1.0627444, 0, 0, 0, 1.0627444, -7.6502905, -2.0862973, -0.20386086)
 
-[node name="EvilGun" type="Node3D" unique_id=1600695075 node_paths=PackedStringArray("raycasts", "visual_hand")]
+[node name="EvilGun" type="Node3D" unique_id=1600695075 node_paths=PackedStringArray("weapon_mesh", "raycasts", "visual_hand")]
 script = ExtResource("1_1hc3p")
 damage = 40.0
 fire_speed = 0.5
+weapon_mesh = NodePath("firstanimation")
 raycasts = [NodePath("BulletRayCast")]
 AbilityDescription = "blam r to reload left click to shoot"
 visual_hand = NodePath("VisualHand")

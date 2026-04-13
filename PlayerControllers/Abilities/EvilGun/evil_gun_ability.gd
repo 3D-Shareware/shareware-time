@@ -12,6 +12,16 @@ extends WeaponAbility
 @export var damage: float = 10.0
 @export var fire_speed: float = 0.1 # Time in seconds between shots
 
+@export_category("Weapon Movement Juice")
+@export var weapon_mesh: Node3D # ASSIGN YOUR VISUAL GUN MODEL HERE!
+@export var bob_frequency: float = 2.0
+@export var bob_amplitude: float = 0.02
+@export var tilt_amount: float = 0.2
+
+var _bob_time: float = 0.0
+var _initial_mesh_position: Vector3
+var _initial_mesh_rotation: Vector3
+
 @export_category("Weapon Nodes")
 # Add ONE RayCast3D here for a Pistol/Rifle, or add MULTIPLE for a Shotgun
 @export var raycasts: Array[RayCast3D] = [] 
@@ -20,13 +30,15 @@ var ammo: int
 
 func _ready() -> void:
 	ammo = max_ammo
-	
-	# 1. Setup the fire rate timer
 	fire_attack_speed.wait_time = fire_speed
 	fire_attack_speed.one_shot = true
-	
 	hide()
 	label.text = str(ammo) + "/" + str(max_ammo)
+	
+	# --- NEW: Save the resting position of the visual mesh ---
+	if weapon_mesh:
+		_initial_mesh_position = weapon_mesh.position
+		_initial_mesh_rotation = weapon_mesh.rotation
 
 func _process(delta: float) -> void:
 	if !is_multiplayer_authority(): return
@@ -52,6 +64,9 @@ func _process(delta: float) -> void:
 	# 3. Check if the gun is ready to fire based on the timer
 	if trigger_pulled and fire_attack_speed.is_stopped():
 		shoot()
+	
+	if weapon_mesh:
+		_apply_weapon_bob_and_tilt(delta)
 
 func reload():
 	animation_player.play("reload")
@@ -108,3 +123,39 @@ func dequip():
 	hide()
 	crosshair_002.hide()
 	show_visual_hand.rpc(false)
+
+# ==========================================
+# SOURCE-ENGINE WEAPON SWAY & BOB
+# ==========================================
+func _apply_weapon_bob_and_tilt(delta: float) -> void:
+	# We only want 2D horizontal velocity (ignoring jumping/falling for the bob cycle)
+	var horizontal_velocity = Vector3(merc.velocity.x, 0, merc.velocity.z)
+	var speed = horizontal_velocity.length()
+	
+	# 1. BOBBING (Figure-8 pattern based on movement speed)
+	if speed > 0.1 and merc.is_on_floor():
+		# Advance the timer based on how fast we are moving
+		_bob_time += delta * speed * bob_frequency
+	else:
+		# Smoothly reset the timer to 0 when we stop walking
+		_bob_time = lerp(_bob_time, 0.0, delta * 5.0) 
+		
+	var target_pos = _initial_mesh_position
+	# Up/Down motion
+	target_pos.y += sin(_bob_time) * bob_amplitude 
+	# Left/Right motion (Half the speed of Up/Down creates a figure-8)
+	target_pos.x += cos(_bob_time * 0.5) * (bob_amplitude * 1.5) 
+	
+	# 2. ACCELERATION TILT (Tilts gun slightly opposite to movement direction)
+	# Convert the global velocity into the camera's local point of view
+	var local_vel = merc.camera.global_transform.basis.inverse() * horizontal_velocity
+	var target_rot = _initial_mesh_rotation
+	
+	# Tilt left/right when strafing (A/D keys)
+	target_rot.z += local_vel.x * tilt_amount * 0.01 
+	# Tilt up/down slightly when moving forward/back (W/S keys)
+	target_rot.x -= local_vel.z * tilt_amount * 0.01 
+	
+	# 3. LERP THE VISUALS (Smooths everything out)
+	weapon_mesh.position = weapon_mesh.position.lerp(target_pos, delta * 10.0)
+	weapon_mesh.rotation = weapon_mesh.rotation.lerp(target_rot, delta * 10.0)

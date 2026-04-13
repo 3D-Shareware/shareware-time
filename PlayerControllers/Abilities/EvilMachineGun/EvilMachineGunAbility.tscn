@@ -246,10 +246,11 @@ bind/3/name = &"Bone"
 bind/3/bone = -1
 bind/3/pose = Transform3D(1.0627444, 0, 0, 0, 1.0627444, 0, 0, 0, 1.0627444, -7.6502905, -2.0862973, -0.20386086)
 
-[node name="EvilMachineGun" type="Node3D" unique_id=1600695075 node_paths=PackedStringArray("raycasts", "visual_hand")]
+[node name="EvilMachineGun" type="Node3D" unique_id=1600695075 node_paths=PackedStringArray("weapon_mesh", "raycasts", "visual_hand")]
 script = ExtResource("1_7lpqe")
 is_auto = true
 max_ammo = 25
+weapon_mesh = NodePath("firstanimation")
 raycasts = [NodePath("BulletRayCast")]
 visual_hand = NodePath("VisualHand")
 trigger_key = "3"
