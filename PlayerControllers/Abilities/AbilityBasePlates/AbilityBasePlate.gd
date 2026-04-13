@@ -10,6 +10,8 @@ const FALLBACK_KEYS: Array[String] = [
 ]
 
 @abstract func activate(abilities : Array[Ability], merc : Merc)
+@export var AbilityDescription : String = "no description"
+@export var visual_hand : Node3D
 
 @export_category("Ability Mapping")
 @export_enum(

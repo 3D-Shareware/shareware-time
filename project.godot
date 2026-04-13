@@ -36,6 +36,7 @@ window/stretch/mode="canvas_items"
 folder_colors={
 "res://MapsAndGamemodes/": "teal",
 "res://MapsAndGamemodes/Gamemodes/": "red",
+"res://MapsAndGamemodes/Gamemodes/PresetGamemodeWidgets/": "gray",
 "res://MapsAndGamemodes/Maps/": "yellow",
 "res://Misc/": "gray",
 "res://MultiplayerStuff/": "green",

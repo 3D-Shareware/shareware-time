@@ -28,7 +28,6 @@ var Lobbies : Dictionary[String, Array] = {} #lobbyid = [player_id, ...]
 var port = 6789
 var address = "localhost"
 #var address = "csdev03.d.umn.edu"
-#var chat 
 #endregion
 
 #region Manager

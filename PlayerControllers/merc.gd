@@ -174,11 +174,64 @@ func check_abilities() -> void:
 			if Input.is_physical_key_pressed(key_code):
 				i.activate(abilities, self)
 
-func add_ability(ability : Ability):
-	pass
+# ==========================================
+# ABILITY MANAGEMENT (SERVER ONLY)
+# ==========================================
 
-func remove_ability(ability: Ability):
-	pass
+func add_ability(ability: Ability) -> void:
+	if not multiplayer.is_server(): return
+	# The server tells EVERYONE (including itself) to attach this specific node
+	_sync_add_ability.rpc(ability.get_path())
+
+func remove_ability(ability: Ability) -> void:
+	if not multiplayer.is_server(): return
+	
+	# The server tells EVERYONE to remove this specific node
+	_sync_remove_ability.rpc(ability.get_path())
+
+# ==========================================
+# ABILITY SYNCHRONIZATION (ALL PEERS)
+# ==========================================
+
+@rpc("authority", "call_local", "reliable")
+func _sync_add_ability(ability_path: NodePath) -> void:
+	# 1. Find the physical ability node in the world using its path
+	var ability_node = get_node_or_null(ability_path)
+	if not ability_node: 
+		push_error("Sync Error: Could not find Ability at path: ", ability_path)
+		return
+		
+	# 2. Resolve keybinds
+	ability_node.equip_ability(abilities)
+	
+	# 3. Add to the local tracking array
+	if not abilities.has(ability_node):
+		abilities.append(ability_node)
+		
+	# 4. Attach it to the Merc (Only reparent if it isn't already attached)
+	if ability_node.get_parent() != self:
+		ability_node.reparent(self) 
+		
+	# 5. Refresh the local UI
+	if abilites_ui and abilites_ui.has_method("generate_ui"):
+		abilites_ui.generate_ui(self)
+
+@rpc("authority", "call_local", "reliable")
+func _sync_remove_ability(ability_path: NodePath) -> void:
+	var ability_node = get_node_or_null(ability_path)
+	if not ability_node: return
+	
+	if abilities.has(ability_node):
+		# 1. Remove from the local tracking array
+		abilities.erase(ability_node)
+		
+		# 2. Trigger the cleanup function you wrote earlier
+		ability_node.dequip_ability()
+		
+		# 3. Refresh the local UI so it disappears from the screen
+		if abilites_ui and abilites_ui.has_method("generate_ui"):
+			abilites_ui.generate_ui(self)
+
 
 @rpc("any_peer", "call_remote", "unreliable")
 func receive_pos_from_server(pos: Vector3, rot: Vector3):

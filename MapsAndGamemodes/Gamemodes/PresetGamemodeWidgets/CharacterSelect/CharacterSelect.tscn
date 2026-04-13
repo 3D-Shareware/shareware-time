@@ -1,0 +1,141 @@
+[gd_scene format=3 uid="uid://bgx7lserrkrgs"]
+
+[ext_resource type="Script" uid="uid://i4snterwwfcp" path="res://MapsAndGamemodes/Gamemodes/PresetGamemodeWidgets/CharacterSelect/character_select.gd" id="1_flvx3"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_flvx3"]
+content_margin_left = 0.0
+content_margin_top = 0.0
+content_margin_right = 0.0
+content_margin_bottom = 0.0
+bg_color = Color(0.1, 0.1, 0.1, 0.6)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.23148724, 0.6297902, 0, 1)
+corner_radius_top_left = 3
+corner_radius_top_right = 3
+corner_radius_bottom_right = 3
+corner_radius_bottom_left = 3
+corner_detail = 5
+
+[sub_resource type="Gradient" id="Gradient_flvx3"]
+offsets = PackedFloat32Array(0, 0.54469275, 1)
+colors = PackedColorArray(0.31764707, 0.4509804, 0.39607844, 1, 0.6901961, 0.7490196, 0.7254902, 0.31764707, 1, 1, 1, 0)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_8i7tb"]
+gradient = SubResource("Gradient_flvx3")
+fill = 1
+fill_from = Vector2(0.51282054, 0.48290598)
+fill_to = Vector2(0.8076923, 0.13247864)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_frsov"]
+transparency = 1
+albedo_texture = SubResource("GradientTexture2D_8i7tb")
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_i77xa"]
+
+[sub_resource type="Sky" id="Sky_flvx3"]
+sky_material = SubResource("ProceduralSkyMaterial_i77xa")
+
+[sub_resource type="Environment" id="Environment_8i7tb"]
+background_mode = 2
+sky = SubResource("Sky_flvx3")
+
+[sub_resource type="Gradient" id="Gradient_8i7tb"]
+colors = PackedColorArray(1, 1, 1, 0, 0, 0, 0, 0.15294118)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_frsov"]
+gradient = SubResource("Gradient_8i7tb")
+fill = 1
+fill_from = Vector2(0.5, 0.52136755)
+
+[node name="CharacterSelect" type="Control" unique_id=248948751]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_flvx3")
+
+[node name="PanelContainer" type="PanelContainer" parent="." unique_id=1266829574]
+layout_mode = 0
+offset_left = 409.0
+offset_top = 25.0
+offset_right = 921.0
+offset_bottom = 537.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_flvx3")
+
+[node name="SubViewportContainer" type="SubViewportContainer" parent="PanelContainer" unique_id=1846554178]
+layout_mode = 2
+
+[node name="SubViewport" type="SubViewport" parent="PanelContainer/SubViewportContainer" unique_id=338155594]
+transparent_bg = true
+handle_input_locally = false
+render_target_update_mode = 4
+
+[node name="maybe make this ia gradient" type="CSGBox3D" parent="PanelContainer/SubViewportContainer/SubViewport" unique_id=1596898349]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0033812523, -1.9432604, -3.9061258)
+size = Vector3(5.9040527, 0.05810547, 6.897705)
+material = SubResource("StandardMaterial3D_frsov")
+
+[node name="maybe make this ia gradient2" type="CSGBox3D" parent="PanelContainer/SubViewportContainer/SubViewport" unique_id=1508300348]
+transform = Transform3D(0.755, 0, 0, 0, 0.755, 0, 0, 0, 0.755, -0.0033812523, -2.7013748, -3.9061258)
+size = Vector3(5.9040527, 0.05810547, 6.897705)
+material = SubResource("StandardMaterial3D_frsov")
+
+[node name="maybe make this ia gradient3" type="CSGBox3D" parent="PanelContainer/SubViewportContainer/SubViewport" unique_id=1139153303]
+transform = Transform3D(0.52, 0, 0, 0, 0.52, 0, 0, 0, 0.52, -0.0033812523, -4.246684, -4.9117584)
+size = Vector3(5.9040527, 0.05810547, 6.897705)
+material = SubResource("StandardMaterial3D_frsov")
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="PanelContainer/SubViewportContainer/SubViewport" unique_id=699360747]
+environment = SubResource("Environment_8i7tb")
+
+[node name="Camera3D" type="Camera3D" parent="PanelContainer/SubViewportContainer/SubViewport" unique_id=594467270]
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="PanelContainer/SubViewportContainer/SubViewport" unique_id=391242647]
+transform = Transform3D(1, 0, 0, 0, 0.36313745, 0.9317356, 0, -0.9317356, 0.36313745, 0, 1.2454926, 2.6535952)
+
+[node name="SpinSpawn" type="Marker3D" parent="PanelContainer/SubViewportContainer/SubViewport" unique_id=379684050]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.026600122, 0.13624978, -2.2191494)
+
+[node name="Timer" type="Timer" parent="PanelContainer/SubViewportContainer/SubViewport/SpinSpawn" unique_id=1313410776]
+wait_time = 0.2
+autostart = true
+
+[node name="CSGBox3D" type="CSGBox3D" parent="PanelContainer/SubViewportContainer/SubViewport/SpinSpawn" unique_id=1095285554]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1.246, 0)
+size = Vector3(1, 0.13232422, 1)
+
+[node name="LockIn" type="Button" parent="." unique_id=1314794864]
+layout_mode = 0
+offset_left = 431.0
+offset_top = 592.0
+offset_right = 902.0
+offset_bottom = 679.0
+theme_override_font_sizes/font_size = 61
+text = "Lock In"
+
+[node name="Abilities" type="VBoxContainer" parent="." unique_id=1393529415]
+layout_mode = 0
+offset_left = 965.0
+offset_top = 37.0
+offset_right = 1256.0
+offset_bottom = 709.0
+
+[node name="MercSelectButtons" type="VBoxContainer" parent="." unique_id=1216373032]
+layout_mode = 0
+offset_left = 14.0
+offset_top = 25.0
+offset_right = 385.0
+offset_bottom = 685.0
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1156284638]
+position = Vector2(639.00006, 360)
+scale = Vector2(20.234375, 11.359375)
+texture = SubResource("GradientTexture2D_frsov")
+
+[connection signal="timeout" from="PanelContainer/SubViewportContainer/SubViewport/SpinSpawn/Timer" to="PanelContainer/SubViewportContainer/SubViewport/SpinSpawn" method="rotate" binds= [Vector3(0, 1, 0), 0.2]]
+[connection signal="pressed" from="LockIn" to="." method="_on_button_pressed"]

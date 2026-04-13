@@ -3,6 +3,7 @@ extends WeaponAbility
 @onready var bullet_ray_cast: RayCast3D = $BulletRayCast
 @onready var tracer_effect: Node3D = $TracerEffect
 @onready var fire_attack_speed: Timer = $FireAttackSpeed
+@onready var crosshair_002: Sprite2D = $Crosshair002
 
 @export var ammo : int = 12
 @export var damage = 10
@@ -16,6 +17,8 @@ func _ready() -> void:
 func _process(delta: float) -> void:
 	if !is_multiplayer_authority(): pass
 	if !currently_active: return
+	
+	crosshair_002.visible = visible
 	
 	global_transform = merc.camera.global_transform
 	

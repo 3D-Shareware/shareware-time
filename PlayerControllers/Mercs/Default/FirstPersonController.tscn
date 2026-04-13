@@ -2,27 +2,28 @@
 
 [ext_resource type="Script" uid="uid://bk51phcq14oxy" path="res://PlayerControllers/Mercs/Default/first_person_controller.gd" id="1_sjy6i"]
 [ext_resource type="PackedScene" uid="uid://bwbfmr1nmjwg" path="res://PlayerControllers/Abilities/EvilGun/EvilGunAbility.tscn" id="2_4fgnm"]
+[ext_resource type="PackedScene" uid="uid://l6sian0yldb7" path="res://PlayerControllers/Abilities/Grenade/GrenadeAbility.tscn" id="2_6heus"]
 [ext_resource type="PackedScene" uid="uid://b36uuh56645j5" path="res://PlayerControllers/Abilities/Jump/JumpAbility.tscn" id="2_lfvw0"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_lwjk5"]
 
 [sub_resource type="CapsuleMesh" id="CapsuleMesh_g1ecg"]
 
-[node name="Player" type="CharacterBody3D" unique_id=728258314 node_paths=PackedStringArray("camera", "visual_hand", "abilities")]
+[node name="Player" type="CharacterBody3D" unique_id=728258314 node_paths=PackedStringArray("camera", "visual_body", "visual_hand", "abilities")]
 collision_layer = 2
 script = ExtResource("1_sjy6i")
 camera = NodePath("Camera3D")
+visual_body = NodePath("MeshInstance3D")
 visual_hand = NodePath("Hand")
-abilities = [NodePath("EvilGun"), NodePath("JumpAbility"), NodePath("EvilGun2")]
+abilities = [NodePath("EvilGun"), NodePath("JumpAbility"), NodePath("GrenadeAbility")]
+
+[node name="GrenadeAbility" parent="." unique_id=1600695075 instance=ExtResource("2_6heus")]
 
 [node name="JumpAbility" parent="." unique_id=27473948 instance=ExtResource("2_lfvw0")]
 auto_bhop = true
 trigger_key = "Space"
 
-[node name="EvilGun" parent="." unique_id=1600695075 instance=ExtResource("2_4fgnm")]
-
-[node name="EvilGun2" parent="." unique_id=1336151495 instance=ExtResource("2_4fgnm")]
-trigger_key = "2"
+[node name="EvilGun" parent="." unique_id=697975385 instance=ExtResource("2_4fgnm")]
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=1977683154]
 shape = SubResource("CapsuleShape3D_lwjk5")

@@ -28,7 +28,7 @@ func _ready() -> void:
 		
 		parent_lobby.player_joined_lobby.connect(_on_player_joined)
 		parent_lobby.player_left_lobby.connect(_on_player_left)
-	
+		multiplayer.peer_disconnected.connect(_disconnected_player)
 	custom_ready()
 	
 	if !multiplayer.is_server(): return
@@ -72,6 +72,23 @@ func _spawn_player(spawn_data:Dictionary):
 
 func get_lobby_player_ids(): return int(name)
 
+func _exit_tree() -> void:
+	if multiplayer.is_server():
+		_cleanup_network_nodes()
+
+func _cleanup_network_nodes() -> void:
+	for child in get_children():
+		child.queue_free()
+
+func _disconnected_player(peer_id : int):
+	if !multiplayer.is_server(): return
+	var player = get_node_or_null(str(peer_id))
+	
+	if player: 
+		player.queue_free()
+		print("Player ", peer_id, " removed successfully.")
+	else:
+		print("Could not find player to remove: ", peer_id)
 @abstract func start_gamemode()
 @abstract func player_died(merc : Merc)
 @abstract func _on_player_joined(player_id: int)

@@ -1,0 +1,27 @@
+[gd_scene format=3 uid="uid://m3x50ujkghf8"]
+
+[ext_resource type="Script" uid="uid://bkors4bvprfv2" path="res://MapsAndGamemodes/Gamemodes/PresetGamemodeWidgets/AbilityPickup/ability_pickup.gd" id="1_voqiy"]
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_fbgu2"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_voqiy"]
+transparency = 1
+albedo_color = Color(0.3569815, 0.5852847, 0.3056644, 0.20784314)
+
+[node name="AbilityPickup" type="Area3D" unique_id=167658854]
+collision_layer = 0
+collision_mask = 2
+script = ExtResource("1_voqiy")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=1724759441]
+shape = SubResource("SphereShape3D_fbgu2")
+
+[node name="Timer" type="Timer" parent="." unique_id=1857078742]
+
+[node name="SpinPoint" type="Marker3D" parent="." unique_id=879503749]
+
+[node name="CSGSphere3D" type="CSGSphere3D" parent="." unique_id=1997621768]
+material = SubResource("StandardMaterial3D_voqiy")
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]
+[connection signal="timeout" from="Timer" to="SpinPoint" method="rotate" binds= [Vector3(0.2, 0.8, 0), 0.2]]
