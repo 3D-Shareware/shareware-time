@@ -13,6 +13,7 @@ signal player_voted(lobby_id: String, sender_id: int, vote_number: String)
 
 var Maps : Dictionary [String, PackedScene] = {
 	"sb_lobby" = load("res://MapsAndGamemodes/Maps/sb_Lobby/sb_lobby.tscn"),
+	"dm_grahhh" = load("res://MapsAndGamemodes/Maps/dm_grahhh/dm_grahhh.tscn"),
 	"hm_home" = load("res://MultiplayerStuff/home -._-/hm_home.tscn")
 } 
 
@@ -26,8 +27,8 @@ var Players : Dictionary [int, Dictionary] #id, [gamertag, lobby]
 var Lobbies : Dictionary[String, Array] = {} #lobbyid = [player_id, ...]
 
 var port = 6789
-#var address = "localhost"
-var address = "csdev03.d.umn.edu"
+var address = "localhost"
+#var address = "csdev03.d.umn.edu"
 #endregion
 
 #region Manager
