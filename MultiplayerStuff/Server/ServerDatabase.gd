@@ -75,6 +75,7 @@ func update_lobbies(_lobbies):
 func sync_lobbies(_lobbies):
 	Lobbies = _lobbies
 	lobbies_updated.emit()
+
 @rpc("any_peer", "call_remote", "reliable")
 func send_chat_message(message: String):
 	if not multiplayer.is_server(): return
