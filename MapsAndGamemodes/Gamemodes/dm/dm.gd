@@ -3,22 +3,59 @@ class_name DM
 #deathmatch
 
 const LEADER_BOARD = preload("res://MapsAndGamemodes/Gamemodes/PresetGamemodeWidgets/Leaderboard/LeaderBoard.tscn")
+const DM_UI = preload("res://MapsAndGamemodes/Gamemodes/PresetGamemodeWidgets/VersusUI/VSUI.tscn")
 
 var leaderboard: LeaderBoard 
+var match_ui: VSUI
+
 @export var spawn_points: Array[Node3D] = [] 
 @export var respawn_delay: float = 5.0 
 @export var gamemode_length = 10.0
 
 var respawn_trackers: Dictionary[int, Dictionary] = {}
 var match_started: bool = false 
+var time_left: float = 0.0 # Track time for the UI
 
-func custom_ready():
+func _ready() -> void:
 	leaderboard = LEADER_BOARD.instantiate()
 	add_child(leaderboard)
 	
-func custom_process(delta: float):
-	# Block all spawning logic until start_gamemode() is called, or if the match ended.
+	# Instantiate the UI on all clients
+	match_ui = DM_UI.instantiate()
+	add_child(match_ui)
+
+func _process(delta: float) -> void:
+	# --- UI & TIME LOGIC (Runs on Server AND Clients) ---
+	if match_started:
+		time_left -= delta
+		
+		# Calculate scores for the UI
+		var my_id = multiplayer.get_unique_id()
+		var my_kills = 0
+		var top_kills = 0
+		
+		if leaderboard and leaderboard.stats:
+			# Get local player's kills safely
+			if leaderboard.stats.has(my_id):
+				my_kills = leaderboard.stats[my_id].get("kills", 0)
+			
+			# Find the highest kills in the lobby
+			for player_data in leaderboard.stats.values():
+				var kills = player_data.get("kills", 0)
+				if kills > top_kills:
+					top_kills = kills
+		
+		# Feed the UI
+		if match_ui:
+			match_ui.update_ui(my_kills, top_kills, max(time_left, 0.0))
+
+	# --- RESPAWN LOGIC (Server Only) ---
 	if !multiplayer.is_server() or !match_started: 
+		return
+		
+	# Check server game-end condition
+	if time_left <= 0.0 and match_started:
+		_finish_match()
 		return
 	
 	for player_id in respawn_trackers.keys():
@@ -85,21 +122,25 @@ func _on_player_left(player_id: int) -> void:
 
 func start_gamemode():
 	if !multiplayer.is_server(): return
-	
-	# 1. Start the match and unlock spawns
-	match_started = true 
-	await get_tree().create_timer(gamemode_length).timeout
-	
-	# 2. Match time is up! Stop gameplay loops.
+	# Start the match on ALL clients simultaneously
+	_sync_start_match.rpc(gamemode_length)
+
+@rpc("authority", "call_local", "reliable")
+func _sync_start_match(length: float) -> void:
+	time_left = length
+	match_started = true
+
+func _finish_match():
+	# Lock the game loop
 	match_started = false 
 	
-	# 3. Calculate winners and show them on all clients
+	# Calculate winners and show them on all clients
 	if leaderboard:
 		var top_players = leaderboard.get_top_players(3)
 		leaderboard.show_end_game_showcase.rpc(top_players)
 		
-	# 4. Wait for 10 seconds so people can see the results
+	# Wait for 10 seconds so people can see the results
 	await get_tree().create_timer(10.0).timeout
 	
-	# 5. Finally, end the game entirely
+	# Finally, end the game entirely
 	_game_ended()

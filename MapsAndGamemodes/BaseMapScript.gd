@@ -11,7 +11,7 @@ var player_data_base : Dictionary[int, Dictionary]
 var is_map_ready : bool = false # Lobby checks this for mid-game joiners
 @export var map_name : String = 'default'
 
-func _ready() -> void:
+func _enter_tree() -> void:
 	player_spawner = MultiplayerSpawner.new()
 	player_spawner.name = "player_spawner"
 	add_child(player_spawner)
@@ -29,10 +29,12 @@ func _ready() -> void:
 		parent_lobby.player_joined_lobby.connect(_on_player_joined)
 		parent_lobby.player_left_lobby.connect(_on_player_left)
 		multiplayer.peer_disconnected.connect(_disconnected_player)
-	custom_ready()
+	
 	
 	if !multiplayer.is_server(): return
 	call_deferred("_finalize_setup")
+
+
 
 func _finalize_setup() -> void:
 	is_map_ready = true
@@ -40,9 +42,6 @@ func _finalize_setup() -> void:
 	
 	if multiplayer.is_server():
 		start_gamemode()
-
-func _process(delta: float) -> void:
-	custom_process(delta)
 
 func _game_ended(): #<1>
 	if !multiplayer.is_server(): return
@@ -93,5 +92,4 @@ func _disconnected_player(peer_id : int):
 @abstract func player_died(merc : Merc)
 @abstract func _on_player_joined(player_id: int)
 @abstract func _on_player_left(player_id: int)
-@abstract func custom_ready()
-@abstract func custom_process(delta : float)
+#@abstract func custom_ready()

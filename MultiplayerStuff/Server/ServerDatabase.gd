@@ -10,11 +10,13 @@ signal players_updated
 signal lobbies_updated 
 signal chat_message_received(sender_id: int, message: String)
 signal player_voted(lobby_id: String, sender_id: int, vote_number: String)
+signal force_end_game(lobby_id: String)
 
 var Maps : Dictionary [String, PackedScene] = {
 	"sb_lobby" = load("res://MapsAndGamemodes/Maps/sb_Lobby/sb_lobby.tscn"),
 	"hm_home" = load("res://MultiplayerStuff/home -._-/hm_home.tscn"),
 	"dm_dust2" = load("res://MapsAndGamemodes/Maps/dm_dust2/dm_dust2.tscn"),
+	"td_dust2" = load("res://MapsAndGamemodes/Maps/td_dust2/td_dust2.tscn"),
 	"dm_grahhh" = load("res://MapsAndGamemodes/Maps/dm_grahhh/dm_grahhh.tscn")
 }
 
@@ -65,7 +67,6 @@ func request_name_change(new_name: String):
 		Players[sender_id]["gamertag"] = clean_name
 		rpc("sync_players", Players)
 
-
 func update_lobbies(_lobbies):
 	rpc("sync_lobbies", _lobbies)
 
@@ -113,10 +114,10 @@ func _process_command(sender_id: int, lobby_id: String, command_string: String):
 			else:
 				receive_chat_message.rpc_id(sender_id, 0, "Usage: /vote [number]")
 				
-		"/start":
-			print("Player ", sender_id, " force-started lobby: ", lobby_id)
-			# NetworkDirector.lobby_container.start_match(lobby_id)
-			
+		"/endgame":
+			print("Player ", sender_id, " forced endgame in lobby: ", lobby_id)
+			# Emit the signal globally, passing the specific lobby that needs to end
+			force_end_game.emit(lobby_id)
 		_:
 			# Catch-all for unknown commands
 			receive_chat_message.rpc_id(sender_id, 0, "Unknown command: " + main_command)

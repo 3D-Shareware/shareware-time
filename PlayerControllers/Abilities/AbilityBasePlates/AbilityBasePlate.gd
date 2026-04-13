@@ -5,7 +5,7 @@ var currently_active = false
 
 const PRIORITY_KEYS: Array[String] = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "0"]
 const FALLBACK_KEYS: Array[String] = [
-	"E", "Q", "F", "G", "H", "V", "B", "N", "M", "T", "Y", "X", "C", "Z",
+	"E", "Q", "F", "G", "H", "V", "B", "T", "Y", "X", "C", "Z",
 	"Shift", "Ctrl", "Alt", "Space", "CapsLock", "Enter",
 ]
 

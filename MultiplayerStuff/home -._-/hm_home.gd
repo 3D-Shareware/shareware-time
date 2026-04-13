@@ -3,10 +3,6 @@ class_name HM
 @onready var trans_out_path: CameraFollowPath = $TransOutPath
 @onready var trans_middle: CameraFollowPath = $TransMiddle
 
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta: float) -> void:
-	pass
-
 func start_gamemode():
 	pass
 
@@ -39,11 +35,10 @@ func _on_player_joined(peer_id: int):
 		print("Player ", peer_id, " joined home for the first time. Spawning body.")
 		player_spawner.spawn({'merc_type' = 'homebody', "peer_id" = peer_id, "position" = Vector3.ZERO})
 
-
-func _on_player_left(player_id: int):
+func custom_ready():
 	pass
 
-func custom_ready():
+func _on_player_left(player_id: int):
 	pass
 
 func custom_process(delta : float):

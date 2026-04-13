@@ -1,10 +1,11 @@
 @abstract class_name Merc extends CharacterBody3D
 
+signal died(_self) #Server will disable input on character
+signal took_damage
+
 ## THIS THE BASE CLASS, DO NOT CHANGE AN OF THIS UNLESS ITS IN THE INSPECTOR
 const ABILITY_UI = preload("res://Misc/UI/ability_ui.tscn")
 const MERC_LABEL = preload("res://MultiplayerStuff/Client/MercLabel.tscn")
-
-var abilites_ui : AbilitiesUI
 
 @export_category("REQUIRED OBJECTS")
 @export var camera : Camera3D
@@ -20,16 +21,26 @@ var abilites_ui : AbilitiesUI
 @export var merc_UI_color : Color
 @export var camera_fov : float = 90.0
 
-var target_position: Vector3 #what other people see
-var target_rotation: Vector3
-
 @export var abilities : Array[Ability]
 #reminder abilities  can have their own ui
 
+var abilites_ui : AbilitiesUI
+var name_label_instance
+var target_position: Vector3 #what other people see
+var target_rotation: Vector3
+
 var dead = false
 var ability_ui 
-signal died(_self) #Server will disable input on character
-signal took_damage
+var team: String = "default"
+var player_teams: Dictionary = {}
+
+const TEAM_COLORS = {
+	"default": Color.WHITE,
+	"red": Color.RED,
+	"blue": Color.BLUE
+}
+
+
 
 func _ready() -> void:
 	target_position = global_position
@@ -37,14 +48,14 @@ func _ready() -> void:
 	
 	_setup_synchronizer()
 	
-	var name_label = MERC_LABEL.instantiate()
-	add_child(name_label)
+	name_label_instance = MERC_LABEL.instantiate()
+	add_child(name_label_instance)
 	
 	# Position it slightly above the player (Adjust the Y value based on your model height)
-	name_label.position = Vector3(0, 1.6, 0) 
+	name_label_instance.position = Vector3(0, 1.6, 0) 
 	
 	# Pass the player's network ID into the label so it knows whose name to grab
-	name_label.setup(name.to_int())
+	name_label_instance.setup(name.to_int())
 	
 	if is_multiplayer_authority():
 		camera.make_current()
@@ -59,7 +70,7 @@ func _ready() -> void:
 			visual_hand.hide()
 		
 		show_visual_body_to_world.rpc()
-		name_label.hide() #hide it local
+		name_label_instance.hide() #hide it local
 
 @rpc("any_peer","call_remote","reliable")
 func show_visual_body_to_world():
@@ -114,8 +125,11 @@ func _physics_process(delta: float) -> void:
 	if camera: camera.fov = camera_fov
 	
 	var input = Vector2.ZERO
-	input.x = float(Input.is_physical_key_pressed(KEY_D)) - float(Input.is_physical_key_pressed(KEY_A))
-	input.y = float(Input.is_physical_key_pressed(KEY_S)) - float(Input.is_physical_key_pressed(KEY_W))
+	
+	if ClientUI.chat_input.text == "":
+		input.x = float(Input.is_physical_key_pressed(KEY_D)) - float(Input.is_physical_key_pressed(KEY_A))
+		input.y = float(Input.is_physical_key_pressed(KEY_S)) - float(Input.is_physical_key_pressed(KEY_W))
+	
 	input = input.normalized()
 	
 	var movement_dir = transform.basis * Vector3(input.x, 0, input.y) * speed
@@ -163,7 +177,7 @@ func sv_airaccelerate(movement_dir, delta):
 
 func _input(event: InputEvent) -> void:
 	if !is_multiplayer_authority(): return
-	
+	if ClientUI.menu.visible: return
 	if dead: return
 	if event is InputEventMouseMotion:
 		rotate_y(-event.relative.x * 0.005)
@@ -200,6 +214,22 @@ func remove_ability(ability: Ability) -> void:
 	
 	# The server tells EVERYONE to remove this specific node
 	_sync_remove_ability.rpc(ability.get_path())
+
+# ==========================================
+# TEAM FIGHTING STUFF
+# ==========================================
+
+func sync_team_database(new_database: Dictionary) -> void:
+	player_teams = new_database
+	
+	# Update our own team based on our multiplayer ID (Node name)
+	var my_id = name.to_int()
+	if player_teams.has(my_id):
+		team = player_teams[my_id]
+		
+		# Update the UI color
+		if name_label_instance and TEAM_COLORS.has(team):
+			name_label_instance.modulate = TEAM_COLORS[team]
 
 # ==========================================
 # ABILITY SYNCHRONIZATION (ALL PEERS)
@@ -257,8 +287,20 @@ func receive_pos_from_server(pos: Vector3, rot: Vector3):
 	target_position = pos
 	target_rotation = rot
 
-@rpc("any_peer","call_remote", 'reliable')
-func take_damage(damage):
+@rpc("any_peer", "call_remote", "reliable")
+func take_damage(damage: float):
+	# 1. Securely get the ID of the person who shot you
+	var attacker_id = multiplayer.get_remote_sender_id()
+	
+	# 2. Check the local database for their team
+	if player_teams.has(attacker_id):
+		var attacker_team = player_teams[attacker_id]
+		
+		# 3. Filter friendly fire
+		if attacker_team == team and team != "default":
+			return # Block the damage!
+			
+	# Apply damage if they pass the check
 	health -= damage
 	if health <= 0 and not dead:
 		dead = true

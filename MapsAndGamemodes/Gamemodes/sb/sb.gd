@@ -10,11 +10,11 @@ var leaderboard: LeaderBoard
 
 var respawn_trackers: Dictionary[int, Dictionary] = {}
 
-func custom_ready():
+func _ready() -> void:
 	leaderboard = LEADER_BOARD.instantiate()
 	add_child(leaderboard)
 	
-func custom_process(delta: float):
+func _process(delta: float) -> void:
 	if !multiplayer.is_server(): return
 	
 	for player_id in respawn_trackers.keys():
