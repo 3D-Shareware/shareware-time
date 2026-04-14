@@ -13,9 +13,13 @@ script = ExtResource("1_jn38g")
 camera = NodePath("Camera3D")
 health = 250.0
 health_per_sec = 10.0
+gravity = null
+friction = null
 air_acceleration = 0.15
 speed = 0.75
-debug_mode = true
+merc_UI_color = null
+camera_fov = null
+debug_mode = null
 abilities = [NodePath("JhomGun"), NodePath("JhomNade"), NodePath("JhomMunch"), null]
 metadata/_custom_type_script = "uid://2ip0lrtrrhsr"
 

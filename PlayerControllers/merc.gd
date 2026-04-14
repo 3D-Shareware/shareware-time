@@ -47,7 +47,8 @@ const TEAM_COLORS = {
 }
 
 func _ready() -> void:
-	
+	if ServerDatabase.address == "csdev03.d.umn.edu":
+		debug_mode = false
 	
 	# ==========================================
 	# DEBUG MODE SETUP
