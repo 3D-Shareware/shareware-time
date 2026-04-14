@@ -1,0 +1,17 @@
+[gd_resource type="StandardMaterial3D" format=3 uid="uid://2bbp2iye2dgc"]
+
+[ext_resource type="Texture2D" uid="uid://dfjnkrm5u31yc" path="res://MapsAndGamemodes/Maps/dm_grahhh/assets/materials_skybox_nmb_space.tga" id="1_aaxj0"]
+
+[resource]
+shading_mode = 0
+diffuse_mode = 1
+specular_mode = 2
+disable_ambient_light = true
+disable_fog = true
+disable_specular_occlusion = true
+albedo_texture = ExtResource("1_aaxj0")
+uv1_scale = Vector3(0.006, 0.006, 0.006)
+uv1_triplanar = true
+uv1_world_triplanar = true
+proximity_fade_enabled = true
+stencil_flags = 2
