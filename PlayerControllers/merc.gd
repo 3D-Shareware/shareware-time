@@ -6,14 +6,12 @@ signal took_damage
 ## THIS THE BASE CLASS, DO NOT CHANGE AN OF THIS UNLESS ITS IN THE INSPECTOR
 const ABILITY_UI = preload("res://Misc/UI/ability_ui.tscn")
 const MERC_LABEL = preload("res://MultiplayerStuff/Client/MercLabel.tscn")
-#@onready var heal_delay: Timer = $HealDelay
 
 @export_category("REQUIRED OBJECTS")
 @export var camera : Camera3D
 
 @export_group("Universal Properties")
 @export var health :float = 100.0
-@export var health_per_sec = 5.0
 @export var gravity := 9.8
 @export var friction := .1
 @export var air_acceleration := .3
@@ -37,7 +35,6 @@ var dead = false
 var ability_ui 
 var team: String = "default"
 var player_teams: Dictionary = {}
-var timer : Timer
 
 
 const TEAM_COLORS = {
@@ -398,12 +395,7 @@ func death_effects():
 func die():
 	emit_signal("died", self)
 
-
-
-func custom_process(_delta : float):
-	return
-
-
-
+func custom_process(delta : float):
+	pass #use this for addons, physics process is used for default movement
 func custom_ready():
 	pass
