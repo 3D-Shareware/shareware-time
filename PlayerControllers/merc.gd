@@ -6,7 +6,7 @@ signal took_damage
 ## THIS THE BASE CLASS, DO NOT CHANGE AN OF THIS UNLESS ITS IN THE INSPECTOR
 const ABILITY_UI = preload("res://Misc/UI/ability_ui.tscn")
 const MERC_LABEL = preload("res://MultiplayerStuff/Client/MercLabel.tscn")
-@onready var heal_delay: Timer = $HealDelay
+#@onready var heal_delay: Timer = $HealDelay
 
 @export_category("REQUIRED OBJECTS")
 @export var camera : Camera3D
@@ -398,17 +398,12 @@ func death_effects():
 func die():
 	emit_signal("died", self)
 
-func custom_process(delta : float):
-	if health >= 250.0:
-		health = 250.0
-	else:
-		if heal_delay.is_stopped():
-			take_damage(health_per_sec*-1)
-			print(health)
-			heal_delay.start()
-		
-		
-	pass
-	pass #use this for addons, physics process is used for default movement
+
+
+func custom_process(_delta : float):
+	return
+
+
+
 func custom_ready():
 	pass
