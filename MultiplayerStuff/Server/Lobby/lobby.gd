@@ -47,6 +47,9 @@ func change_map(map_name : String):
 		current_map.queue_free()
 		current_map = null # Explicitly nullify it so it instantly fails 'if current_map' checks
 	
+	print(map_name)
+	print(ServerDatabase.Maps[map_name])
+	
 	var new_map : Map = ServerDatabase.Maps[map_name].instantiate()
 	
 	new_map.name = name #so far i havent had any issues with this naming scheme, it seems to be stable
