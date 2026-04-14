@@ -18,10 +18,13 @@ var _merc_ref: Merc = null
 # Riley's stuff
 @onready var chomper: Node3D = $"../chomper_bodybrandc"
 @onready var explosion_radius: Area3D = $ExplosionRadius
+@onready var collision_shape_3d: CollisionShape3D = $"../CollisionShape3D"
 var chomp_og_pos
+var gravity
 
 func _ready() -> void:
 	chomp_og_pos = chomper.position
+	gravity = get_parent_node_3d().gravity
 
 
 func _physics_process(delta: float) -> void:
@@ -39,6 +42,11 @@ func _physics_process(delta: float) -> void:
 		# fix clipping into floor
 		if chomp_og_pos and chomper.position == chomp_og_pos:
 			chomper.position.y += 2
+			
+			collision_shape_3d.position = chomper.position
+			chomper.rotate_x(-PI/2)
+			
+			get_parent_node_3d().gravity = 0
 		
 		# make funky rotation apply
 		chomper.rotate_z(PI/12)
@@ -62,17 +70,26 @@ func _physics_process(delta: float) -> void:
 			_merc_ref.camera_fov = _original_fov
 			_is_recovering = false
 	
-	explode()
+	explode(delta)
 	# Riley shenanigans
 	if not _is_sprinting:
 		if chomp_og_pos and chomper.position != chomp_og_pos:
 			chomper.position.y -= 2
+			
+			collision_shape_3d.position = chomper.position
+			chomper.rotate_x(PI/2)
+			
 		if chomper.rotation.x != 0:
 			chomper.rotation.x = 0
 		if chomper.rotation.z != 0:
 			chomper.rotation.z = 0
 		if chomper.rotation.y != 0:
 			chomper.rotation.y = PI
+			
+		if gravity:
+			get_parent_node_3d().gravity = gravity
+		else:
+			get_parent_node_3d().gravity = 9.8
 
 # This is called by Merc every single frame the key is held down
 func activate(abilities: Array[Ability], merc: Merc) -> void:
@@ -101,10 +118,10 @@ func _stop_sprint() -> void:
 
 
 @rpc("any_peer", "call_local", "reliable")
-func explode():
+func explode(delta : float):
 	# Only the authority should calculate and send damage
 	if is_multiplayer_authority():
 		for i in explosion_radius.get_overlapping_bodies():
-			if i != null and i is Merc:
-				i.take_damage.rpc_id(i.name.to_int(), damage) 
+			if i != null and i is Merc and i != get_parent():
+				i.take_damage.rpc_id(i.name.to_int(), damage*delta) 
 	
