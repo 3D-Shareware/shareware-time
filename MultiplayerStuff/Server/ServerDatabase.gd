@@ -23,8 +23,12 @@ var Maps : Dictionary [String, PackedScene] = {
 var Mercs : Dictionary [String, PackedScene] = {
 	"default" = load("res://PlayerControllers/Mercs/Default/FirstPersonController.tscn"),
 	"homebody" = load("res://PlayerControllers/Mercs/HomeBody/HomeBody.tscn"),
-	#"hyde" = load("res://PlayerControllers/Mercs/Hyde/Hyde.tscn"),`
-	"Jhomas" = load("res://PlayerControllers/Mercs/Jhomas/Jhomas.tscn")
+	"YAM" = load("res://PlayerControllers/Mercs/YetAnotherMerc/YetAnotherMerc.tscn"),
+	"Fiend" = load("res://PlayerControllers/Mercs/Fiend/Fiend.tscn"),
+	"Jhomas" = load("res://PlayerControllers/Mercs/Jhomas/Jhomas.tscn"),
+	"hyde" = load("res://PlayerControllers/Mercs/Hyde/Hyde.tscn"),
+	'chomp' = load("res://PlayerControllers/Mercs/Chomp/Chomp.tscn"),
+	'cheif' = load("res://PlayerControllers/Mercs/Halo/MasterChief.tscn")
 }
 
 var Characters : Dictionary [String, PackedScene] = {} 

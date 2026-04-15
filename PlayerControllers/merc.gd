@@ -6,14 +6,17 @@ signal took_damage
 ## THIS THE BASE CLASS, DO NOT CHANGE AN OF THIS UNLESS ITS IN THE INSPECTOR
 const ABILITY_UI = preload("res://Misc/UI/ability_ui.tscn")
 const MERC_LABEL = preload("res://MultiplayerStuff/Client/MercLabel.tscn")
-@onready var heal_delay: Timer = $HealDelay
+const HEALTH_BAR = preload("res://Misc/UI/health_bar.tscn")
+var health_bar : ProgressBar
 
 @export_category("REQUIRED OBJECTS")
 @export var camera : Camera3D
 
 @export_group("Universal Properties")
-@export var health :float = 100.0
-@export var health_per_sec = 5.0
+@export var health :float = 100.0:
+	set(value):
+		if health_bar: health_bar.value = value
+
 @export var gravity := 9.8
 @export var friction := .1
 @export var air_acceleration := .3
@@ -37,7 +40,6 @@ var dead = false
 var ability_ui 
 var team: String = "default"
 var player_teams: Dictionary = {}
-var timer : Timer
 
 
 const TEAM_COLORS = {
@@ -107,6 +109,11 @@ func _ready() -> void:
 		abilites_ui = ABILITY_UI.instantiate()
 		add_child(abilites_ui)
 		abilites_ui.generate_ui(self)
+		health_bar = HEALTH_BAR.instantiate()
+		add_child(health_bar)
+		health_bar.max_value = health
+		health_bar.value = health
+		
 		if visual_body:
 			visual_body.hide()
 		if visual_hand:
@@ -163,6 +170,7 @@ func _physics_process(delta: float) -> void:
 		global_rotation.y = lerp_angle(global_rotation.y, target_rotation.y, lerp_speed)
 		global_rotation.z = lerp_angle(global_rotation.z, target_rotation.z, lerp_speed)
 		
+		if health_bar: health_bar.hide()
 		return # Skip all the local movement code below
 	
 	if dead: return
@@ -221,6 +229,7 @@ func sv_airaccelerate(movement_dir, delta):
 
 func _input(event: InputEvent) -> void:
 	if !is_multiplayer_authority(): return
+	if !ClientUI: return
 	if ClientUI.menu.visible: return
 	if dead: return
 	if event is InputEventMouseMotion:
@@ -235,14 +244,16 @@ func check_abilities() -> void:
 		if i == null: return
 		if !i.is_multiplayer_authority():
 			i.set_multiplayer_authority(int(name), true)
+		if i.abilities !=abilities: i.abilities = abilities
+		if i.merc != self: i.merc = self
 		
-		if i.trigger_key != 'Passive':
+		if i.trigger_key != 'None':
 			# Convert key to the integer keycode (e.g. Q -> 81)
 			var key_code = OS.find_keycode_from_string(i.trigger_key)
 			
 			# Finally, check the hardware state
 			if Input.is_physical_key_pressed(key_code):
-				i.activate(abilities, self)
+				i.activate()
 
 # ==========================================
 # ABILITY MANAGEMENT (SERVER ONLY)
@@ -350,12 +361,13 @@ func take_damage(damage: float):
 	# TELL EVERYONE TO FLASH THIS PLAYER YELLOW
 	_sync_flash_damage.rpc() 
 	
-	if health <= 0 and not dead:
+	if health <= 0 and not dead and is_multiplayer_authority():
 		dead = true
 		death_effects.rpc()
 		die.rpc_id(1)
 	else:
 		emit_signal("took_damage")
+
 
 @rpc("authority", "call_local", "unreliable")
 func _sync_flash_damage() -> void:
@@ -399,16 +411,6 @@ func die():
 	emit_signal("died", self)
 
 func custom_process(delta : float):
-	if health >= 250.0:
-		health = 250.0
-	else:
-		if heal_delay.is_stopped():
-			take_damage(health_per_sec*-1)
-			print(health)
-			heal_delay.start()
-		
-		
-	pass
 	pass #use this for addons, physics process is used for default movement
 func custom_ready():
 	pass
