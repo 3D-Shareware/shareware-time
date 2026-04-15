@@ -1,0 +1,11 @@
+Model Information:
+* title:	Master Chief Halo Helmet
+* source:	https://sketchfab.com/3d-models/master-chief-halo-helmet-7aa589395b5a40f3a75168e9f537d750
+* author:	Atlas (https://sketchfab.com/Atlasmodels)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "Master Chief Halo Helmet" (https://sketchfab.com/3d-models/master-chief-halo-helmet-7aa589395b5a40f3a75168e9f537d750) by Atlas (https://sketchfab.com/Atlasmodels) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)

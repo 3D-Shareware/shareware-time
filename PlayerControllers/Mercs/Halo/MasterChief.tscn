@@ -1,74 +1,59 @@
 [gd_scene format=3 uid="uid://c8y3no4wbaaf7"]
 
-[ext_resource type="Script" uid="uid://bk51phcq14oxy" path="res://PlayerControllers/Mercs/Default/first_person_controller.gd" id="1_uuibg"]
-[ext_resource type="Script" uid="uid://citp50pf2ul2s" path="res://MultiplayerStuff/Client/client_ui.gd" id="2_4nij0"]
+[ext_resource type="Script" uid="uid://2ip0lrtrrhsr" path="res://PlayerControllers/merc.gd" id="1_muwch"]
+[ext_resource type="PackedScene" uid="uid://byblikkwgri3q" path="res://PlayerControllers/Abilities/Sprint/SprintAbility.tscn" id="2_h30se"]
+[ext_resource type="PackedScene" uid="uid://b36uuh56645j5" path="res://PlayerControllers/Abilities/Jump/JumpAbility.tscn" id="3_010wl"]
+[ext_resource type="PackedScene" uid="uid://dd4n62pstw6h2" path="res://PlayerControllers/Abilities/HaloAR/HaloAR.tscn" id="4_euw0f"]
+[ext_resource type="PackedScene" uid="uid://d2yhprgaagb85" path="res://PlayerControllers/Mercs/Halo/master_chief_halo_helmet/scene.gltf" id="5_010wl"]
+[ext_resource type="AudioStream" uid="uid://dvu1jwhkna0gl" path="res://PlayerControllers/Mercs/Halo/Every OG Halo Theme Overlapped, PERFECTLY Synchronized - Mr. A (64k).mp3" id="5_euw0f"]
+[ext_resource type="Texture2D" uid="uid://fqudaqraiioo" path="res://PlayerControllers/Mercs/Halo/Hud.png" id="7_gthcp"]
 
-[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_lwjk5"]
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_va2xk"]
 
-[sub_resource type="CapsuleMesh" id="CapsuleMesh_g1ecg"]
-
-[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_kr8st"]
-properties/0/path = NodePath(".:input")
-properties/0/spawn = true
-properties/0/replication_mode = 1
-properties/1/path = NodePath(".:position")
-properties/1/spawn = true
-properties/1/replication_mode = 1
-
-[node name="Player" type="CharacterBody3D" unique_id=894558095]
-collision_layer = 0
-script = ExtResource("1_uuibg")
+[node name="MC" type="CharacterBody3D" unique_id=1976584918 node_paths=PackedStringArray("camera", "abilities")]
+script = ExtResource("1_muwch")
+camera = NodePath("Camera3D")
 debug_mode = true
+abilities = [NodePath("SprintAbility"), NodePath("JumpAbility"), NodePath("HaloAR")]
+metadata/_custom_type_script = "uid://2ip0lrtrrhsr"
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=1625866823]
-shape = SubResource("CapsuleShape3D_lwjk5")
+[node name="SprintAbility" parent="." unique_id=699710493 instance=ExtResource("2_h30se")]
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=315240941]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 0.34232295, 0, 0, 0.26418364)
-mesh = SubResource("CapsuleMesh_g1ecg")
+[node name="JumpAbility" parent="." unique_id=27473948 instance=ExtResource("3_010wl")]
+auto_bhop = true
+jump_cooldown = 0.063
+jump_strength = 5.0
+trigger_key = "Space"
 
-[node name="Camera3D" type="Camera3D" parent="." unique_id=724319984]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.64104, 0)
-fov = 90.0
+[node name="HaloAR" parent="." unique_id=1600695075 instance=ExtResource("4_euw0f")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.10683805, 1.7487231, 0.5263119)
 
-[node name="UI" type="Control" parent="." unique_id=861840572]
-layout_mode = 3
-anchors_preset = 8
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=523479650]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.1689423, 0.1863763)
+shape = SubResource("CapsuleShape3D_va2xk")
+
+[node name="Camera3D" type="Camera3D" parent="." unique_id=735909127]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.6547091, -0.34116477)
+
+[node name="AudioStreamPlayer3D" type="AudioStreamPlayer3D" parent="." unique_id=161209818]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.3532925, 0)
+stream = ExtResource("5_euw0f")
+autoplay = true
+max_distance = 50.0
+
+[node name="Sketchfab_Scene" parent="." unique_id=262531744 instance=ExtResource("5_010wl")]
+transform = Transform3D(0.006, 0, 0, 0, 0.005525808, 0.0023378301, 0, -0.0023378301, 0.005525808, 0, 1.2446154, 0.20199335)
+
+[node name="Hud" type="Sprite2D" parent="." unique_id=1041843924]
+position = Vector2(632, 363.99997)
+scale = Vector2(0.35, 0.35)
+texture = ExtResource("7_gthcp")
+
+[node name="ColorRect" type="ColorRect" parent="." unique_id=1200066343]
+layout_direction = 2
+anchors_preset = 5
 anchor_left = 0.5
-anchor_top = 0.5
 anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -2.0
-offset_top = -4.0
-offset_right = 4.0
-offset_bottom = 2.0
 grow_horizontal = 2
-grow_vertical = 2
-
-[node name="Velocity" type="Label" parent="UI" unique_id=1355452923]
-layout_mode = 0
-offset_left = -553.0
-offset_top = -306.0
-offset_right = -513.0
-offset_bottom = -283.0
-scale = Vector2(2.87363, 2.87363)
-
-[node name="ColorRect" type="ColorRect" parent="UI" unique_id=1663850141]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_top = 2.0
-offset_right = -2.0
-grow_horizontal = 2
-grow_vertical = 2
-
-[node name="TimeToStartPulling" type="Timer" parent="." unique_id=353347098]
-one_shot = true
-
-[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="." unique_id=894683685]
-replication_config = SubResource("SceneReplicationConfig_kr8st")
-
-[node name="InputSynchronizer" type="MultiplayerSynchronizer" parent="." unique_id=226900716]
-replication_config = SubResource("SceneReplicationConfig_kr8st")
-script = ExtResource("2_4nij0")
+scale = Vector2(11.280003, 2.08)
+color = Color(0.03529412, 0.47843137, 0.9843137, 0.54901963)

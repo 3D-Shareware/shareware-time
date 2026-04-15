@@ -1,0 +1,11 @@
+Model Information:
+* title:	Halo CE MA5B HD (2022)
+* source:	https://sketchfab.com/3d-models/halo-ce-ma5b-hd-2022-96598441eed34c0f85d085acbf1a6f97
+* author:	NotARealStudio (https://sketchfab.com/NotARealStudio)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "Halo CE MA5B HD (2022)" (https://sketchfab.com/3d-models/halo-ce-ma5b-hd-2022-96598441eed34c0f85d085acbf1a6f97) by NotARealStudio (https://sketchfab.com/NotARealStudio) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
