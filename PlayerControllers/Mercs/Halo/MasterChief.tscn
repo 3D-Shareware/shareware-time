@@ -21,16 +21,19 @@ material = SubResource("StandardMaterial3D_gthcp")
 [node name="MC" type="CharacterBody3D" unique_id=1976584918 node_paths=PackedStringArray("camera", "abilities")]
 script = ExtResource("1_muwch")
 camera = NodePath("Camera3D")
+health = 150.0
+speed = 0.5
 debug_mode = true
 abilities = [NodePath("SprintAbility"), NodePath("JumpAbility"), NodePath("HaloAR")]
 metadata/_custom_type_script = "uid://2ip0lrtrrhsr"
 
 [node name="SprintAbility" parent="." unique_id=699710493 instance=ExtResource("2_h30se")]
+speed_multiplier = 2.0
 
 [node name="JumpAbility" parent="." unique_id=27473948 instance=ExtResource("3_010wl")]
 auto_bhop = true
 jump_cooldown = 0.063
-jump_strength = 5.0
+jump_strength = 6.0
 trigger_key = "Space"
 
 [node name="HaloAR" parent="." unique_id=1600695075 instance=ExtResource("4_euw0f")]
