@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://dvu1jwhkna0gl"
+path="res://.godot/imported/Every OG Halo Theme Overlapped, PERFECTLY Synchronized - Mr. A (64k).mp3-ea147c591afd5645fcd83fc2bb195e6b.mp3str"
+
+[deps]
+
+source_file="res://PlayerControllers/Mercs/Halo/Every OG Halo Theme Overlapped, PERFECTLY Synchronized - Mr. A (64k).mp3"
+dest_files=["res://.godot/imported/Every OG Halo Theme Overlapped, PERFECTLY Synchronized - Mr. A (64k).mp3-ea147c591afd5645fcd83fc2bb195e6b.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4
