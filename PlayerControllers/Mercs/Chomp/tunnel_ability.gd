@@ -67,7 +67,7 @@ func _physics_process(delta: float) -> void:
 			get_parent().set_collision_layer_value(2,true)
 
 # This is called by Merc every single frame the key is held down
-func activate(abilities: Array[Ability], merc: Merc) -> void:
+func activate() -> void:
 	# If we are already sprinting, ignore the continuous stream
 	if _is_sprinting:
 		return

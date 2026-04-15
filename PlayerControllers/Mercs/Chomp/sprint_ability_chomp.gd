@@ -53,7 +53,7 @@ func _physics_process(delta: float) -> void:
 		chomper.scale.z = move_toward(chomper.scale.z, 1, 15*delta)
 
 # This is called by Merc every single frame the key is held down
-func activate(abilities: Array[Ability], merc: Merc) -> void:
+func activate() -> void:
 	# If we are already sprinting, ignore the continuous stream
 	if _is_sprinting:
 		return
