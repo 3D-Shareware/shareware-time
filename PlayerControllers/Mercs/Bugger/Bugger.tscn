@@ -1,0 +1,18 @@
+[gd_scene format=3 uid="uid://wd6vfxg31gi"]
+
+[ext_resource type="Script" uid="uid://2ip0lrtrrhsr" path="res://PlayerControllers/merc.gd" id="1_1jx3u"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_1jx3u"]
+height = 2.427246
+
+[node name="Bugger" type="CharacterBody3D" unique_id=1512466377 node_paths=PackedStringArray("camera")]
+script = ExtResource("1_1jx3u")
+camera = NodePath("Camera3D")
+metadata/_custom_type_script = "uid://2ip0lrtrrhsr"
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=75012073]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.21362305, 0)
+shape = SubResource("CapsuleShape3D_1jx3u")
+
+[node name="Camera3D" type="Camera3D" parent="." unique_id=1607488851]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.7303312, 0)

@@ -1,7 +1,8 @@
 class_name Merc extends CharacterBody3D
 
-signal died(_self) #Server will disable input on character
+signal died(_self, killer_id: int) #Server will disable input on character
 signal took_damage
+signal kill_confirmed(person_killed_id : int)
 
 ## THIS THE BASE CLASS, DO NOT CHANGE AN OF THIS UNLESS ITS IN THE INSPECTOR
 const ABILITY_UI = preload("res://Misc/UI/ability_ui.tscn")
@@ -364,7 +365,7 @@ func take_damage(damage: float):
 	if health <= 0 and not dead and is_multiplayer_authority():
 		dead = true
 		death_effects.rpc()
-		die.rpc_id(1)
+		die.rpc_id(1, attacker_id)
 	else:
 		emit_signal("took_damage")
 
@@ -391,7 +392,6 @@ func _sync_flash_damage() -> void:
 	if is_instance_valid(visual_body):
 		_apply_overlay_recursive(visual_body, null)
 
-
 # --- The Recursive Search Function ---
 func _apply_overlay_recursive(current_node: Node, mat: Material) -> void:
 	# If the node can be rendered in 3D, apply the overlay
@@ -407,8 +407,13 @@ func death_effects():
 	pass
 
 @rpc("authority", "call_remote", "reliable")
-func die():
-	emit_signal("died", self)
+func die(killer_id: int = 0):
+	emit_signal("died", self, killer_id)
+
+#emits when you kill a player
+@rpc("authority","call_remote","reliable")
+func notify_kill_confirmed(id : int = 0): 
+	kill_confirmed.emit(id)
 
 func custom_process(delta : float):
 	pass #use this for addons, physics process is used for default movement
