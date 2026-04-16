@@ -1,0 +1,11 @@
+[gd_resource type="StandardMaterial3D" format=3 uid="uid://dydvfbi0jghb1"]
+
+[ext_resource type="Texture2D" uid="uid://c3ialjgy2kfe1" path="res://MapsAndGamemodes/Maps/dm_grahhh/assets/seamless-texture-of-white-cement-wall-a-rough-surface-with-space-for-text-for-a-background-free-photo.png" id="1_ol4jb"]
+
+[resource]
+albedo_texture = ExtResource("1_ol4jb")
+rim = 0.11
+uv1_scale = Vector3(0.42, 0.42, 0.42)
+uv1_offset = Vector3(0, 0.245, 0)
+uv1_triplanar = true
+uv1_world_triplanar = true

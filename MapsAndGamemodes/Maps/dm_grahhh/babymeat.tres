@@ -5,8 +5,9 @@
 [resource]
 albedo_texture = ExtResource("1_566yw")
 emission_enabled = true
-emission_energy_multiplier = 1.14
+emission_energy_multiplier = 0.34
 emission_texture = ExtResource("1_566yw")
 uv1_scale = Vector3(0.16, 0.16, 0.16)
 uv1_triplanar = true
 uv1_world_triplanar = true
+proximity_fade_distance = 36.31
