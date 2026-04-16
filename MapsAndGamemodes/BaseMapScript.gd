@@ -90,7 +90,7 @@ func _disconnected_player(peer_id : int):
 	else:
 		print("Could not find player to remove: ", peer_id)
 @abstract func start_gamemode()
-@abstract func player_died(merc : Merc)
+@abstract func player_died(merc : Merc, killer_id: int = 0)
 @abstract func _on_player_joined(player_id: int)
 @abstract func _on_player_left(player_id: int)
 #@abstract func custom_ready()

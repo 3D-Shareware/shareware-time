@@ -18,6 +18,7 @@ script = ExtResource("1_sjy6i")
 camera = NodePath("Camera3D")
 visual_body = NodePath("MeshInstance3D")
 visual_hand = NodePath("Hand")
+debug_mode = true
 abilities = [NodePath("EvilGun"), NodePath("JumpAbility"), NodePath("GrenadeAbility"), NodePath("SprintAbility"), NodePath("EvilGunShotgun"), NodePath("EvilMachineGun")]
 
 [node name="SprintAbility" parent="." unique_id=699710493 instance=ExtResource("2_fheum")]

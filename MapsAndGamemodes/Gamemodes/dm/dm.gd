@@ -75,7 +75,7 @@ func _process(delta: float) -> void:
 			if tracker["respawn_timer"] <= 0.0:
 				_respawn_player(player_id)
 
-func player_died(merc: Merc):
+func player_died(merc: Merc, killer_id : int = 0):
 	if !multiplayer.is_server(): return
 	var player_id = merc.name.to_int()
 	
@@ -86,8 +86,19 @@ func player_died(merc: Merc):
 	
 	# Update Leaderboard logic
 	if leaderboard:
-		leaderboard.record_death(player_id)
-		
+			# Record the death for the victim
+			leaderboard.record_death(player_id)
+			
+			# If there was a killer, and it wasn't a suicide (falling off map)
+			if killer_id != 0 and killer_id != player_id:
+				# Assuming your leaderboard script has a record_kill function
+				leaderboard.record_kill(killer_id) 
+				
+				# Ping the killer's specific client so they get immediate visual/audio feedback
+				var killer_node = get_node_or_null(str(killer_id))
+				if killer_node and killer_node.has_method("notify_kill_confirmed"):
+					killer_node.notify_kill_confirmed.rpc_id(killer_id)
+
 	merc.queue_free()
 
 func _respawn_player(player_id: int):

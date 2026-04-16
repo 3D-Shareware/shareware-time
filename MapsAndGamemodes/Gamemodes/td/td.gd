@@ -102,7 +102,7 @@ func _process(delta: float) -> void:
 			if tracker["respawn_timer"] <= 0.0:
 				_respawn_player(player_id)
 
-func player_died(merc: Merc):
+func player_died(merc: Merc, killer_id : int = 0):
 	if !multiplayer.is_server(): return
 	var player_id = merc.name.to_int()
 	

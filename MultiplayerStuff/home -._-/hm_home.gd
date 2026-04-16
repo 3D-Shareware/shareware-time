@@ -9,7 +9,7 @@ func start_gamemode():
 func end_gamemode():
 	pass #not gonna happen -._-
 
-func player_died(merc : Merc):
+func player_died(merc : Merc, killer_id : int = 0):
 	pass #not gonna happen -_.-
 
 func _on_player_joined(peer_id: int):
