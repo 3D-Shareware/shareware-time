@@ -7,6 +7,7 @@ var player_spawner : MultiplayerSpawner
 var player_data_base : Dictionary[int, Dictionary]
 var is_map_ready : bool = false # Lobby checks this for mid-game joiners
 @export var map_name : String = 'default'
+@export var world_enviornment : Environment
 
 func _enter_tree() -> void:
 	player_spawner = MultiplayerSpawner.new()
@@ -61,6 +62,7 @@ func _spawn_player(spawn_data:Dictionary):
 	
 	var merc_spanwed : PackedScene = ServerDatabase.Mercs[spawn_data["merc_type"]]
 	var merc_real : Merc = merc_spanwed.instantiate()
+	
 	
 	merc_real.name = str(spawn_data["peer_id"])
 	merc_real.debug_mode = false

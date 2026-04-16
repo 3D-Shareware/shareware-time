@@ -262,6 +262,7 @@ mesh = SubResource("BoxMesh_eruum")
 
 [node name="HurtableProp" parent="." unique_id=1847698847 instance=ExtResource("2_wxeq5")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -9.1217165, -7.0307746, 17.693186)
+collision_layer = 3
 script = ExtResource("3_ox1it")
 
 [node name="CollisionShape3D" parent="HurtableProp" index="0" unique_id=404081774]
@@ -278,6 +279,7 @@ text = "HURT ME"
 
 [node name="HurtableProp2" parent="." unique_id=774946491 instance=ExtResource("2_wxeq5")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 28.73233, 2.3499417, 8.17588)
+collision_layer = 3
 script = ExtResource("3_ox1it")
 
 [node name="CollisionShape3D" parent="HurtableProp2" index="0" unique_id=404081774]
@@ -294,6 +296,7 @@ text = "HURT ME"
 
 [node name="HurtableProp3" parent="." unique_id=921454447 instance=ExtResource("2_wxeq5")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.0699139, 22.509338, -32.178257)
+collision_layer = 3
 script = ExtResource("3_ox1it")
 
 [node name="CollisionShape3D" parent="HurtableProp3" index="0" unique_id=404081774]
@@ -310,6 +313,7 @@ text = "HURT ME"
 
 [node name="HurtableProp4" parent="." unique_id=1886658244 instance=ExtResource("2_wxeq5")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 42.24514, 16.761095, 2.2451744)
+collision_layer = 3
 script = ExtResource("3_ox1it")
 
 [node name="CollisionShape3D" parent="HurtableProp4" index="0" unique_id=404081774]
@@ -326,6 +330,7 @@ text = "HURT ME"
 
 [node name="HurtableProp5" parent="." unique_id=649708482 instance=ExtResource("2_wxeq5")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -87.17112, -7.4694223, -40.612976)
+collision_layer = 3
 script = ExtResource("3_ox1it")
 
 [node name="CollisionShape3D" parent="HurtableProp5" index="0" unique_id=404081774]

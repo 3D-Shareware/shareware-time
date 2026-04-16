@@ -1,0 +1,8 @@
+[gd_resource type="Environment" format=3 uid="uid://b0wv4lj6oo8v8"]
+
+[resource]
+ambient_light_source = 1
+tonemap_exposure = 1.3
+glow_normalized = true
+volumetric_fog_enabled = true
+volumetric_fog_density = 0.0
