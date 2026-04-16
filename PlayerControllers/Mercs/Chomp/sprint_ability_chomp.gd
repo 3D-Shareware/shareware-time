@@ -30,7 +30,7 @@ func _physics_process(delta: float) -> void:
 	# 2. --- THE LERPING MAGIC ---
 	if _is_sprinting:
 		# make funky scaling apply
-		chomper.scale.z = move_toward(chomper.scale.z, 5, 15*delta)
+		chomper.scale.z = move_toward(chomper.scale.z, 3, 15*delta)
 		
 		# Smoothly accelerate and push FOV out
 		_merc_ref.speed = lerp(_merc_ref.speed, _target_speed, transition_speed * delta)
@@ -57,7 +57,7 @@ func activate() -> void:
 	# If we are already sprinting, ignore the continuous stream
 	if _is_sprinting:
 		return
-
+	
 	_merc_ref = merc
 	
 	# CRITICAL: Only save the original stats if we are fully idle!

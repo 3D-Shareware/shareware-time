@@ -20,6 +20,7 @@ var _merc_ref: Merc = null
 @onready var chomper: Node3D = $"../chomper_bodybrandc"
 @onready var explosion_radius: Area3D = $ExplosionRadius
 @onready var cooldown_timer: Timer = $CooldownTimer
+@onready var tornado_dash_ability: Node3D = $"../TornadoDashAbility"
 var on_cooldown : bool = false
 
 func _physics_process(delta: float) -> void:
@@ -70,6 +71,9 @@ func _physics_process(delta: float) -> void:
 func activate() -> void:
 	# If we are already sprinting, ignore the continuous stream
 	if _is_sprinting:
+		return
+	
+	if tornado_dash_ability._is_sprinting:
 		return
 	
 	if on_cooldown: #prevents spamming dig ability

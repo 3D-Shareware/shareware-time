@@ -18,7 +18,7 @@ var _merc_ref: Merc = null
 # Riley's stuff
 @onready var chomper: Node3D = $"../chomper_bodybrandc"
 @onready var explosion_radius: Area3D = $ExplosionRadius
-@onready var collision_shape_3d: CollisionShape3D = $"../CollisionShape3D"
+@onready var tunnel_ability: Node3D = $"../TunnelAbility"
 var chomp_og_pos
 var gravity
 
@@ -41,10 +41,9 @@ func _physics_process(delta: float) -> void:
 	if _is_sprinting:
 		# fix clipping into floor
 		if chomp_og_pos and chomper.position == chomp_og_pos:
-			chomper.position.y += 2
-			
-			collision_shape_3d.position = chomper.position
 			chomper.rotate_x(-PI/2)
+			chomper.position = chomp_og_pos * 0.4
+			
 			
 			get_parent_node_3d().gravity = 0
 		
@@ -71,13 +70,12 @@ func _physics_process(delta: float) -> void:
 			_is_recovering = false
 	
 	explode(delta)
+	
 	# Riley shenanigans
 	if not _is_sprinting:
 		if chomp_og_pos and chomper.position != chomp_og_pos:
-			chomper.position.y -= 2
-			
-			collision_shape_3d.position = chomper.position
 			chomper.rotate_x(PI/2)
+			chomper.position = chomp_og_pos
 			
 		if chomper.rotation.x != 0:
 			chomper.rotation.x = 0
@@ -96,7 +94,10 @@ func activate() -> void:
 	# If we are already sprinting, ignore the continuous stream
 	if _is_sprinting:
 		return
-
+	
+	if tunnel_ability._is_sprinting: # if tunnel ability active already
+		return
+		
 	_merc_ref = merc
 	
 	# CRITICAL: Only save the original stats if we are fully idle!
