@@ -1,0 +1,7 @@
+[gd_scene format=3 uid="uid://bkx1r2xs33ani"]
+
+[ext_resource type="Texture2D" uid="uid://bdcen1o6c8wnk" path="res://PlayerControllers/Mercs/Tracker/Assets/medical-syringe-closeup-on-white-260nw-2740721803-removebg-preview(1).png" id="1_cgge1"]
+
+[node name="MedicalSyringeCloseupOnWhite260Nw2740721803RemovebgPreview(1)" type="TextureRect" unique_id=1404427957]
+texture = ExtResource("1_cgge1")
+flip_h = true

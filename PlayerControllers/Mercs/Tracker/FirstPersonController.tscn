@@ -1,0 +1,97 @@
+[gd_scene format=3 uid="uid://cxc6ir0vt6gad"]
+
+[ext_resource type="Script" uid="uid://dw5sig7ld3seg" path="res://PlayerControllers/Mercs/Tracker/first_person_controller.gd" id="1_f1ajo"]
+[ext_resource type="PackedScene" uid="uid://byblikkwgri3q" path="res://PlayerControllers/Abilities/Sprint/SprintAbility.tscn" id="2_gknva"]
+[ext_resource type="PackedScene" uid="uid://b36uuh56645j5" path="res://PlayerControllers/Abilities/Jump/JumpAbility.tscn" id="6_5twnm"]
+[ext_resource type="Material" uid="uid://dkhu3aa0o8vps" path="res://MapsAndGamemodes/Maps/dm_grahhh/gallerycarpet.tres" id="6_f1ajo"]
+[ext_resource type="Material" uid="uid://bm5npalrr2vm4" path="res://MapsAndGamemodes/Maps/dm_grahhh/babymeat.tres" id="7_gknva"]
+[ext_resource type="PackedScene" uid="uid://vmlcnayrosrt" path="res://PlayerControllers/Mercs/Tracker/ads.tscn" id="7_lwdld"]
+[ext_resource type="PackedScene" uid="uid://c4kg4o6mwrs2m" path="res://PlayerControllers/Abilities/TrackerRifle/TrackerRifle.tscn" id="8_gknva"]
+[ext_resource type="PackedScene" uid="uid://dvr218k27n36v" path="res://PlayerControllers/Abilities/SmokeGrenade/SmokeGrenadeAbility.tscn" id="8_lwdld"]
+[ext_resource type="Script" uid="uid://ctmrjhkh8lita" path="res://PlayerControllers/Mercs/Tracker/trackerui.gd" id="9_0i4c5"]
+[ext_resource type="PackedScene" uid="uid://qbndxwane47x" path="res://PlayerControllers/Abilities/TrackerBoltGun/boltgun.tscn" id="9_lftqa"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_lwjk5"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_lwdld"]
+size = Vector3(0.85, 1.755, 0.82)
+
+[sub_resource type="BoxMesh" id="BoxMesh_lftqa"]
+lightmap_size_hint = Vector2i(23, 18)
+size = Vector3(1.615, 0.27, 1.42)
+
+[node name="Tracker" type="CharacterBody3D" unique_id=728258314 node_paths=PackedStringArray("camera", "visual_body", "visual_hand", "abilities")]
+collision_layer = 2
+script = ExtResource("1_f1ajo")
+camera = NodePath("Camera3D")
+health = 88.0
+gravity = 11.0
+speed = 0.8
+visual_body = NodePath("MeshInstance3D2")
+visual_hand = NodePath("Hand")
+debug_mode = true
+abilities = [NodePath("JumpAbility"), NodePath("Smoke"), NodePath("SprintAbility"), NodePath("BoltGun"), NodePath("TrackerRifle")]
+
+[node name="SprintAbility" parent="." unique_id=699710493 instance=ExtResource("2_gknva")]
+AbilityDescription = "if you must go fast"
+
+[node name="JumpAbility" parent="." unique_id=27473948 instance=ExtResource("6_5twnm")]
+auto_bhop = true
+jump_strength = 5.0
+trigger_key = "Space"
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=1977683154]
+shape = SubResource("CapsuleShape3D_lwjk5")
+
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="." unique_id=75447282]
+transform = Transform3D(0.77857435, 0, 0, 0, 1, 0, 0, 0, 0.74186414, 0, 0, 0.053175926)
+mesh = SubResource("BoxMesh_lwdld")
+surface_material_override/0 = ExtResource("6_f1ajo")
+
+[node name="MeshInstance3D3" type="MeshInstance3D" parent="MeshInstance3D2" unique_id=746112660]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1.0000001, 0, 0.99079275, 0)
+mesh = SubResource("BoxMesh_lftqa")
+skeleton = NodePath("../..")
+
+[node name="Camera3D" type="Camera3D" parent="." unique_id=1609023110]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.64104, 0)
+fov = 90.0
+
+[node name="Hand" type="CSGSphere3D" parent="." unique_id=427775565]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.25360978, 0.23060426, -0.48329479)
+visible = false
+radius = 0.09193548
+material = ExtResource("7_gknva")
+
+[node name="ADS" parent="." unique_id=477706851 node_paths=PackedStringArray("guns", "camera") instance=ExtResource("7_lwdld")]
+guns = [NodePath("../BoltGun"), NodePath("../TrackerRifle")]
+camera = NodePath("../Camera3D")
+
+[node name="TrackerRifle" parent="." unique_id=1600695075 instance=ExtResource("8_gknva")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.044250637, 0.333, -0.27153152)
+visible = false
+
+[node name="BoltGun" parent="." unique_id=812748014 instance=ExtResource("9_lftqa")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5445492, 0)
+
+[node name="Smoke" parent="." unique_id=2020247024 instance=ExtResource("8_lwdld")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.6188444, 0)
+trigger_key = "3"
+
+[node name="TrackerUI" type="Control" parent="." unique_id=1747036020]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+script = ExtResource("9_0i4c5")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="TrackerUI" unique_id=947402587]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 5.0
+anchor_bottom = 3.0000002
+offset_left = -48.0
+offset_right = -48.0
+theme_override_constants/separation = -16
+
+[connection signal="kill_confirmed" from="." to="." method="_on_kill_confirmed"]
