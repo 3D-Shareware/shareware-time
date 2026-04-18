@@ -20,7 +20,7 @@ func _physics_process(delta: float) -> void:
 			_was_held = false
 
 # This intercepts the continuous stream from the Merc class
-func activate(abilities: Array[Ability], merc: Merc) -> void:
+func activate() -> void:
 	# If the ability is still on cooldown OR the player is just holding the button down, ignore
 	if _current_cooldown > 0.0 or _was_held:
 		return
@@ -30,7 +30,7 @@ func activate(abilities: Array[Ability], merc: Merc) -> void:
 	_current_cooldown = cooldown
 
 	# Fire the actual custom logic!
-	_on_activate_just_pressed(abilities, merc)
+	_on_activate_just_pressed()
 
 # Club members will override THIS function in their custom abilities
-@abstract func _on_activate_just_pressed(abilities: Array[Ability], merc: Merc)
+@abstract func _on_activate_just_pressed()

@@ -7,6 +7,7 @@
 [ext_resource type="PackedScene" uid="uid://d2yhprgaagb85" path="res://PlayerControllers/Mercs/Halo/master_chief_halo_helmet/scene.gltf" id="5_010wl"]
 [ext_resource type="AudioStream" uid="uid://dvu1jwhkna0gl" path="res://PlayerControllers/Mercs/Halo/Every OG Halo Theme Overlapped, PERFECTLY Synchronized - Mr. A (64k).mp3" id="5_euw0f"]
 [ext_resource type="Texture2D" uid="uid://fqudaqraiioo" path="res://PlayerControllers/Mercs/Halo/Hud.png" id="7_gthcp"]
+[ext_resource type="Script" uid="uid://b7ibtls0akmau" path="res://PlayerControllers/Mercs/Halo/halo_ui.gd" id="7_jx4xv"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_va2xk"]
 height = 1.8222656
@@ -54,16 +55,13 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.6547091, 0.043964207)
 [node name="AudioStreamPlayer3D" type="AudioStreamPlayer3D" parent="." unique_id=161209818]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.3532925, 0)
 stream = ExtResource("5_euw0f")
+max_db = -7.909
 autoplay = true
-max_distance = 50.0
+max_distance = 12.3
+panning_strength = 3.0
 
 [node name="Helmet" parent="." unique_id=262531744 instance=ExtResource("5_010wl")]
 transform = Transform3D(0.006, 0, 0, 0, 0.005525808, 0.0023378301, 0, -0.0023378301, 0.005525808, 0, 1.2446154, 0.20199335)
-
-[node name="Hud" type="Sprite2D" parent="." unique_id=1041843924]
-position = Vector2(632, 363.99997)
-scale = Vector2(0.35, 0.35)
-texture = ExtResource("7_gthcp")
 
 [node name="ColorRect" type="ColorRect" parent="." unique_id=1200066343]
 visible = false
@@ -74,3 +72,9 @@ anchor_right = 0.5
 grow_horizontal = 2
 scale = Vector2(11.280003, 2.08)
 color = Color(0.03529412, 0.47843137, 0.9843137, 0.54901963)
+script = ExtResource("7_jx4xv")
+
+[node name="Hud" type="Sprite2D" parent="ColorRect" unique_id=1041843924]
+position = Vector2(-0.7092209, 174.99998)
+scale = Vector2(0.031028362, 0.16826923)
+texture = ExtResource("7_gthcp")
