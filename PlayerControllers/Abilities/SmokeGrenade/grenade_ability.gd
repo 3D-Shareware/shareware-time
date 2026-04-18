@@ -17,6 +17,8 @@ var thrown : bool = false
 
 func _process(_delta: float) -> void:
 	if !currently_active: return
+	if merc and merc.camera:
+		global_transform = merc.camera.global_transform
 	if Input.is_action_just_pressed("left_click") and not thrown:
 		holding_about_to_throw = true
 		anim_player.play("hold_to_throw")
@@ -26,14 +28,15 @@ func _process(_delta: float) -> void:
 		holding_about_to_throw = false
 		thrown = true
 		shoot()
-	
 
+ 
 func shoot():
 	# Detach the grenade from the hand and throw it
 	anim_player.play("throw")
 	await anim_player.animation_finished
 	hand.set_deferred("remote_path", null)
 	grenade.freeze = false
+	grenade.linear_velocity = Vector3.ZERO
 	grenade.apply_central_impulse(-merc.camera.global_basis.z * throw_strength) 
 
 func equip():
