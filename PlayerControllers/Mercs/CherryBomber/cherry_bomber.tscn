@@ -141,9 +141,9 @@ _surfaces = [{
 blend_shape_mode = 0
 shadow_mesh = SubResource("ArrayMesh_88vdv")
 
-[sub_resource type="CylinderShape3D" id="CylinderShape3D_3ny4l"]
-height = 2.717041
-radius = 0.89404297
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_uvt7h"]
+radius = 0.65283203
+height = 2.3798828
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_8jcl1"]
 resource_name = "Material.002"
@@ -1237,7 +1237,7 @@ abilities = [NodePath("JumpAbility"), NodePath("DoohickyGun"), NodePath("C4")]
 metadata/_custom_type_script = "uid://2ip0lrtrrhsr"
 
 [node name="CherryBomberModel" type="Node3D" parent="." unique_id=690071305]
-transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 0, 0, 0)
+transform = Transform3D(-3.3876326e-08, 0, 0.775, 0, 0.775, 0, -0.775, 0, -3.3876326e-08, 0, 0, 0)
 
 [node name="Icosphere" type="MeshInstance3D" parent="CherryBomberModel" unique_id=941721479]
 mesh = SubResource("ArrayMesh_s2686")
@@ -1249,8 +1249,8 @@ mesh = SubResource("ArrayMesh_tynre")
 skeleton = NodePath("")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=1702368430]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.43103027, 0)
-shape = SubResource("CylinderShape3D_3ny4l")
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.08093262, 0)
+shape = SubResource("CapsuleShape3D_uvt7h")
 
 [node name="Camera3D" type="Camera3D" parent="." unique_id=650188405]
 
@@ -1406,7 +1406,7 @@ transform = Transform3D(0.76582, -0.17333014, 0.6192548, -1.4901161e-07, 0.96298
 shape = SubResource("BoxShape3D_r51g3")
 
 [node name="Doohicky" type="Node3D" parent="C4" unique_id=1747705607]
-transform = Transform3D(-0.46004674, 0.093597576, -0.8829475, 0.19936791, 0.9799247, 0, 0.86522204, -0.17603143, -0.46947154, 0.54, -0.33, -0.85)
+transform = Transform3D(-0.4600467, 0.093597576, -0.88294744, 0.1993679, 0.9799247, 0, 0.865222, -0.17603143, -0.4694715, 0.54, -0.33, -0.85)
 visible = false
 
 [node name="Body" type="MeshInstance3D" parent="C4/Doohicky" unique_id=1592089141]
