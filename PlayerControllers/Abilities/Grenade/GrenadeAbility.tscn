@@ -195,6 +195,11 @@ _data = {
 &"throw": SubResource("Animation_8vxmg")
 }
 
+[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_seah1"]
+properties/0/path = NodePath("Grenade:position")
+properties/0/spawn = true
+properties/0/replication_mode = 1
+
 [node name="GrenadeAbility" type="Node3D" unique_id=1600695075 node_paths=PackedStringArray("visual_hand")]
 script = ExtResource("1_seah1")
 AbilityDescription = "Blow them bitsy itsy bitsy spider style"
@@ -203,6 +208,7 @@ trigger_key = "G"
 
 [node name="Grenade" type="RigidBody3D" parent="." unique_id=2084771126]
 transform = Transform3D(1, 0, 0, 0, 0.6997382, 0.71439934, 0, -0.71439934, 0.6997382, 0.42329928, -0.056609645, -0.9350784)
+top_level = true
 collision_layer = 0
 collision_mask = 3
 
@@ -224,7 +230,7 @@ debug_color = Color(0.77254903, 0, 0.09803922, 0.7921569)
 [node name="CPUParticles3D" type="CPUParticles3D" parent="Grenade" unique_id=800159809]
 emitting = false
 amount = 30
-lifetime = 5.0
+lifetime = 3.0
 one_shot = true
 explosiveness = 1.0
 mesh = SubResource("SphereMesh_8vxmg")
@@ -243,8 +249,12 @@ color_initial_ramp = SubResource("Gradient_nla6h")
 remote_path = NodePath("../Grenade")
 
 [node name="FuseTimer" type="Timer" parent="." unique_id=1510142201]
+one_shot = true
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=1062011076]
 libraries/ = SubResource("AnimationLibrary_nla6h")
+
+[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="." unique_id=888136363]
+replication_config = SubResource("SceneReplicationConfig_seah1")
 
 [connection signal="timeout" from="FuseTimer" to="." method="_on_fuse_timer_timeout"]

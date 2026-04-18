@@ -1,0 +1,9 @@
+[gd_resource type="StandardMaterial3D" format=3 uid="uid://7vaj7sq52lqr"]
+
+[ext_resource type="Texture2D" uid="uid://dqk81m0qpla16" path="res://MapsAndGamemodes/Maps/dm_grahhh/assets/materials_plaster_offwllb.png" id="1_cgstr"]
+
+[resource]
+albedo_texture = ExtResource("1_cgstr")
+uv1_scale = Vector3(3.71, 3.71, 3.71)
+uv1_offset = Vector3(0, -0.1, 0)
+uv1_triplanar = true

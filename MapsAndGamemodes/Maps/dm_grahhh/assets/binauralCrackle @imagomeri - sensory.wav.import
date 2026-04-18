@@ -1,0 +1,24 @@
+[remap]
+
+importer="wav"
+type="AudioStreamWAV"
+uid="uid://dfnvr71r8nijf"
+path="res://.godot/imported/binauralCrackle @imagomeri - sensory.wav-7961322ea8fbe1d47215e48d0965f58f.sample"
+
+[deps]
+
+source_file="res://MapsAndGamemodes/Maps/dm_grahhh/assets/binauralCrackle @imagomeri - sensory.wav"
+dest_files=["res://.godot/imported/binauralCrackle @imagomeri - sensory.wav-7961322ea8fbe1d47215e48d0965f58f.sample"]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop_mode=0
+edit/loop_begin=0
+edit/loop_end=-1
+compress/mode=2

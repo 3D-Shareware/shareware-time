@@ -1,0 +1,8 @@
+[gd_resource type="StandardMaterial3D" format=3 uid="uid://botxnfglymuc5"]
+
+[ext_resource type="Texture2D" uid="uid://l7gmgtyykbnc" path="res://MapsAndGamemodes/Maps/dm_grahhh/assets/CSS-cs_havana-pipemetal003a.png" id="1_ysw57"]
+
+[resource]
+albedo_texture = ExtResource("1_ysw57")
+uv1_scale = Vector3(5.385, 5.385, 5.385)
+uv1_triplanar = true

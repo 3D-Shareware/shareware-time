@@ -1,0 +1,18 @@
+[gd_resource type="Environment" format=3 uid="uid://b0wv4lj6oo8v8"]
+
+[ext_resource type="Texture2D" uid="uid://dfjnkrm5u31yc" path="res://MapsAndGamemodes/Maps/dm_grahhh/assets/materials_skybox_nmb_space.tga" id="1_5xthp"]
+
+[sub_resource type="PanoramaSkyMaterial" id="PanoramaSkyMaterial_fkvb0"]
+panorama = ExtResource("1_5xthp")
+
+[sub_resource type="Sky" id="Sky_1gm5m"]
+sky_material = SubResource("PanoramaSkyMaterial_fkvb0")
+
+[resource]
+background_mode = 2
+sky = SubResource("Sky_1gm5m")
+ambient_light_source = 1
+tonemap_exposure = 1.3
+glow_normalized = true
+volumetric_fog_enabled = true
+volumetric_fog_density = 0.0

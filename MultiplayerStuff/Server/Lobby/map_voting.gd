@@ -11,6 +11,7 @@ var _server_player_votes : Dictionary = {}
 var is_voting_active: bool = false
 var vote_time_remaining: int = 0
 var last_announced_winner: String = ""
+var _current_vote_id: int = 0
 
 # Finds the Lobby node this panel belongs to so we can verify the lobby ID
 @onready var parent_lobby = owner if owner is Lobby else get_parent()
@@ -41,6 +42,10 @@ func _process(delta: float) -> void:
 func initiate_vote(duration_seconds: int = 30) -> void:
 	if not multiplayer.is_server(): return
 	
+	# NEW: Increment vote ID to invalidate any ghost timers
+	_current_vote_id += 1
+	var this_vote_id = _current_vote_id
+	
 	# Reset states
 	_server_player_votes.clear()
 	for key in map_votes.keys():
@@ -51,11 +56,34 @@ func initiate_vote(duration_seconds: int = 30) -> void:
 	# Tell all clients to start their local UI countdowns
 	for player_id in parent_lobby.connected_players:
 		rpc_id(player_id, "sync_vote_start", duration_seconds)
-	sync_vote_start(duration_seconds) # Update the server's local UI
+	sync_vote_start(duration_seconds)
 	
 	# Start the server's authoritative timer
 	await get_tree().create_timer(duration_seconds).timeout
+	
+	# NEW: Check if this vote was cancelled or restarted while we were waiting
+	if _current_vote_id != this_vote_id or not is_voting_active:
+		return
+		
 	_end_vote()
+
+func cancel_vote() -> void:
+	if not multiplayer.is_server(): return
+	if not is_voting_active: return
+	
+	# Incrementing this ID defuses the 30-second await timer in initiate_vote
+	_current_vote_id += 1 
+	
+	for player_id in parent_lobby.connected_players:
+		rpc_id(player_id, "sync_vote_cancelled")
+	sync_vote_cancelled()
+
+func remove_player_vote(player_id: int) -> void:
+	if not multiplayer.is_server(): return
+	if _server_player_votes.has(player_id):
+		_server_player_votes.erase(player_id)
+		_recalculate_votes() # Update everyone's totals dynamically
+
 
 func _end_vote() -> void:
 	if not multiplayer.is_server(): return
@@ -155,6 +183,12 @@ func sync_vote_end(winning_map: String) -> void:
 func sync_vote_totals(new_totals: Dictionary) -> void:
 	map_votes = new_totals
 	_update_ui()
+
+@rpc("authority", "call_local", "reliable")
+func sync_vote_cancelled() -> void:
+	is_voting_active = false
+	vote_time_remaining = 0
+	hide()
 
 func _tick_countdown() -> void:
 	if not is_voting_active: return

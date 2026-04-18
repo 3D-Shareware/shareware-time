@@ -33,15 +33,6 @@ fill_to = Vector2(0.8076923, 0.13247864)
 transparency = 1
 albedo_texture = SubResource("GradientTexture2D_8i7tb")
 
-[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_i77xa"]
-
-[sub_resource type="Sky" id="Sky_flvx3"]
-sky_material = SubResource("ProceduralSkyMaterial_i77xa")
-
-[sub_resource type="Environment" id="Environment_8i7tb"]
-background_mode = 2
-sky = SubResource("Sky_flvx3")
-
 [sub_resource type="Gradient" id="Gradient_8i7tb"]
 colors = PackedColorArray(1, 1, 1, 0, 0, 0, 0, 0.15294118)
 
@@ -51,6 +42,7 @@ fill = 1
 fill_from = Vector2(0.5, 0.52136755)
 
 [node name="CharacterSelect" type="Control" unique_id=248948751]
+visible = false
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -73,7 +65,7 @@ layout_mode = 2
 [node name="SubViewport" type="SubViewport" parent="PanelContainer/SubViewportContainer" unique_id=338155594]
 transparent_bg = true
 handle_input_locally = false
-render_target_update_mode = 4
+render_target_update_mode = 0
 
 [node name="maybe make this ia gradient" type="CSGBox3D" parent="PanelContainer/SubViewportContainer/SubViewport" unique_id=1596898349]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0033812523, -1.9432604, -3.9061258)
@@ -90,13 +82,16 @@ transform = Transform3D(0.52, 0, 0, 0, 0.52, 0, 0, 0, 0.52, -0.0033812523, -4.24
 size = Vector3(5.9040527, 0.05810547, 6.897705)
 material = SubResource("StandardMaterial3D_frsov")
 
-[node name="WorldEnvironment" type="WorldEnvironment" parent="PanelContainer/SubViewportContainer/SubViewport" unique_id=699360747]
-environment = SubResource("Environment_8i7tb")
-
 [node name="Camera3D" type="Camera3D" parent="PanelContainer/SubViewportContainer/SubViewport" unique_id=594467270]
 
-[node name="DirectionalLight3D" type="DirectionalLight3D" parent="PanelContainer/SubViewportContainer/SubViewport" unique_id=391242647]
-transform = Transform3D(1, 0, 0, 0, 0.36313745, 0.9317356, 0, -0.9317356, 0.36313745, 0, 1.2454926, 2.6535952)
+[node name="DirectionalLight3D" type="SpotLight3D" parent="PanelContainer/SubViewportContainer/SubViewport" unique_id=372959255]
+transform = Transform3D(1, 0, 0, 0, 0.36313745, 0.9317356, 0, -0.9317356, 0.36313745, 0, 2.3829749, -1.3209751)
+light_energy = 1.403
+light_indirect_energy = 5.126
+light_specular = 2.714
+spot_range = 5.225
+spot_attenuation = -1.17
+spot_angle = 32.99246
 
 [node name="SpinSpawn" type="Marker3D" parent="PanelContainer/SubViewportContainer/SubViewport" unique_id=379684050]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.026600122, 0.13624978, -2.2191494)

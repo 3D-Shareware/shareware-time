@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://ddjwqtsn0dgcv"
+path="res://.godot/imported/HALO Shield Recharge - Red Productions (64k).mp3-7650b3650addc3b992404aa1753be1da.mp3str"
+
+[deps]
+
+source_file="res://PlayerControllers/Mercs/Halo/HALO Shield Recharge - Red Productions (64k).mp3"
+dest_files=["res://.godot/imported/HALO Shield Recharge - Red Productions (64k).mp3-7650b3650addc3b992404aa1753be1da.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

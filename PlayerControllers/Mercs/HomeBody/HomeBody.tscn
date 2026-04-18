@@ -7,18 +7,25 @@
 
 [sub_resource type="CapsuleMesh" id="CapsuleMesh_g1ecg"]
 
-[node name="HomeBody" type="CharacterBody3D" unique_id=728258314 node_paths=PackedStringArray("camera", "visual_body", "abilities")]
+[node name="HomeBody" type="CharacterBody3D" unique_id=728258314 node_paths=PackedStringArray("camera", "visual_body", "visual_hand", "abilities")]
 collision_layer = 2
 script = ExtResource("1_c4nve")
 camera = NodePath("Camera3D")
 visual_body = NodePath("MeshInstance3D")
+visual_hand = NodePath("CSGSphere3D4")
+debug_mode = true
 abilities = [NodePath("HomeBodyHand")]
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=1977683154]
 shape = SubResource("CapsuleShape3D_lwjk5")
 
+[node name="CSGSphere3D4" type="CSGSphere3D" parent="." unique_id=492177763]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1.0000001, -0.31083328, 0.021698594, -0.62250984)
+radius = 0.06879895
+
 [node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=1865011546]
 transform = Transform3D(0.77857435, 0, 0, 0, 1, 0, 0, 0, 0.74186414, 0, 0, 0.053175926)
+visible = false
 mesh = SubResource("CapsuleMesh_g1ecg")
 
 [node name="CSGSphere3D" type="CSGSphere3D" parent="MeshInstance3D" unique_id=1634025672]
@@ -38,3 +45,4 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.64104, 0)
 fov = 90.0
 
 [node name="HomeBodyHand" parent="." unique_id=2122495283 instance=ExtResource("2_6lw5w")]
+trigger_key = "Passive"

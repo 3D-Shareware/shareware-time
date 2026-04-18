@@ -1,0 +1,6 @@
+[gd_resource type="StandardMaterial3D" format=3 uid="uid://dwngb8ucnb2a"]
+
+[resource]
+shading_mode = 0
+refraction_enabled = true
+refraction_texture_channel = 4

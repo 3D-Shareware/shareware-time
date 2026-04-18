@@ -6,15 +6,15 @@ const LEADER_BOARD = preload("res://MapsAndGamemodes/Gamemodes/PresetGamemodeWid
 var leaderboard: LeaderBoard 
 @export var player_spawn: Node3D
 @export var respawn_delay: float = 5.0 
-@export var gamemode_length = 10.0
+@export var gamemode_length = 900.0
 
 var respawn_trackers: Dictionary[int, Dictionary] = {}
 
-func custom_ready():
+func _ready() -> void:
 	leaderboard = LEADER_BOARD.instantiate()
 	add_child(leaderboard)
 	
-func custom_process(delta: float):
+func _process(delta: float) -> void:
 	if !multiplayer.is_server(): return
 	
 	for player_id in respawn_trackers.keys():
@@ -25,7 +25,7 @@ func custom_process(delta: float):
 			if tracker["respawn_timer"] <= 0.0:
 				_respawn_player(player_id)
 
-func player_died(merc: Merc):
+func player_died(merc: Merc, killer_id : int = 0):
 	if !multiplayer.is_server(): return
 	var player_id = merc.name.to_int()
 	

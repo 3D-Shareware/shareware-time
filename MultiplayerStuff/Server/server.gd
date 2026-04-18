@@ -76,6 +76,6 @@ func rehost_server(new_port: int) -> void:
 	if error == OK:
 		multiplayer.multiplayer_peer = peer
 		print("Successfully re-hosted on Port: ", ServerDatabase.port)
-		lobby_container.create_new_lobby('home', [])
+		lobby_container.create_new_lobby('home', [], 'hm_home')
 	else:
 		print("Failed to re-host. Error: ", error)

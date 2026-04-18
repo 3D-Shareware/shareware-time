@@ -2,6 +2,7 @@
 
 [ext_resource type="Script" uid="uid://citp50pf2ul2s" path="res://MultiplayerStuff/Client/client_ui.gd" id="1_erp88"]
 [ext_resource type="Script" uid="uid://bwv3skhkt52ki" path="res://MultiplayerStuff/Client/menu_ui.gd" id="2_c7bsp"]
+[ext_resource type="Script" uid="uid://bhbctyg6iyw5o" path="res://MultiplayerStuff/Client/name_change.gd" id="3_b2t23"]
 [ext_resource type="Script" uid="uid://c8i0a53aap31q" path="res://MultiplayerStuff/Client/chat.gd" id="3_ty0e6"]
 [ext_resource type="Texture2D" uid="uid://btcwv6lmydfjx" path="res://MultiplayerStuff/home -._-/vhsoff-Sheet.png" id="4_ogf0i"]
 
@@ -96,10 +97,10 @@ layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = 26.0
-offset_top = 30.0
-offset_right = -22.0
-offset_bottom = -26.0
+offset_left = 121.0
+offset_top = 138.0
+offset_right = -118.0
+offset_bottom = -169.0
 grow_horizontal = 2
 grow_vertical = 2
 
@@ -109,10 +110,10 @@ anchors_preset = -1
 anchor_left = 0.786
 anchor_right = 1.0
 anchor_bottom = 0.66300005
-offset_left = 23.255981
-offset_top = 10.0
-offset_right = -13.0
-offset_bottom = -14.496033
+offset_left = -6.226013
+offset_top = 31.0
+offset_right = -42.481995
+offset_bottom = 6.5039673
 
 [node name="Current" type="RichTextLabel" parent="Menu/Panel/LobbyStatus" unique_id=2119815128]
 layout_mode = 0
@@ -132,15 +133,54 @@ offset_right = 185.0
 offset_bottom = 332.0
 text = "Leave Lobby"
 
+[node name="CloseGame" type="Button" parent="Menu/Panel" unique_id=1808893363]
+layout_mode = 0
+offset_left = 27.0
+offset_top = 11.0
+offset_right = 138.0
+offset_bottom = 51.0
+text = "Close Game :,("
+
+[node name="NameChange" type="Control" parent="Menu" unique_id=1327057232]
+anchors_preset = 0
+offset_left = 268.0
+offset_top = 268.0
+offset_right = 757.0
+offset_bottom = 396.0
+script = ExtResource("3_b2t23")
+
+[node name="Panel2" type="Panel" parent="Menu/NameChange" unique_id=1740546727]
+layout_mode = 0
+offset_left = -15.0
+offset_top = 3.0
+offset_right = 392.0
+offset_bottom = 114.0
+
+[node name="LineEdit" type="LineEdit" parent="Menu/NameChange/Panel2" unique_id=1389384570]
+layout_mode = 0
+offset_left = 28.0
+offset_top = 12.0
+offset_right = 384.0
+offset_bottom = 47.0
+placeholder_text = "GamerTag"
+
+[node name="Button" type="Button" parent="Menu/NameChange/Panel2" unique_id=954450757]
+layout_mode = 0
+offset_left = 112.0
+offset_top = 58.0
+offset_right = 295.0
+offset_bottom = 98.0
+text = "Change Name!"
+
 [node name="Chat" type="Control" parent="." unique_id=1833918700]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
-offset_left = 65.0
-offset_top = 315.0
-offset_right = -704.0
-offset_bottom = -179.0
+offset_left = 40.0
+offset_top = 417.0
+offset_right = -729.0
+offset_bottom = -77.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
@@ -169,3 +209,4 @@ sprite_frames = SubResource("SpriteFrames_q52u8")
 animation = &"off"
 
 [connection signal="pressed" from="Menu/Panel/LobbyStatus/LeaveLobby" to="Menu" method="_on_leave_lobby_pressed"]
+[connection signal="pressed" from="Menu/Panel/CloseGame" to="." method="_on_button_pressed"]

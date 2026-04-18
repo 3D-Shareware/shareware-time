@@ -1,0 +1,17 @@
+[gd_resource type="StandardMaterial3D" format=3 uid="uid://brnvc1miefgdq"]
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_nx5ch"]
+frequency = 0.0384
+domain_warp_enabled = true
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_b8aas"]
+noise = SubResource("FastNoiseLite_nx5ch")
+
+[resource]
+subsurf_scatter_enabled = true
+subsurf_scatter_strength = 1.0
+subsurf_scatter_transmittance_enabled = true
+subsurf_scatter_transmittance_depth = 3.8
+refraction_enabled = true
+refraction_texture = SubResource("NoiseTexture2D_b8aas")
+refraction_texture_channel = 4

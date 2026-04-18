@@ -1,0 +1,13 @@
+[gd_scene format=3 uid="uid://dg0hfrjbmgdv7"]
+
+[ext_resource type="FontFile" uid="uid://dqg207sij2u3j" path="res://Misc/UI/fonts/GothicA1-Thin.ttf" id="1_d4kh6"]
+[ext_resource type="Script" uid="uid://t3sp0uytdplk" path="res://MultiplayerStuff/Client/merc_label.gd" id="2_jyyxj"]
+
+[node name="MercLabel" type="Label3D" unique_id=24462204]
+gi_lightmap_texel_scale = 1.1448
+billboard = 2
+modulate = Color(0.9867516, 0.9867516, 0.9867516, 1)
+text = "furious_knight25"
+font = ExtResource("1_d4kh6")
+outline_size = 5
+script = ExtResource("2_jyyxj")

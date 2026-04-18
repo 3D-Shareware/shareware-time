@@ -1,0 +1,13 @@
+[gd_resource type="StandardMaterial3D" format=3 uid="uid://bm5npalrr2vm4"]
+
+[ext_resource type="Texture2D" uid="uid://dik34xhky325m" path="res://MapsAndGamemodes/Maps/dm_grahhh/assets/materials_nippertextures_blah_nmb_redgoop.png" id="1_566yw"]
+
+[resource]
+albedo_texture = ExtResource("1_566yw")
+emission_enabled = true
+emission_energy_multiplier = 0.34
+emission_texture = ExtResource("1_566yw")
+uv1_scale = Vector3(0.16, 0.16, 0.16)
+uv1_triplanar = true
+uv1_world_triplanar = true
+proximity_fade_distance = 36.31

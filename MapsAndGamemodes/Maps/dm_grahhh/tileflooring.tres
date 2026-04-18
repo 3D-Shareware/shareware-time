@@ -1,0 +1,21 @@
+[gd_resource type="StandardMaterial3D" format=3 uid="uid://km15c643od4h"]
+
+[ext_resource type="Texture2D" uid="uid://df858na74d2d5" path="res://MapsAndGamemodes/Maps/dm_grahhh/assets/materials_nippertextures_blah_nmb_tilefloor1.png" id="1_a6gik"]
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_nx5ch"]
+frequency = 0.0384
+domain_warp_enabled = true
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_b8aas"]
+noise = SubResource("FastNoiseLite_nx5ch")
+
+[resource]
+albedo_texture = ExtResource("1_a6gik")
+subsurf_scatter_strength = 1.0
+subsurf_scatter_transmittance_enabled = true
+subsurf_scatter_transmittance_depth = 3.968
+refraction_texture = SubResource("NoiseTexture2D_b8aas")
+refraction_texture_channel = 4
+uv1_scale = Vector3(0.28, 0.28, 0.28)
+uv1_triplanar = true
+uv1_world_triplanar = true
