@@ -14,6 +14,7 @@ const MIN_COST_PER_ACT: int = 0				## Minimum cost an activation will charge per
 const MIN_COST_MULT: float = 0.001			## Minimum cost multiplier that will be applied to an activation
 
 signal cost_updated(old: float, new: float)		## Emitted when the gross cost of ability activation changes
+signal reward_updated(old: float, new: float)	## Emitted when the cost per kill changes
 signal mult_updated(old: float, new: float)		## Emitted when the cost multiplier of ability activation changes
 signal activations_updated(old: int, new: int)	## Emitted when the total number of activations changes
 
@@ -37,6 +38,18 @@ var cost_per_activation: float = 0.0:
 			var old := cost_per_activation
 			cost_per_activation = c
 			cost_updated.emit(old, cost_per_activation)
+
+## Amount of money awarded to the player on kill with this ability
+var reward_per_kill: float = 100.0:
+	set(c):
+		c = max(0, c)
+		if c != reward_per_kill:
+			var old := reward_per_kill
+			reward_per_kill = c
+			reward_updated.emit(old, reward_per_kill)
+
+## Whether the given ability can kill. Intended use is to not spuriously switch between last used abilities when moving / using movement abilities
+var can_kill: bool = true
 
 ## Multiplier applied to `cost_per_activation` to get net cost
 var cost_multiplier: float = 1.0:

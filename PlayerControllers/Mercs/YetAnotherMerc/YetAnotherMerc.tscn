@@ -3,6 +3,7 @@
 [ext_resource type="Script" uid="uid://dgodpaidmm08a" path="res://PlayerControllers/Mercs/YetAnotherMerc/yet_another_merc.gd" id="1_mpngw"]
 [ext_resource type="PackedScene" uid="uid://bwbfmr1nmjwg" path="res://PlayerControllers/Abilities/EvilGun/EvilGunAbility.tscn" id="2_5xqyl"]
 [ext_resource type="PackedScene" uid="uid://b2o8qrqm1mtei" path="res://PlayerControllers/Abilities/EvilShotgun/EvilShotgun.tscn" id="2_nltnw"]
+[ext_resource type="Shader" uid="uid://b4jvxg6wbglwk" path="res://PlayerControllers/Mercs/YetAnotherMerc/YetAnotherMerc.gdshader" id="2_vid3w"]
 [ext_resource type="Script" uid="uid://dfvybr130ixi0" path="res://PlayerControllers/Mercs/YetAnotherMerc/base_money_gun.gd" id="3_l55cr"]
 [ext_resource type="PackedScene" uid="uid://q1amjn7ixxvn" path="res://PlayerControllers/Abilities/EvilMachineGun/EvilMachineGunAbility.tscn" id="4_l55cr"]
 [ext_resource type="Script" uid="uid://duh751bbqbgx6" path="res://PlayerControllers/Mercs/YetAnotherMerc/money_shotgun.gd" id="5_ernmp"]
@@ -15,6 +16,18 @@
 [ext_resource type="Script" uid="uid://jw4xg8xmvwg0" path="res://PlayerControllers/Mercs/YetAnotherMerc/money_sprint.gd" id="13_f2hxi"]
 [ext_resource type="Script" uid="uid://cpmibxxp622lk" path="res://PlayerControllers/Mercs/YetAnotherMerc/supply_and_demand.gd" id="14_0oa5j"]
 
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_0oa5j"]
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_vid3w"]
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_4v6uc"]
+noise = SubResource("FastNoiseLite_vid3w")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_4v6uc"]
+render_priority = 0
+shader = ExtResource("2_vid3w")
+shader_parameter/noise = SubResource("NoiseTexture2D_4v6uc")
+
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_8ppig"]
 
 [node name="YetAnotherMerc" type="CharacterBody3D" unique_id=1806716565 node_paths=PackedStringArray("camera", "abilities")]
@@ -25,16 +38,25 @@ camera_fov = 115.0
 debug_mode = true
 abilities = [NodePath("MoneyGun"), NodePath("MoneyShotgun"), NodePath("MoneyMachineGun"), NodePath("MoneyGrenade"), NodePath("JumpAbility"), NodePath("SprintAbility"), NodePath("SupplyAndDemand")]
 metadata/_custom_type_script = "uid://2ip0lrtrrhsr"
+metadata/_edit_lock_ = true
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=685279411]
+mesh = SubResource("CapsuleMesh_0oa5j")
+surface_material_override/0 = SubResource("ShaderMaterial_4v6uc")
+metadata/_edit_lock_ = true
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=920532566]
 shape = SubResource("CapsuleShape3D_8ppig")
+metadata/_edit_lock_ = true
 
 [node name="Camera3D" type="Camera3D" parent="." unique_id=1948415982]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, -0.5)
+metadata/_edit_lock_ = true
 
 [node name="MoneyGun" parent="." unique_id=1600695075 instance=ExtResource("2_5xqyl")]
 script = ExtResource("3_l55cr")
 AbilityDescription = "Money Pistol"
+metadata/_edit_lock_ = true
 
 [node name="MoneyShotgun" parent="." unique_id=845874724 instance=ExtResource("2_nltnw")]
 script = ExtResource("5_ernmp")
@@ -43,24 +65,30 @@ max_ammo = 12
 damage = 3.0
 fire_speed = 0.2
 AbilityDescription = "Money Shotgun"
+metadata/_edit_lock_ = true
 
 [node name="MoneyMachineGun" parent="." unique_id=1904938717 instance=ExtResource("4_l55cr")]
 script = ExtResource("7_ernmp")
 AbilityDescription = "Money Machinegun"
+metadata/_edit_lock_ = true
 
 [node name="MoneyGrenade" parent="." unique_id=580170457 instance=ExtResource("5_xeqhp")]
 script = ExtResource("9_qh8cp")
 AbilityDescription = "Throw a Golden Grenade"
+metadata/_edit_lock_ = true
 
 [node name="JumpAbility" parent="." unique_id=27473948 instance=ExtResource("6_ernmp")]
 script = ExtResource("11_hid7e")
 AbilityDescription = "Jump"
 trigger_key = "Space"
+metadata/_edit_lock_ = true
 
 [node name="SprintAbility" parent="." unique_id=699710493 instance=ExtResource("7_qh8cp")]
 script = ExtResource("13_f2hxi")
+metadata/_edit_lock_ = true
 
 [node name="SupplyAndDemand" type="Node3D" parent="." unique_id=769101498]
 script = ExtResource("14_0oa5j")
 AbilityDescription = "The Invisible Hand of the Market will gide your weapon choice"
 trigger_key = "M"
+metadata/_edit_lock_ = true

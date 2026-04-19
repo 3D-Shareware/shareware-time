@@ -19,13 +19,32 @@ var cash: float = DEFAULT_CASH:
 			cash = old
 			cash_updated.emit(old, cash)
 
+## Last used money ability. Used for returning money on kill. A bit ad-hoc because the kill_confirmed signal
+## doesn't return the ability being used to kill, but it should be fine in most cases
+@onready var last_used_ability: Ability = null
+
 ## Overwritten from `Merc`, but still makes space for a custom ready via `money_custom_ready`
 func custom_ready() -> void:
 	add_to_group(GROUP_NAME)
 	for ability in abilities:
 		if ability.is_in_group(MoneyAbility.GROUP_NAME):
 			ability.connect_player_cash(self)
-			ability.fired.connect(func(cost: float) -> void: cash -= cost)
+			ability.fired.connect(
+				func(cost: float) -> void: 
+					cash -= cost
+					if ability.can_kill: 
+						last_used_ability = ability
+			)
+
+	kill_confirmed.connect(
+		func(_killed_id: int) -> void:
+			if !last_used_ability or !last_used_ability.is_in_group(MoneyAbility.GROUP_NAME): return
+			cash += last_used_ability.reward_per_kill
+	)
+
+	health_changed.connect(
+		func(old: float, new: float) -> void: if new < old: cash += abs(old - new)
+	)
 
 	money_custom_ready()
 	return
