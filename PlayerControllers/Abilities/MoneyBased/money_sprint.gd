@@ -1,7 +1,4 @@
-extends "res://PlayerControllers/Abilities/EvilGun/evil_gun_ability.gd"
-
-# Sorry in advance, this is going to get weird thanks to Godot's lack of 
-# multi-inheritence / interface implementation
+extends SprintAbility
 
 const MoneyAbility := preload("res://PlayerControllers/Abilities/MoneyBased/base_money_ability.gd")
 
@@ -58,7 +55,6 @@ var cash_storage: float = abh.cash_storage:
 	set(m): 
 		abh.cash_storage = m
 		cash_storage = abh.cash_storage
-		update_label()
 
 var net_activation_cost: float = abh.net_activation_cost:
 	get: return abh.net_activation_cost
@@ -82,43 +78,19 @@ func _ready() -> void:
 	abh.mult_updated		.connect(func(old: float, new: float) -> void: self.mult_updated		.emit(old, new))
 	abh.activations_updated	.connect(func(old: float, new: float) -> void: self.activations_updated	.emit(old, new))
 	
-	## Gun Settings
-	ammo = 99
-	max_ammo = 99
-	super()
-	label.text = ""
-	cost_per_activation = 0
-
-### Gun Stuff ###
-
-func update_label() -> void:
-	label.text = "%0.2f/%0.2f: %0.f" % [cash_storage, net_activation_cost, floor(cash_storage / net_activation_cost)]
-
-func equip() -> void:
-	super()
-	update_label()
-
-func reload() -> void: return
-
-func shoot():
-	if cash_storage - cost_per_activation < 0:
-		# Optional: Play a "click" sound here for empty ammo
-		failure.emit()
-		activated.emit(false)
-		return
+	cost_per_activation = 2.0
 	
-	cash_storage -= net_activation_cost
+var tmpact: float = 0.0
+func _physics_process(delta: float) -> void:
+	if cash_storage - (net_activation_cost * delta) < 0: 
+		if _is_sprinting: _stop_sprint()
+		_is_sprinting = false
 	
-	# Restart animation and start the cooldown timer
-	animation_player.stop() 
-	animation_player.play("fire")
-	fire_attack_speed.start()
+	if _is_sprinting:
+		tmpact += delta
+		if tmpact >= 1:
+			activations += 10
+			tmpact = 0
+		fired.emit(net_activation_cost * delta)
 	
-	# 4. Fire every raycast in the array (1 for Pistol, Many for Shotgun)
-	_do_raycasts()
-	
-	fired.emit(net_activation_cost)
-	activations += 1
-	
-	success.emit()
-	activated.emit(true)
+	super(delta)

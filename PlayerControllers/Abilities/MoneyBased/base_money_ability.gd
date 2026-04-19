@@ -31,7 +31,7 @@ var activations: int = 0:
 			activations_updated.emit(old, activations)
 
 ## Gross cost to activate ability. Multiplied with `cost_multiplier` to get net cost per activation
-var cost_per_activation: float = 0.0:
+@export var cost_per_activation: float = 0.0:
 	set(c):
 		c = max(MIN_COST_PER_ACT, c)
 		if c != cost_per_activation:
@@ -40,7 +40,7 @@ var cost_per_activation: float = 0.0:
 			cost_updated.emit(old, cost_per_activation)
 
 ## Amount of money awarded to the player on kill with this ability
-var reward_per_kill: float = 100.0:
+@export var reward_per_kill: float = 100.0:
 	set(c):
 		c = max(0, c)
 		if c != reward_per_kill:
@@ -49,7 +49,7 @@ var reward_per_kill: float = 100.0:
 			reward_updated.emit(old, reward_per_kill)
 
 ## Whether the given ability can kill. Intended use is to not spuriously switch between last used abilities when moving / using movement abilities
-var can_kill: bool = true
+@export var can_kill: bool = true
 
 ## Multiplier applied to `cost_per_activation` to get net cost
 var cost_multiplier: float = 1.0:
@@ -61,14 +61,20 @@ var cost_multiplier: float = 1.0:
 			mult_updated.emit(old, cost_multiplier)
 
 var cash_storage: float = DEFAULT_CASH	## Used to store the player's cash without directly holding a reference to them
-var connected: bool = false				## Whether the ability has been connected to a player or not. 
+var net_activation_cost: float:
+	get: return cost_per_activation * cost_multiplier
+	set(n): assert(false, "<BaseMoneyAbility::set(net_activation_cost, %f)> Error: This is a virtual property, it can not be set" % n)
+
+var connected: bool = false	## Whether the ability has been connected to a player or not. 
 
 ## Connects the ability's `cash_storage` to a player's actual `cash_updated` signal
 func connect_player_cash(player: Merc) -> void:
 	if connected or !player or !player.is_in_group(CashUser.GROUP_NAME): return
-	player.cash_updated.connect(func(new: float) -> void: cash_storage = new)
+	
+	player.cash_updated.connect(func(_old: float, new: float) -> void: cash_storage = new)
 	cash_storage = player.cash
 	connected = true
+	
 	return
 
 ## Adds any instantiated nodes to the money ability group. Call super() in your extending classes if you want them to be properly included

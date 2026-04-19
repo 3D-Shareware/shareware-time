@@ -1,79 +1,41 @@
-extends Ability
+extends "res://PlayerControllers/Abilities/MoneyBased/base_money_ability.gd"
 
-@warning_ignore("unused_signal")
-# Note: This exists because YAM won't add an ability unless it has this signal
-signal uses_updated(_uses: int, _prior: int)
+signal reduce_activations(mult: float)
 
-func get_activations() -> int: return 0
-func update_cost_mult(_p: float) -> void: return
-
-signal total_activations_updated(activations: int)
-signal reduce_activations(percent: float)
-
-var _do_price_update: bool = true
-var activations: int = 0
-
-var cmerc: Merc = null
-var total_activations: int = 0:
-	set(n):
-		if n != total_activations:
-			total_activations = n
-			total_activations_updated.emit(total_activations)
-
-var connected: bool = false
-func connect_to_abilities(m: Merc) -> void:
-	if connected: return
-	cmerc = m
-	if !cmerc: return
-	if !cmerc.has_signal("cash_updated"): return # Only touch YAM-Compatible playerss
+func connect_player_cash(player: Merc) -> void:
+	super(player)
 	
-	for ability in cmerc.abilities:
-		if not (
-			ability.has_signal("uses_updated") and
-			ability.has_method("get_activations") and
-			ability.has_method("update_cost_mult")
-		): return
-	
-	connected = true
-	for ability in cmerc.abilities:
-		ability.uses_updated.connect(
-			func(uses: int, prior: int) -> void: 
-				if uses > prior:
-					total_activations += uses - prior
-					print("%s uses: %d, total: %d" % [ability.name, (uses - prior), total_activations])
+	for ability in player.abilities:
+		if !ability.is_in_group(GROUP_NAME): continue
+		ability.activations_updated.connect(
+			func(old: int, new: int) -> void:
+				if new > old: activations += abs(new - old)
 		)
 		
-		total_activations_updated.connect(
-			func(_total_activations: int) -> void:
-				var tmp := get_new_mult(ability.get_activations())
-				ability.update_cost_mult(tmp)
-				print("updating cost mult: " + str(tmp) + " on " + ability.name)
+		self.activations_updated.connect(
+			func(_old: int, _new: int) -> void:
+				ability.cost_multiplier = get_new_mult(ability.activations)
 		)
 		
-		reduce_activations.connect(
-			func(p: float) -> void: 
-				print("reducing activations from " + str(ability.activations) + " to " + str(ability.activations * p) + " on " + ability.name)
-				ability.activations *= p
+		self.reduce_activations.connect(
+			func(mult: float) -> void:
+				ability.activations = floorf(ability.activations * mult)
 		)
 
 func get_new_mult(act: int) -> float:
-	if total_activations == act: total_activations += 1
-	return 1.0 / (1 - ((1.0 * act) / (1.0 * total_activations)))
+	if activations == act: activations += 1
+	return 1.0 / (1.0 - ((1.0 * act) / (1.0 * activations)))
 	# Ignore the "1.0 *" bs, it's just so that godot stops complaining about int div
 
-# Ran whenever "activated". I assume that because this is passive it is every frame
-func activate() -> void:
-	print("ACTIVATED!")
-	connect_to_abilities(merc)
-	_do_price_update = true
-	return
+# Never ran because this is never explicitly activated
+func activate() -> void: return
 
 var passed: float = 0.0
 func _physics_process(delta: float) -> void:
-	if !_do_price_update: return
+	if !connected: return
 	passed += delta
 	if passed >= 1:
 		@warning_ignore("narrowing_conversion")
-		total_activations *= 0.85
-		reduce_activations.emit(0.90)
+		activations = floorf(activations * 0.90)
+		reduce_activations.emit(0.85)
 		passed = 0

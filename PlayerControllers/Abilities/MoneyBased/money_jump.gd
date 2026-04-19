@@ -1,7 +1,4 @@
-extends "res://PlayerControllers/Abilities/EvilGun/evil_gun_ability.gd"
-
-# Sorry in advance, this is going to get weird thanks to Godot's lack of 
-# multi-inheritence / interface implementation
+extends "res://PlayerControllers/Abilities/Jump/jump_ability.gd"
 
 const MoneyAbility := preload("res://PlayerControllers/Abilities/MoneyBased/base_money_ability.gd")
 
@@ -58,7 +55,6 @@ var cash_storage: float = abh.cash_storage:
 	set(m): 
 		abh.cash_storage = m
 		cash_storage = abh.cash_storage
-		update_label()
 
 var net_activation_cost: float = abh.net_activation_cost:
 	get: return abh.net_activation_cost
@@ -82,43 +78,15 @@ func _ready() -> void:
 	abh.mult_updated		.connect(func(old: float, new: float) -> void: self.mult_updated		.emit(old, new))
 	abh.activations_updated	.connect(func(old: float, new: float) -> void: self.activations_updated	.emit(old, new))
 	
-	## Gun Settings
-	ammo = 99
-	max_ammo = 99
-	super()
-	label.text = ""
-	cost_per_activation = 0
+	cost_per_activation = 10
 
-### Gun Stuff ###
+	jump_strength *= 2
+	success.connect(
+		func() -> void: 
+			fired.emit(net_activation_cost)
+			activations += 1
+	)
 
-func update_label() -> void:
-	label.text = "%0.2f/%0.2f: %0.f" % [cash_storage, net_activation_cost, floor(cash_storage / net_activation_cost)]
-
-func equip() -> void:
-	super()
-	update_label()
-
-func reload() -> void: return
-
-func shoot():
-	if cash_storage - cost_per_activation < 0:
-		# Optional: Play a "click" sound here for empty ammo
-		failure.emit()
-		activated.emit(false)
-		return
-	
-	cash_storage -= net_activation_cost
-	
-	# Restart animation and start the cooldown timer
-	animation_player.stop() 
-	animation_player.play("fire")
-	fire_attack_speed.start()
-	
-	# 4. Fire every raycast in the array (1 for Pistol, Many for Shotgun)
-	_do_raycasts()
-	
-	fired.emit(net_activation_cost)
-	activations += 1
-	
-	success.emit()
-	activated.emit(true)
+func _physics_process(delta: float) -> void:
+	if cash_storage - net_activation_cost < 0: return
+	super(delta)

@@ -4,7 +4,7 @@ extends Merc
 const MoneyAbility := preload("res://PlayerControllers/Abilities/MoneyBased/base_money_ability.gd")
 
 const GROUP_NAME = "CASH_USER"				## Group name. Access through `get_tree().get_nodes_in_group()` and similar group functions
-@export var DEFAULT_CASH: float = 1000.0	## Starting cash
+@export var DEFAULT_CASH: float = 100.0		## Starting cash
 @export var MIN_CASH: float = 0				## Minimum possible cash
 @export var MAX_CASH: float = 99999.0		## Maximum possible cash
 
@@ -13,10 +13,10 @@ signal cash_updated(old: float, new: float)	## Emitted any time the player's cas
 ## Player's cash. Relayed to money-based abilities via `cash_updated` signal
 var cash: float = DEFAULT_CASH:
 	set(m):
-		m = clamp(m, MIN_CASH, MAX_CASH)
+		m = clampf(m, MIN_CASH, MAX_CASH)
 		if m != cash:
 			var old := cash
-			cash = old
+			cash = m
 			cash_updated.emit(old, cash)
 
 ## Last used money ability. Used for returning money on kill. A bit ad-hoc because the kill_confirmed signal
@@ -43,7 +43,7 @@ func custom_ready() -> void:
 	)
 
 	health_changed.connect(
-		func(old: float, new: float) -> void: if new < old: cash += abs(old - new)
+		func(old: float, new: float) -> void: if new < old: cash += 10 * abs(old - new)
 	)
 
 	money_custom_ready()
