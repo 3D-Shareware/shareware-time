@@ -21,6 +21,7 @@ var cash: float = DEFAULT_CASH:
 
 ## Overwritten from `Merc`, but still makes space for a custom ready via `money_custom_ready`
 func custom_ready() -> void:
+	add_to_group(GROUP_NAME)
 	for ability in abilities:
 		if ability.is_in_group(MoneyAbility.GROUP_NAME):
 			ability.connect_player_cash(self)
