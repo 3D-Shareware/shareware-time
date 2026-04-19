@@ -59,7 +59,6 @@ fov = 90.0
 
 [node name="Hand" type="CSGSphere3D" parent="." unique_id=427775565]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.25360978, 0.23060426, -0.48329479)
-visible = false
 radius = 0.09193548
 material = ExtResource("5_amjnl")
 
@@ -69,6 +68,7 @@ camera = NodePath("../Camera3D")
 
 [node name="TrackerRifle" parent="." unique_id=1600695075 instance=ExtResource("7_gbrgr")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.044250637, 0.333, -0.27153152)
+visible = false
 
 [node name="BoltGun" parent="." unique_id=812748014 instance=ExtResource("8_biies")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5445492, 0)

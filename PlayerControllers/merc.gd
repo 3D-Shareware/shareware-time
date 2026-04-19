@@ -363,7 +363,6 @@ func receive_pos_from_server(pos: Vector3, rot: Vector3):
 	# Don't move them yet! Just update the target.
 	target_position = pos
 	target_rotation = rot
-
 @rpc("any_peer", "call_remote", "reliable")
 func take_damage(damage: float):
 	if !is_multiplayer_authority(): return
@@ -430,6 +429,7 @@ func death_effects():
 
 @rpc("authority", "call_remote", "reliable")
 func die(killer_id: int = 0):
+	notify_kill_confirmed(killer_id)
 	emit_signal("died", self, killer_id)
 
 #emits when you kill a player

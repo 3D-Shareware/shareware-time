@@ -143,7 +143,7 @@ shadow_mesh = SubResource("ArrayMesh_88vdv")
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_uvt7h"]
 radius = 0.65283203
-height = 2.3798828
+height = 2.100586
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_8jcl1"]
 resource_name = "Material.002"
@@ -1249,7 +1249,7 @@ mesh = SubResource("ArrayMesh_tynre")
 skeleton = NodePath("")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=1702368430]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.08093262, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.22058105, 0)
 shape = SubResource("CapsuleShape3D_uvt7h")
 
 [node name="Camera3D" type="Camera3D" parent="." unique_id=650188405]
@@ -1353,7 +1353,6 @@ text = "0/30"
 
 [node name="VisualHand" type="Marker3D" parent="DoohickyGun" unique_id=295525846]
 transform = Transform3D(0.12, 0, 0, 0, 0.12, 0, 0, 0, 0.12, 0, 0, 0)
-visible = false
 
 [node name="VisualHand" type="MeshInstance3D" parent="DoohickyGun/VisualHand" unique_id=1502494456]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.590866, -0.44901386, 2.6677482)
@@ -1406,7 +1405,7 @@ transform = Transform3D(0.76582, -0.17333014, 0.6192548, -1.4901161e-07, 0.96298
 shape = SubResource("BoxShape3D_r51g3")
 
 [node name="Doohicky" type="Node3D" parent="C4" unique_id=1747705607]
-transform = Transform3D(-0.4600467, 0.093597576, -0.88294744, 0.1993679, 0.9799247, 0, 0.865222, -0.17603143, -0.4694715, 0.54, -0.33, -0.85)
+transform = Transform3D(-0.46004668, 0.093597576, -0.8829474, 0.1993679, 0.9799247, 0, 0.8652219, -0.17603143, -0.46947148, 0.54, -0.33, -0.85)
 visible = false
 
 [node name="Body" type="MeshInstance3D" parent="C4/Doohicky" unique_id=1592089141]

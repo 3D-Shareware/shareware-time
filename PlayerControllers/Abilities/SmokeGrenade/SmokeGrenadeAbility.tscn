@@ -213,7 +213,6 @@ AbilityDescription = "Deny sightlines"
 visual_hand = NodePath("Grenade/MeshInstance3D")
 
 [node name="Grenade" type="RigidBody3D" parent="." unique_id=2084771126]
-transform = Transform3D(1, 0, 0, 0, 0.94833475, 0.31727147, 0, -0.31727147, 0.94833475, 0.42329928, -0.8561233, -0.29262486)
 top_level = true
 collision_layer = 0
 collision_mask = 3

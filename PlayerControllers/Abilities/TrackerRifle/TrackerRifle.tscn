@@ -380,13 +380,14 @@ damage = 75.0
 fire_speed = 1.0
 weapon_mesh = NodePath("trackerrifle")
 raycasts = [NodePath("BulletRayCast")]
-AbilityDescription = "blam r to reload left click to shoot"
+AbilityDescription = "RMB to scope in. shoot them."
 visual_hand = NodePath("VisualHand")
 trigger_key = "1"
 
 [node name="TracerEffect" parent="." unique_id=1482231535 instance=ExtResource("2_42kd8")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.59079814, -0.1720166, -1.8837852)
 script = ExtResource("3_nnlp6")
+tracer_color = Color(1, 0.9475, 0.55, 1)
 
 [node name="BulletRayCast" type="RayCast3D" parent="." unique_id=1097835970]
 target_position = Vector3(0, 0, -80)
@@ -449,6 +450,43 @@ skeleton = NodePath("")
 
 [node name="VisualHand" type="Marker3D" parent="." unique_id=295525846]
 transform = Transform3D(0.12, 0, 0, 0, 0.12, 0, 0, 0, 0.12, 0, 0, 0)
+
+[node name="trackerrifle" type="Node3D" parent="VisualHand" unique_id=1821625065]
+transform = Transform3D(-1.2337711e-08, 0, -0.11500005, 0, 0.11500005, 0, 0.11500005, 0, -1.2337711e-08, 0, 0, 0)
+
+[node name="Cube" type="MeshInstance3D" parent="VisualHand/trackerrifle" unique_id=1893236625]
+transform = Transform3D(100, 0, 0, 0, -1.1920929e-05, 99.99999, 0, -99.99999, -1.1920929e-05, 0, 0, 0)
+mesh = SubResource("ArrayMesh_lubwo")
+skeleton = NodePath("")
+
+[node name="Cube_001" type="MeshInstance3D" parent="VisualHand/trackerrifle" unique_id=512610214]
+transform = Transform3D(100, 0, 0, 0, -1.1920929e-05, 99.99999, 0, -99.99999, -1.1920929e-05, 0, 3.960266, 0)
+mesh = SubResource("ArrayMesh_8wyhi")
+skeleton = NodePath("")
+
+[node name="Cube_002" type="MeshInstance3D" parent="VisualHand/trackerrifle" unique_id=1165382470]
+transform = Transform3D(100, 0, 0, 0, -1.1920929e-05, 99.99999, 0, -99.99999, -1.1920929e-05, 0, -0.008598454, 12.857395)
+mesh = SubResource("ArrayMesh_wla3m")
+skeleton = NodePath("")
+surface_material_override/0 = ExtResource("5_06ucm")
+
+[node name="Cube_003" type="MeshInstance3D" parent="VisualHand/trackerrifle" unique_id=1847658893]
+transform = Transform3D(100, 0, 0, 0, -1.1920929e-05, 99.99999, 0, -99.99999, -1.1920929e-05, 0, -1.2081196, -12.901115)
+mesh = SubResource("ArrayMesh_cn0ku")
+skeleton = NodePath("")
+
+[node name="Cube_005" type="MeshInstance3D" parent="VisualHand/trackerrifle" unique_id=1479355252]
+transform = Transform3D(74.72753, 0, 0, 0, -8.908216e-06, 74.72752, 0, -74.72752, -8.908216e-06, 0, -1.9267453, -6.564629)
+mesh = SubResource("ArrayMesh_daa6h")
+skeleton = NodePath("")
+surface_material_override/0 = ExtResource("6_to81w")
+
+[node name="pull" type="Node3D" parent="VisualHand/trackerrifle" unique_id=1466943250]
+
+[node name="Cube_004" type="MeshInstance3D" parent="VisualHand/trackerrifle/pull" unique_id=345425425]
+transform = Transform3D(0, 2.0861626e-05, -100, 100, 0, 0, 0, -100, -2.3841858e-05, 2.2748077, 0.6574292, 3.2126098)
+mesh = SubResource("ArrayMesh_apiuy")
+skeleton = NodePath("")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=38789671]
 libraries/ = SubResource("AnimationLibrary_r0p3f")

@@ -323,7 +323,6 @@ theme_override_font_sizes/font_size = 46
 
 [node name="VisualHand" type="Marker3D" parent="." unique_id=295525846]
 transform = Transform3D(0.12, 0, 0, 0, 0.12, 0, 0, 0, 0.12, 0, 0, 0)
-visible = false
 
 [node name="VisualHand" type="MeshInstance3D" parent="VisualHand" unique_id=1502494456]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.590866, -0.44901386, 2.6677482)

@@ -40,7 +40,7 @@ func _ready() -> void:
 	fire_attack_speed.wait_time = fire_speed
 	fire_attack_speed.one_shot = true
 	hide()
-	label.text = str(get_parent().bolts)
+	label.text = str(1)
 	
 	# --- NEW: Save the resting position of the visual mesh ---
 	if weapon_mesh:
@@ -78,15 +78,19 @@ func _process(delta: float) -> void:
 		_apply_weapon_bob_and_tilt(delta)
 
 func reload():
-	pass
+	if get_parent().bolts <= 0: return
+	animation_player.play("reload")
+	await animation_player.animation_finished
+	ammo = 1
+	get_parent().bolts -= 1
+	label.text = str(ammo)
 
 func shoot():
-	if ammo <= 0 or get_parent().bolts <= 0:
+	if ammo <= 0:
 		# Optional: Play a "click" sound here for empty ammo
 		return
 	
 	# Consume 1 ammo per trigger pull (even if it's a shotgun firing 8 pellets)
-	get_parent().bolts -= 1
 	ammo -= 1
 	
 	$AudioStreamPlayer3D.play()
@@ -108,14 +112,14 @@ func _do_raycasts() -> void:
 		
 		# Force update so the raycast is perfectly aligned with the camera this frame
 		rc.force_raycast_update()
-
 		if rc.is_colliding():
 			var person_hit = rc.get_collider()
 			if person_hit != null and person_hit is Merc:
 				person_hit.take_damage.rpc_id(int(person_hit.name), damage)
+				
 				person_hit.speed -= 0.12
 				var tracker_bolt = load("res://PlayerControllers/Abilities/TrackerBoltGun/tracker_bolt.tscn").instantiate()
-				tracker_bolt.tracker = self
+				tracker_bolt.tracker = get_parent()
 				person_hit.add_child(tracker_bolt)
 				
 			# Spawn tracer at hit point

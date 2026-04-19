@@ -38,6 +38,7 @@ func shoot():
 	grenade.freeze = false
 	grenade.linear_velocity = Vector3.ZERO
 	grenade.apply_central_impulse(-merc.camera.global_basis.z * throw_strength) 
+	thrown = true
 
 func equip():
 	show()
@@ -55,6 +56,7 @@ func explode():
 	# Only the authority should calculate and send damage
 	
 	# Everything below this runs locally for all clients (Visuals/Cleanup)
+	
 	$Grenade/FogVolume.visible = true
 	$AudioStreamPlayer3D.play()
 	
@@ -88,9 +90,9 @@ func _on_fuse_timer_timeout() -> void:
 
 
 func _on_detection_radius_body_entered(body: Node3D) -> void:
-	if body is Merc and not (body == get_parent()) and thrown:
+	if body is Merc and !(body == get_parent()) and thrown:
 		$Grenade/DetectionRadius/Beep.play()
-		var max_speed = 10
+		var max_speed = 4
 		clamp(body.velocity.x, 0, max_speed)
 		clamp(body.velocity.y, 0, max_speed)
 		clamp(body.velocity.z, 0, max_speed)

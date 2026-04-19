@@ -32,7 +32,6 @@ func _process(_delta: float) -> void:
 	if Input.is_action_just_pressed("right_click") and thrown == true:
 		denonate()
 		anim_player.play("detonate")
-	
 
 func shoot():
 	# Detach the grenade from the hand and throw it
