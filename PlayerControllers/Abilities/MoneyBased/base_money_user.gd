@@ -4,7 +4,7 @@ extends Merc
 const MoneyAbility := preload("res://PlayerControllers/Abilities/MoneyBased/base_money_ability.gd")
 
 const GROUP_NAME = "CASH_USER"				## Group name. Access through `get_tree().get_nodes_in_group()` and similar group functions
-@export var DEFAULT_CASH: float = 100.0		## Starting cash
+@export var DEFAULT_CASH: float = 1000.0		## Starting cash
 @export var MIN_CASH: float = 0				## Minimum possible cash
 @export var MAX_CASH: float = 99999.0		## Maximum possible cash
 

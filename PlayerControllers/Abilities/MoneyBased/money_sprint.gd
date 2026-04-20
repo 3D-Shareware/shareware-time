@@ -78,7 +78,8 @@ func _ready() -> void:
 	abh.mult_updated		.connect(func(old: float, new: float) -> void: self.mult_updated		.emit(old, new))
 	abh.activations_updated	.connect(func(old: float, new: float) -> void: self.activations_updated	.emit(old, new))
 	
-	cost_per_activation = 2.0
+	cost_per_activation = 1.0
+	can_kill = false
 	
 var tmpact: float = 0.0
 func _physics_process(delta: float) -> void:

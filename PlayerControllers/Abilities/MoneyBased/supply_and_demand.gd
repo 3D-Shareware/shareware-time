@@ -30,6 +30,10 @@ func get_new_mult(act: int) -> float:
 # Never ran because this is never explicitly activated
 func activate() -> void: return
 
+func _ready() -> void:
+	super()
+	can_kill = false
+
 var passed: float = 0.0
 func _physics_process(delta: float) -> void:
 	if !connected: return

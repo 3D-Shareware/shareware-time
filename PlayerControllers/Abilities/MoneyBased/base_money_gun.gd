@@ -88,6 +88,7 @@ func _ready() -> void:
 	super()
 	label.text = ""
 	cost_per_activation = 0
+	reward_per_kill = 500
 
 func _process(delta: float) -> void:
 	super(delta)
