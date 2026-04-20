@@ -14,7 +14,7 @@
 [ext_resource type="Script" uid="uid://de742iy8iq6a3" path="res://PlayerControllers/Abilities/MoneyBased/money_grenade.gd" id="9_qh8cp"]
 [ext_resource type="Script" uid="uid://c3xib2wiq032w" path="res://PlayerControllers/Abilities/MoneyBased/money_jump.gd" id="11_hid7e"]
 [ext_resource type="Script" uid="uid://jw4xg8xmvwg0" path="res://PlayerControllers/Abilities/MoneyBased/money_sprint.gd" id="13_f2hxi"]
-[ext_resource type="Script" uid="uid://cpmibxxp622lk" path="res://PlayerControllers/Mercs/YetAnotherMerc/supply_and_demand.gd" id="14_0oa5j"]
+[ext_resource type="Script" uid="uid://cpmibxxp622lk" path="res://PlayerControllers/Abilities/MoneyBased/supply_and_demand.gd" id="14_0oa5j"]
 
 [sub_resource type="CapsuleMesh" id="CapsuleMesh_0oa5j"]
 

@@ -6,10 +6,10 @@ func connect_player_cash(player: Merc) -> void:
 	super(player)
 	
 	for ability in player.abilities:
-		if !ability.is_in_group(GROUP_NAME): continue
+		if !ability.is_in_group(GROUP_NAME) or ability == self: continue
 		ability.activations_updated.connect(
 			func(old: int, new: int) -> void:
-				if new > old: activations += abs(new - old)
+				if new > old: self.activations += abs(new - old)
 		)
 		
 		self.activations_updated.connect(

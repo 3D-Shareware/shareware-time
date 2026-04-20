@@ -89,6 +89,13 @@ func _ready() -> void:
 	label.text = ""
 	cost_per_activation = 0
 
+func _process(delta: float) -> void:
+	super(delta)
+	
+	# TODO: This is a bit hacky, and I don't love it, but it works for now. Figure out why it's not updating
+	# correctly and remove this so that it only updates on actual cash update
+	update_label()
+
 ### Gun Stuff ###
 
 func update_label() -> void:
