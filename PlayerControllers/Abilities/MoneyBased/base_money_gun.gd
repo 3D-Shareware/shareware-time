@@ -46,12 +46,10 @@ var reward_per_kill: float = abh.reward_per_kill:
 		reward_per_kill = abh.reward_per_kill
 
 
-var can_kill: bool = abh.can_kill:
-	get: return abh.reward_per_kill
-	set(v): 
-		abh.can_kill = v
-		can_kill = abh.can_kill
-
+var can_kill: bool = true:
+	get: return true
+	set(_v): return
+	
 var cost_multiplier: float = abh.cost_multiplier:
 	get: return abh.cost_multiplier
 	set(m): 
@@ -91,7 +89,8 @@ func _ready() -> void:
 	ammo = 99
 	max_ammo = 99
 	super()
-	label.text = ""
+	
+	update_label()
 	cost_per_activation = 0
 	reward_per_kill = -500
 	can_kill = true
