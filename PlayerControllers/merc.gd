@@ -16,8 +16,6 @@ const MERC_LABEL = preload("res://MultiplayerStuff/Client/MercLabel.tscn")
 const HEALTH_BAR = preload("res://Misc/UI/health_bar.tscn")
 var health_bar : ProgressBar
 
-@export var NPC:bool = false
-
 @export_category("REQUIRED OBJECTS")
 @export var camera : Camera3D
 
@@ -136,8 +134,8 @@ func _ready() -> void:
 		var map = get_parent()
 		if map is Map and camera and map.environment != null:
 			camera.environment = map.environment
-		if !NPC:
-			camera.make_current()
+		
+		camera.make_current()
 		if camera: camera.fov = camera_fov
 		get_tree().physics_frame.connect(check_abilities)
 		custom_ready()
@@ -156,8 +154,8 @@ func _ready() -> void:
 		
 		show_visual_body_to_world.rpc()
 		name_label_instance.hide() #hide it local
-		if !NPC:
-			Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
+		
+		Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 
 @rpc("any_peer","call_remote","reliable")
 func show_visual_body_to_world():
@@ -226,7 +224,7 @@ func _physics_process(delta: float) -> void:
 	
 	var input = Vector2.ZERO
 	
-	if ClientUI.chat_input.text == "" and can_move and !NPC:
+	if ClientUI.chat_input.text == "" and can_move:
 		input.x = float(Input.is_physical_key_pressed(KEY_D)) - float(Input.is_physical_key_pressed(KEY_A))
 		input.y = float(Input.is_physical_key_pressed(KEY_S)) - float(Input.is_physical_key_pressed(KEY_W))
 	
