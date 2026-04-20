@@ -30,11 +30,12 @@ shader_parameter/noise = SubResource("NoiseTexture2D_4v6uc")
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_8ppig"]
 
-[node name="YetAnotherMerc" type="CharacterBody3D" unique_id=1806716565 node_paths=PackedStringArray("camera", "abilities")]
+[node name="YetAnotherMerc" type="CharacterBody3D" unique_id=1806716565 node_paths=PackedStringArray("camera", "visual_body", "abilities")]
 script = ExtResource("1_mpngw")
-camera = NodePath("Camera3D")
-merc_UI_color = Color(0.21284103, 0.4399235, 1, 1)
 debug_mode = true
+camera = NodePath("Camera3D")
+visual_body = NodePath("MeshInstance3D")
+merc_UI_color = Color(0.21284103, 0.4399235, 1, 1)
 abilities = [NodePath("MoneyGun"), NodePath("MoneyShotgun"), NodePath("MoneyMachineGun"), NodePath("MoneyGrenade"), NodePath("MoneyJump"), NodePath("MoneySprint"), NodePath("SupplyAndDemand")]
 metadata/_custom_type_script = "uid://2ip0lrtrrhsr"
 metadata/_edit_lock_ = true
