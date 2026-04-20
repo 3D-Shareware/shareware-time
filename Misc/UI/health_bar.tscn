@@ -60,4 +60,5 @@ grow_horizontal = 2
 grow_vertical = 0
 theme = ExtResource("1_hbq7f")
 theme_type_variation = &"HeaderSmall"
-text = "100"
+text = "100.0"
+horizontal_alignment = 1
