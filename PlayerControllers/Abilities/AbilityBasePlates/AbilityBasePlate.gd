@@ -2,9 +2,11 @@
 class_name Ability extends Node3D
 #DO NOT EDIT THIS CODE
 
-signal success
-signal failure
-signal activated(status: bool)
+@warning_ignore_start("unused_signal")
+signal success					## Emitted on successful ability activation (must be emitted by extending class)
+signal failure					## Emitted on failed ability activation (must be emitted by extending class)
+signal activated(status: bool)	## Emitted on ANY ability activation, successful or not. Contains success state, true being successful and false otherwise (must be emitted by extending class)
+@warning_ignore_restore("unused_signal")
 
 var abilities : Array[Ability]
 var merc : Merc
@@ -16,7 +18,7 @@ const FALLBACK_KEYS: Array[String] = [
 ]
 
 #plays every frame when the trigger key is pressed
-@abstract func activate() 
+@abstract func activate()
 @export var AbilityDescription : String = "no description"
 @export var visual_hand : Node3D
 

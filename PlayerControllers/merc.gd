@@ -1,8 +1,10 @@
 class_name Merc extends CharacterBody3D
 
 signal died(_self, killer_id: int) #Server will disable input on character
+## @deprecated: Use `health_changed` and look for when `new < old`
 signal took_damage
 signal kill_confirmed(person_killed_id : int)
+signal health_changed(old: float, new: float)
 
 # Debug test environment import
 const TEST_ENVIRONMENT = preload("res://MapsAndGamemodes/Maps/TestEnvironment/TestEnvironment.tscn")
@@ -22,8 +24,16 @@ var health_bar : ProgressBar
 @export_group("Universal Properties")
 @export var health :float = 100.0:
 	set(value):
-		health = value
 		if health_bar: health_bar.value = value
+		if value != health:
+			var old := health
+			health = value
+			health_changed.emit(old, health)
+		
+		# TODO: Figure out if this is necessary. I included it just to make sure I'm 
+		# not breaking anyone else's stuff just in case they rely on this behavior 
+		# (they really shouldn't) - Connor
+		else: health = value
 
 @export var gravity := 9.8
 @export var friction := .1
