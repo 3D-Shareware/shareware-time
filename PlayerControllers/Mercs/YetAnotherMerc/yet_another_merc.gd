@@ -12,10 +12,7 @@ func money_custom_ready() -> void:
 	while to_visit.size() > 0:
 		var cur: Variant = to_visit.pop_back()
 		to_visit += cur.get_children()
-		if cur is MeshInstance3D and cur != $MeshInstance3D:
+		if cur is MeshInstance3D:
 			(cur as MeshInstance3D).set_surface_override_material(0, GoldMaterial)
-
-	# I have no idea why this sets EVERY material to gold when it should only set the ability materials
-	# lmao
 
 	return

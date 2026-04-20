@@ -63,7 +63,7 @@ AbilityDescription = "Cheapo (FREE!) Gun. Does not cost money to fire, rewards m
 script = ExtResource("5_ernmp")
 is_auto = true
 max_ammo = 12
-damage = 15.0
+damage = 20.0
 fire_speed = 0.3
 AbilityDescription = "The Moneymaker. Costs money to shoot, but more powerful than the cheapo pistol"
 
@@ -93,3 +93,4 @@ AbilityDescription = "Sprint using money-powered socks"
 
 [node name="SupplyAndDemand" type="Node3D" parent="." unique_id=1466372349]
 script = ExtResource("14_0oa5j")
+AbilityDescription = "Let the Invisible Hand of the Market guide your weapon selection"

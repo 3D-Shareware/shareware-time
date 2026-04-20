@@ -33,10 +33,8 @@ var cost_per_activation: float = abh.cost_per_activation:
 		cost_per_activation = abh.cost_per_activation
 
 var reward_per_kill: float = abh.reward_per_kill:
-	get: return abh.reward_per_kill
-	set(c): 
-		abh.reward_per_kill = c
-		reward_per_kill = abh.reward_per_kill
+	get: return ceilf(100.0/damage) * cost_per_activation * 3
+	set(_c): return
 
 var can_kill: bool = abh.can_kill:
 	get: return abh.reward_per_kill

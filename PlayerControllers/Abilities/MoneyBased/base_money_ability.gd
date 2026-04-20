@@ -42,7 +42,6 @@ var activations: int = 0:
 ## Amount of money awarded to the player on kill with this ability
 @export var reward_per_kill: float = 100.0:
 	set(c):
-		c = max(0, c)
 		if c != reward_per_kill:
 			var old := reward_per_kill
 			reward_per_kill = c

@@ -78,7 +78,7 @@ func _ready() -> void:
 	abh.mult_updated		.connect(func(old: float, new: float) -> void: self.mult_updated		.emit(old, new))
 	abh.activations_updated	.connect(func(old: float, new: float) -> void: self.activations_updated	.emit(old, new))
 	
-	cost_per_activation = 1.0
+	cost_per_activation = 0.25
 	can_kill = false
 	
 var tmpact: float = 0.0
@@ -90,7 +90,7 @@ func _physics_process(delta: float) -> void:
 	if _is_sprinting:
 		tmpact += delta
 		if tmpact >= 1:
-			activations += 10
+			activations += 3
 			tmpact = 0
 		fired.emit(net_activation_cost * delta)
 	
