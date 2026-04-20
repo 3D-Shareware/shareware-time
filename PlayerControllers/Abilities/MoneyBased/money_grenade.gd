@@ -79,7 +79,8 @@ func _ready() -> void:
 	abh.activations_updated	.connect(func(old: float, new: float) -> void: self.activations_updated	.emit(old, new))
 
 	cost_per_activation = 35
-	damage = 100	
+	damage = 100
+	can_kill = true
 
 func shoot():
 	if cash_storage - net_activation_cost < 0: return
