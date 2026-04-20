@@ -142,6 +142,8 @@ change_team={
 
 [layer_names]
 
+3d_render/layer_1="Layer 1"
+3d_render/layer_2="Layer 2"
 3d_physics/layer_1="Enviornment"
 3d_physics/layer_2="Mercs"
 
