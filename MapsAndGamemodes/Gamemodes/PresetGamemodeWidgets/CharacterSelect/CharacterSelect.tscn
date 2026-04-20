@@ -68,24 +68,25 @@ handle_input_locally = false
 render_target_update_mode = 0
 
 [node name="maybe make this ia gradient" type="CSGBox3D" parent="PanelContainer/SubViewportContainer/SubViewport" unique_id=1596898349]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0033812523, -1.9432604, -3.9061258)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.0033812523, -36.001926, -3.9061258)
 size = Vector3(5.9040527, 0.05810547, 6.897705)
 material = SubResource("StandardMaterial3D_frsov")
 
 [node name="maybe make this ia gradient2" type="CSGBox3D" parent="PanelContainer/SubViewportContainer/SubViewport" unique_id=1508300348]
-transform = Transform3D(0.755, 0, 0, 0, 0.755, 0, 0, 0, 0.755, -0.0033812523, -2.7013748, -3.9061258)
+transform = Transform3D(0.755, 0, 0, 0, 0.755, 0, 0, 0, 0.755, -0.0033812523, -36.76004, -3.9061258)
 size = Vector3(5.9040527, 0.05810547, 6.897705)
 material = SubResource("StandardMaterial3D_frsov")
 
 [node name="maybe make this ia gradient3" type="CSGBox3D" parent="PanelContainer/SubViewportContainer/SubViewport" unique_id=1139153303]
-transform = Transform3D(0.52, 0, 0, 0, 0.52, 0, 0, 0, 0.52, -0.0033812523, -4.246684, -4.9117584)
+transform = Transform3D(0.52, 0, 0, 0, 0.52, 0, 0, 0, 0.52, -0.0033812523, -38.30535, -4.9117584)
 size = Vector3(5.9040527, 0.05810547, 6.897705)
 material = SubResource("StandardMaterial3D_frsov")
 
 [node name="Camera3D" type="Camera3D" parent="PanelContainer/SubViewportContainer/SubViewport" unique_id=594467270]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -34.058666, 0)
 
 [node name="DirectionalLight3D" type="SpotLight3D" parent="PanelContainer/SubViewportContainer/SubViewport" unique_id=372959255]
-transform = Transform3D(1, 0, 0, 0, 0.36313745, 0.9317356, 0, -0.9317356, 0.36313745, 0, 2.3829749, -1.3209751)
+transform = Transform3D(1, 0, 0, 0, 0.36313745, 0.9317356, 0, -0.9317356, 0.36313745, 0, -31.675692, -1.3209751)
 light_energy = 1.403
 light_indirect_energy = 5.126
 light_specular = 2.714
@@ -94,7 +95,7 @@ spot_attenuation = -1.17
 spot_angle = 32.99246
 
 [node name="SpinSpawn" type="Marker3D" parent="PanelContainer/SubViewportContainer/SubViewport" unique_id=379684050]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.026600122, 0.13624978, -2.2191494)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.026600122, -33.922417, -2.2191494)
 
 [node name="Timer" type="Timer" parent="PanelContainer/SubViewportContainer/SubViewport/SpinSpawn" unique_id=1313410776]
 wait_time = 0.2

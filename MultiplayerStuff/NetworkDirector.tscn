@@ -123,4 +123,13 @@ Aswath
 Alex the Slave
 "
 
+[node name="GamerTagEdit" type="LineEdit" parent="JoinScreen/Panel" unique_id=113088510]
+layout_mode = 0
+offset_left = 524.0
+offset_top = 558.0
+offset_right = 794.0
+offset_bottom = 583.0
+placeholder_text = "Enter Your Gamertag Here"
+alignment = 1
+
 [editable path="LobbyContainer"]

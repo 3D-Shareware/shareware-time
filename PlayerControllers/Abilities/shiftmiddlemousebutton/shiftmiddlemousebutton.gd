@@ -72,18 +72,21 @@ func shoot():
 	if ammo <= 0:
 		# Optional: Play a "click" sound here for empty ammo
 		return
-	
+	match ammo:
+		3:
+			pass #freeze
+		2:
+			_do_raycasts()
+		3:
+			pass
 	# Consume 1 ammo per trigger pull (even if it's a shotgun firing 8 pellets)
 	ammo = clamp(ammo - 1, 0, max_ammo)
-	
 	
 	# Restart animation and start the cooldown timer
 	animation_player.stop() 
 	animation_player.play("fire")
 	fire_attack_speed.start()
 	label.text = str(ammo) + "/" + str(max_ammo)
-	# 4. Fire every raycast in the array (1 for Pistol, Many for Shotgun)
-	_do_raycasts()
 
 func _do_raycasts() -> void:
 	for rc in raycasts:

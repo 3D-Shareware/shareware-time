@@ -9,14 +9,14 @@ signal health_changed(old: float, new: float)
 # Debug test environment import
 const TEST_ENVIRONMENT = preload("res://MapsAndGamemodes/Maps/TestEnvironment/TestEnvironment.tscn")
 
-
 ## THIS THE BASE CLASS, DO NOT CHANGE AN OF THIS UNLESS ITS IN THE INSPECTOR
 const ABILITY_UI = preload("res://Misc/UI/ability_ui.tscn")
 const MERC_LABEL = preload("res://MultiplayerStuff/Client/MercLabel.tscn")
 const HEALTH_BAR = preload("res://Misc/UI/health_bar.tscn")
 var health_bar : ProgressBar
 
-@export_category("REQUIRED OBJECTS")
+@export var debug_mode : bool = false
+@export_category("REQUIRED CAMERA")
 @export var camera : Camera3D
 
 @export_group("Universal Properties")
@@ -41,7 +41,7 @@ var health_bar : ProgressBar
 @export var visual_hand : Node3D
 @export var merc_UI_color : Color
 @export var camera_fov : float = 90.0
-@export var debug_mode : bool = false
+
 			#and more implicitones
 			#ex. position
 			#scale
@@ -60,7 +60,12 @@ var target_rotation: Vector3
 var can_move:bool = true
 var dead = false
 var ability_ui 
-var team: String = "default"
+var team: String = "default":
+	set(value):
+		team = value
+		# Automatically update the color whenever the team changes
+		if name_label_instance and TEAM_COLORS.has(team):
+			name_label_instance.modulate = TEAM_COLORS[team]
 var player_teams: Dictionary = {}
 
 
@@ -90,26 +95,6 @@ func _ready() -> void:
 		add_child(debug_environment)
 		debug_environment.top_level = true
 		
-		## 2. Spawn a debug floor
-		#var debug_floor = CSGBox3D.new()
-		#debug_floor.size = Vector3(100, 1, 100) # Big platform
-		#debug_floor.use_collision = true
-		#debug_floor.top_level = true # Prevents the floor from moving WITH the player
-		#debug_floor.global_position = global_position - Vector3(0, 1, 0)
-		#
-		## Optional: Add a checkerboard or basic color so you can see movement
-		#var mat = StandardMaterial3D.new()
-		#mat.albedo_color = Color.DARK_GRAY
-		#debug_floor.material = mat
-		#
-		#add_child(debug_floor)
-		#
-		## 3. Add a sun so the scene isn't pitch black
-		#var debug_light = DirectionalLight3D.new()
-		#debug_light.top_level = true
-		#debug_light.rotation_degrees = Vector3(-45, 45, 0)
-		#add_child(debug_light)
-		
 		print("--- DEBUG MODE ACTIVE: Local Server & Floor Generated ---")
 
 	# ==========================================
@@ -123,12 +108,15 @@ func _ready() -> void:
 	name_label_instance = MERC_LABEL.instantiate()
 	add_child(name_label_instance)
 	
-
-	# Position it slightly above the player (Adjust the Y value based on your model height)
 	name_label_instance.position = Vector3(0, 1.6, 0) 
 	
+	var parent_gamemode = get_parent()
+	if parent_gamemode and "master_team_database" in parent_gamemode:
+		sync_team_database(parent_gamemode.master_team_database)
 	# Pass the player's network ID into the label so it knows whose name to grab
 	name_label_instance.setup(name.to_int())
+	if TEAM_COLORS.has(team):
+		name_label_instance.modulate = TEAM_COLORS[team]
 	
 	if is_multiplayer_authority():
 		var map = get_parent()
@@ -157,6 +145,7 @@ func _ready() -> void:
 		
 		Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 
+
 @rpc("any_peer","call_remote","reliable")
 func show_visual_body_to_world():
 	if visual_body:
@@ -171,21 +160,13 @@ func _setup_synchronizer() -> void:
 	var config = SceneReplicationConfig.new()
 	
 	# --- ON CHANGE PROPERTIES (Zero Bandwidth Cost unless modified) ---
-	var static_props = [":health", ":gravity", ":friction", ":air_acceleration", ":speed"]
+	var static_props = [":health", ":gravity", ":friction", ":air_acceleration", ":speed", ":team"]
 	for prop in static_props:
 		var path = NodePath(prop)
 		config.add_property(path)
 		# Only send a packet if the value actually changes
 		config.property_set_replication_mode(path, SceneReplicationConfig.REPLICATION_MODE_ON_CHANGE)
 	
-	## --- ALWAYS PROPERTIES (Costs bandwidth, required for standard multiplayer) ---
-	#var dynamic_props = [":position", ":rotation"]
-	#for prop in dynamic_props:
-		#var path = NodePath(prop)
-		#config.add_property(path)
-		## Send a packet every network tick
-		#config.property_set_replication_mode(path, SceneReplicationConfig.REPLICATION_MODE_ALWAYS)
-	#
 	synchronizer.replication_config = config
 	add_child(synchronizer)
 
@@ -408,9 +389,7 @@ func take_damage(damage: float):
 	
 	# TELL EVERYONE TO FLASH THIS PLAYER YELLOW
 	_sync_flash_damage.rpc() 
-	print(dead, health, is_multiplayer_authority())
 	if health <= 0 and not dead and is_multiplayer_authority():
-		print('DIED')
 		dead = true
 		death_effects.rpc()
 		die.rpc_id(1, attacker_id)
@@ -462,8 +441,9 @@ func die(killer_id: int = 0):
 	emit_signal("died", self, killer_id)
 
 #emits when you kill a player
-@rpc("authority","call_remote","reliable")
+@rpc("any_peer","call_remote","reliable")
 func notify_kill_confirmed(id : int = 0): 
+	#was not working because players had the authority`
 	kill_confirmed.emit(id)
 
 func custom_process(delta : float):

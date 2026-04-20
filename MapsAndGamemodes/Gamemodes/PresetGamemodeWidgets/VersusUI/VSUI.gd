@@ -6,40 +6,43 @@ class_name VSUI
 @onready var time_label: RichTextLabel = $Panel/Panel/Time
 
 func _ready() -> void:
-	# Hide by default so it doesn't flash on screen before the check happens
 	hide()
 
-# Added 'lobby_id' as the first parameter so we know which match to check
-func update_ui(my_points: int, top_points: int, time_left: float) -> void:
+# Added 'my_team' as an optional parameter to handle TD colors
+func update_ui(my_points: int, top_points: int, time_left: float, my_team: String = "") -> void:
 	var lobby_id = get_parent().name
-	# --- 1. SECURITY / VISIBILITY CHECK ---
 	var my_id = multiplayer.get_unique_id()
 	
-	# If the lobby doesn't exist, OR the local player isn't in it, hide and abort!
 	if not ServerDatabase.Lobbies.has(lobby_id) or not my_id in ServerDatabase.Lobbies[lobby_id]:
 		hide()
 		return
 		
-	# If they made it past the check, make sure the UI is visible
 	show()
-	# --------------------------------------
 
-	# 2. Update Scores
+	# Update Scores
 	good_team.text = str(my_points)
 	bad_team.text = str(top_points)
 	
-	# 3. Format the time to MM:SS
+	# Update Colors based on team
+	if my_team == "red":
+		good_team.add_theme_color_override("font_color", Color.RED)
+		bad_team.add_theme_color_override("font_color", Color.BLUE)
+	elif my_team == "blue":
+		good_team.add_theme_color_override("font_color", Color.BLUE)
+		bad_team.add_theme_color_override("font_color", Color.RED)
+	else:
+		# Reset to default styling if no team is passed (e.g., standard Deathmatch)
+		good_team.remove_theme_color_override("font_color")
+		bad_team.remove_theme_color_override("font_color")
+	
+	# Format time
 	var minutes = int(time_left) / 60
 	var seconds = int(time_left) % 60
 	var time_str = "%02d:%02d" % [minutes, seconds]
 	
-	# 4. Apply the dynamic BBCode styling based on time left
 	if time_left <= 15.0:
-		# Red AND shaking!
 		time_label.text = "[center][color=red][shake rate=20.0 level=10 connected=1]%s[/shake][/color][/center]" % time_str
 	elif time_left <= 30.0:
-		# Just Red
 		time_label.text = "[center][color=red]%s[/color][/center]" % time_str
 	else:
-		# Normal
 		time_label.text = "[center]%s[/center]" % time_str

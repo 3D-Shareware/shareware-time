@@ -60,7 +60,7 @@ func _process(delta: float) -> void:
 		trigger_pulled = Input.is_action_pressed("left_click") # Hold to shoot
 	else:
 		trigger_pulled = Input.is_action_just_pressed("left_click") # Click to shoot
-		
+	
 	# 3. Check if the gun is ready to fire based on the timer
 	if trigger_pulled and fire_attack_speed.is_stopped():
 		shoot()
@@ -100,7 +100,7 @@ func _do_raycasts() -> void:
 
 		if rc.is_colliding():
 			var person_hit = rc.get_collider()
-			if person_hit != null and person_hit is Merc:
+			if person_hit != self and person_hit != null and person_hit is Merc:
 				person_hit.take_damage.rpc_id(int(person_hit.name), damage)
 				
 			# Spawn tracer at hit point
@@ -119,7 +119,7 @@ func equip():
 func show_visual_hand(vis : bool):
 	if visual_hand:
 		visual_hand.visible = vis
-	
+
 func dequip():
 	animation_player.play("dequip")
 	await animation_player.animation_finished

@@ -99,13 +99,13 @@ bind/16/pose = Transform3D(-0.010000001, 1.00825e-09, 2.0677149e-09, 3.1902295e-
 
 [node name="Fiend" type="CharacterBody3D" unique_id=1377816512 node_paths=PackedStringArray("camera", "visual_body", "abilities")]
 script = ExtResource("1_4n0xw")
+debug_mode = true
 camera = NodePath("Camera3D")
 health = 50.0
 gravity = 6.0
 air_acceleration = 0.4
 visual_body = NodePath("cat2")
 merc_UI_color = Color(0.5133467, 0.10674628, 0.16933385, 1)
-debug_mode = true
 abilities = [NodePath("SprintAbility"), NodePath("JumpAbility"), NodePath("GrenadeAbility")]
 metadata/_custom_type_script = "uid://2ip0lrtrrhsr"
 

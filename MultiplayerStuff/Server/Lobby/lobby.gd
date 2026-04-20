@@ -87,13 +87,13 @@ func on_player_left(player_id: int) -> void:
 
 func game_end():
 	#animssss  and stuff
-
 	change_map(next_map)
 
 func _on_force_end_game(target_lobby_id: String) -> void:
 	# Make sure the command was sent from a player actually inside THIS lobby
 	if target_lobby_id == name:
 		print("Lobby ", name, " ending game early via admin command!")
+		
 		game_end()
 		
 func _on_map_voting_vote_finished(winning_map: String) -> void:
