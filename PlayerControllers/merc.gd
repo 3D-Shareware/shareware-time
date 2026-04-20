@@ -135,6 +135,7 @@ func _ready() -> void:
 			camera.environment = map.environment
 		
 		camera.make_current()
+		if camera: camera.fov = camera_fov
 		get_tree().physics_frame.connect(check_abilities)
 		custom_ready()
 		abilites_ui = ABILITY_UI.instantiate()
@@ -205,7 +206,7 @@ func _physics_process(delta: float) -> void:
 		return # Skip all the local movement code below
 	
 	if dead: return
-	if camera: camera.fov = camera_fov
+	
 	
 	var input = Vector2.ZERO
 	

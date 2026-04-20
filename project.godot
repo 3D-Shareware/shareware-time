@@ -146,3 +146,9 @@ change_team={
 3d_render/layer_2="Layer 2"
 3d_physics/layer_1="Enviornment"
 3d_physics/layer_2="Mercs"
+
+[rendering]
+
+textures/canvas_textures/default_texture_filter=3
+textures/decals/filter=0
+environment/volumetric_fog/use_filter=0
