@@ -34,7 +34,6 @@ func custom_ready() -> void:
 					cash -= cost
 					if ability.can_kill: 
 						last_used_ability = ability
-						print(ability)
 			)
 
 	kill_confirmed.connect(
