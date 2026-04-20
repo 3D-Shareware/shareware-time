@@ -103,8 +103,8 @@ debug_mode = true
 camera = NodePath("Camera3D")
 health = 50.0
 gravity = 6.0
-air_acceleration = 0.4
-visual_body = NodePath("cat2")
+air_acceleration = 0.15
+visual_body = NodePath("VisualBodyMesh")
 merc_UI_color = Color(0.5133467, 0.10674628, 0.16933385, 1)
 abilities = [NodePath("SprintAbility"), NodePath("JumpAbility"), NodePath("GrenadeAbility")]
 metadata/_custom_type_script = "uid://2ip0lrtrrhsr"
@@ -162,7 +162,8 @@ bones/19/rotation = Quaternion(0.9374514, -0.06303941, -0.022970516, -0.34158936
 bones/20/rotation = Quaternion(-0.45928812, 0.03779079, -0.046299063, 0.8862747)
 bones/21/rotation = Quaternion(0.3575477, -0.0053464114, -0.013962689, 0.9337752)
 
-[node name="cat2" type="MeshInstance3D" parent="." unique_id=875551646]
+[node name="VisualBodyMesh" type="MeshInstance3D" parent="." unique_id=875551646]
+unique_name_in_owner = true
 transform = Transform3D(-0.29171273, 0, -2.5502338e-08, 0, 0.29171273, 0, 2.5502338e-08, 0, -0.29171273, 0, 0, 0)
 mesh = SubResource("ArrayMesh_mf7sn")
 skin = SubResource("Skin_ypa4o")
