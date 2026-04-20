@@ -31,23 +31,7 @@ func update_ui() -> void:
 	for child in v_box_container.get_children():
 		child.queue_free()
 		
-	# 2. Calculate Team Scores
-	var team_scores = {"red": 0, "blue": 0}
-	for p_id in stats:
-		var t = stats[p_id].get("team", "default")
-		if team_scores.has(t):
-			team_scores[t] += stats[p_id]["kills"]
-
-	# 3. Add Team Score Header
-	var header = Label.new()
-	header.text = "🔴 RED KILLS: %d   |   🔵 BLUE KILLS: %d" % [team_scores["red"], team_scores["blue"]]
-	header.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	v_box_container.add_child(header)
-	
-	# Visual divider
-	v_box_container.add_child(HSeparator.new())
-		
-	# 4. Build the new player list, colored by team
+	# 2. Build the new player list, colored by team
 	for player_id in stats.keys():
 		var player_data = stats[player_id]
 		var kills = player_data["kills"]

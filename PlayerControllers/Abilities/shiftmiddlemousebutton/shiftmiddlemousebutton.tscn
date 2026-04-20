@@ -206,8 +206,9 @@ _data = {
 &"reload": SubResource("Animation_6s1p4")
 }
 
-[node name="Shiftmiddlemousebutton" type="Node3D" unique_id=153145727 node_paths=PackedStringArray("raycasts")]
+[node name="Shiftmiddlemousebutton" type="Node3D" unique_id=153145727 node_paths=PackedStringArray("weapon_mesh", "raycasts")]
 script = ExtResource("1_j8xjd")
+weapon_mesh = NodePath("firstanimation")
 raycasts = [NodePath("BulletRayCast")]
 
 [node name="Crosshair002" type="Sprite2D" parent="." unique_id=1407128125]

@@ -5,6 +5,7 @@ class_name GrappleSwingAbility
 @export var squeeze_length: float = 0.2
 @export var tension_physics: float = 5.0
 @export var shoot_force: float = 50.0
+@export var always_enabled_for_right_click : bool = false
 
 @onready var grapple_start: MeshInstance3D = $GrappleStart
 @onready var grapple_end: RigidBody3D = $GrappleEnd
@@ -37,7 +38,9 @@ func activate() -> void:
 
 func _physics_process(delta: float) -> void:
 	if not is_multiplayer_authority() or not merc: return
-
+	if always_enabled_for_right_click and Input.is_action_pressed("right_click"):
+		_is_held = true
+	
 	# State Transitions
 	if _is_held and not _was_held and retracted:
 		connect_grapple()

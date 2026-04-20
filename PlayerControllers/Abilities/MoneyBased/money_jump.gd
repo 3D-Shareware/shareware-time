@@ -38,11 +38,9 @@ var reward_per_kill: float = abh.reward_per_kill:
 		abh.reward_per_kill = c
 		reward_per_kill = abh.reward_per_kill
 
-var can_kill: bool = abh.can_kill:
-	get: return abh.reward_per_kill
-	set(v): 
-		abh.can_kill = v
-		can_kill = abh.can_kill
+var can_kill: bool = false:
+	get: return false
+	set(_v): return
 
 var cost_multiplier: float = abh.cost_multiplier:
 	get: return abh.cost_multiplier
@@ -78,16 +76,16 @@ func _ready() -> void:
 	abh.mult_updated		.connect(func(old: float, new: float) -> void: self.mult_updated		.emit(old, new))
 	abh.activations_updated	.connect(func(old: float, new: float) -> void: self.activations_updated	.emit(old, new))
 	
-	cost_per_activation = 5
+	cost_per_activation = 2.5
 
 	jump_strength *= 2
 	success.connect(
 		func() -> void: 
 			fired.emit(net_activation_cost)
-			activations += 1
+			activations += 3
 	)
 	
-	can_kill = false
+	self.can_kill = false
 
 func _physics_process(delta: float) -> void:
 	if cash_storage - net_activation_cost < 0: return

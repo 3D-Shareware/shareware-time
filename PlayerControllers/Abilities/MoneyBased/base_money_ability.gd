@@ -42,14 +42,13 @@ var activations: int = 0:
 ## Amount of money awarded to the player on kill with this ability
 @export var reward_per_kill: float = 100.0:
 	set(c):
-		c = max(0, c)
 		if c != reward_per_kill:
 			var old := reward_per_kill
 			reward_per_kill = c
 			reward_updated.emit(old, reward_per_kill)
 
 ## Whether the given ability can kill. Intended use is to not spuriously switch between last used abilities when moving / using movement abilities
-@export var can_kill: bool = true
+@export var can_kill: bool = false
 
 ## Multiplier applied to `cost_per_activation` to get net cost
 var cost_multiplier: float = 1.0:

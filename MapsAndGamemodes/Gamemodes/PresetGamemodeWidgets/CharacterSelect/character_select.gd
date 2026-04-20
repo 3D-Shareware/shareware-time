@@ -7,6 +7,7 @@ signal character_locked_in(merc_name: String)
 @onready var merc_select_buttons: VBoxContainer = $MercSelectButtons
 @onready var abilities_container: VBoxContainer = $Abilities
 @onready var lock_in_button: Button = $LockIn
+@onready var sub_viewport: SubViewport = $PanelContainer/SubViewportContainer/SubViewport
 
 var selected_merc_name: String = ""
 var current_preview_model: Node3D = null
@@ -17,9 +18,21 @@ func _ready() -> void:
 	lock_in_button.pressed.connect(_on_lock_in_pressed)
 	
 	register_mercs()
+	
+	# Connect to the built-in signal that fires when this UI's visibility changes
+
 
 func _process(delta: float) -> void:
-	if visible:
+	var is_ui_visible = self.visible
+	
+	# Loop through the SubViewport's children and sync their visibility
+	for child in sub_viewport.get_children():
+		# Check if the node actually has a 'visible' property (like Node3D) before setting it
+		if "visible" in child:
+			child.visible = is_ui_visible
+			
+	# Optional optimization: You can handle your mouse mode logic here too!
+	if is_ui_visible:
 		Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
 
 func register_mercs() -> void:

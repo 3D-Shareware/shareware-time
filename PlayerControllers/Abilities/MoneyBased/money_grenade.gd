@@ -33,16 +33,12 @@ var cost_per_activation: float = abh.cost_per_activation:
 		cost_per_activation = abh.cost_per_activation
 
 var reward_per_kill: float = abh.reward_per_kill:
-	get: return abh.reward_per_kill
-	set(c): 
-		abh.reward_per_kill = c
-		reward_per_kill = abh.reward_per_kill
+	get: return ceilf(100.0/damage) * cost_per_activation * 3
+	set(_c): return
 
-var can_kill: bool = abh.can_kill:
-	get: return abh.reward_per_kill
-	set(v): 
-		abh.can_kill = v
-		can_kill = abh.can_kill
+var can_kill: bool = true:
+	get: return true
+	set(_v): return
 
 var cost_multiplier: float = abh.cost_multiplier:
 	get: return abh.cost_multiplier
@@ -79,7 +75,8 @@ func _ready() -> void:
 	abh.activations_updated	.connect(func(old: float, new: float) -> void: self.activations_updated	.emit(old, new))
 
 	cost_per_activation = 35
-	damage = 100	
+	damage = 100
+	can_kill = true
 
 func shoot():
 	if cash_storage - net_activation_cost < 0: return
