@@ -8,7 +8,7 @@ func money_custom_ready() -> void:
 	$MeshInstance3D.visible = !is_multiplayer_authority()
 	GoldMaterial.shader = GoldShaderPreload
 	
-	var to_visit: Array[Variant] = [$"."]
+	var to_visit: Array[Variant] = self.abilities.duplicate()
 	while to_visit.size() > 0:
 		var cur: Variant = to_visit.pop_back()
 		to_visit += cur.get_children()
