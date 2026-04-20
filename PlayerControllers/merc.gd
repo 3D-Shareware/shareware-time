@@ -14,6 +14,8 @@ const MERC_LABEL = preload("res://MultiplayerStuff/Client/MercLabel.tscn")
 const HEALTH_BAR = preload("res://Misc/UI/health_bar.tscn")
 var health_bar : ProgressBar
 
+@export var NPC:bool = false
+
 @export_category("REQUIRED OBJECTS")
 @export var camera : Camera3D
 
@@ -47,6 +49,7 @@ var name_label_instance
 var target_position: Vector3 #what other people see
 var target_rotation: Vector3
 
+var can_move:bool = true
 var dead = false
 var ability_ui 
 var team: String = "default"
@@ -123,8 +126,8 @@ func _ready() -> void:
 		var map = get_parent()
 		if map is Map and camera and map.environment != null:
 			camera.environment = map.environment
-		
-		camera.make_current()
+		if !NPC:
+			camera.make_current()
 		if camera: camera.fov = camera_fov
 		get_tree().physics_frame.connect(check_abilities)
 		custom_ready()
@@ -133,8 +136,8 @@ func _ready() -> void:
 		abilites_ui.generate_ui(self)
 		health_bar = HEALTH_BAR.instantiate()
 		add_child(health_bar)
+		health_bar.health = health
 		health_bar.max_value = health
-		health_bar.value = health
 		
 		if visual_body:
 			visual_body.hide()
@@ -143,7 +146,8 @@ func _ready() -> void:
 		
 		show_visual_body_to_world.rpc()
 		name_label_instance.hide() #hide it local
-		Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
+		if !NPC:
+			Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 
 @rpc("any_peer","call_remote","reliable")
 func show_visual_body_to_world():
@@ -177,6 +181,18 @@ func _setup_synchronizer() -> void:
 	synchronizer.replication_config = config
 	add_child(synchronizer)
 
+
+#handling knockback. i wish i could stuff it at the bottom :(
+#use this by rpc id'ing it, just like applying damage.
+var knockback_dir : Vector3 = Vector3(0,0,0)
+var knockback_pwr := 0
+var knockback_decay := 0.3
+
+func apply_knockback(vec:Vector3, power:float, decay:float):
+	knockback_dir = vec
+	knockback_pwr = power
+	knockback_decay = decay
+
 func _physics_process(delta: float) -> void:
 	if not is_multiplayer_authority(): 
 		# --- THE LERPING MAGIC ---
@@ -200,7 +216,7 @@ func _physics_process(delta: float) -> void:
 	
 	var input = Vector2.ZERO
 	
-	if ClientUI.chat_input.text == "":
+	if ClientUI.chat_input.text == "" and can_move and !NPC:
 		input.x = float(Input.is_physical_key_pressed(KEY_D)) - float(Input.is_physical_key_pressed(KEY_A))
 		input.y = float(Input.is_physical_key_pressed(KEY_S)) - float(Input.is_physical_key_pressed(KEY_W))
 	
@@ -213,11 +229,15 @@ func _physics_process(delta: float) -> void:
 		var friction_dir = transform.basis * Vector3(current_friction.x, 0, current_friction.y)
 		velocity += Vector3(current_friction.x, 0, current_friction.y)
 		velocity += Vector3(movement_dir.x, 0, movement_dir.z)
-	
+		
+		velocity += (knockback_dir*knockback_pwr)
+		
 	else:
 		if is_on_wall(): 
 			velocity = velocity.lerp(Vector3.ZERO, delta * 5) 
 		sv_airaccelerate(movement_dir, delta)
+	
+	knockback_pwr *= knockback_decay
 
 	velocity.y -= gravity * delta
 	custom_process(delta)
@@ -423,13 +443,14 @@ func _apply_overlay_recursive(current_node: Node, mat: Material) -> void:
 	for child in current_node.get_children():
 		_apply_overlay_recursive(child, mat)
 
+
+
 @rpc("any_peer", "call_local")
 func death_effects():
 	pass
 
 @rpc("authority", "call_remote", "reliable")
 func die(killer_id: int = 0):
-	notify_kill_confirmed(killer_id)
 	emit_signal("died", self, killer_id)
 
 #emits when you kill a player

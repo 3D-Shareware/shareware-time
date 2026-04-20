@@ -1,6 +1,5 @@
 extends Control
 
-
 func add_bolts(amount):
 	for i in amount:
 		var bolts_scene = load("res://PlayerControllers/Mercs/Tracker/dartUI.tscn").instantiate()

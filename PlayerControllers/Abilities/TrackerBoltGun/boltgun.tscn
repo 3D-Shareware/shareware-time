@@ -7,7 +7,7 @@
 [ext_resource type="FontFile" uid="uid://bbiqgpxf2c38" path="res://Misc/UI/fonts/GothicA1-Black.ttf" id="5_e5od5"]
 [ext_resource type="Material" uid="uid://bm5npalrr2vm4" path="res://MapsAndGamemodes/Maps/dm_grahhh/babymeat.tres" id="6_6u03f"]
 [ext_resource type="AudioStream" uid="uid://cs8hd8v8kh4ac" path="res://PlayerControllers/Mercs/Tracker/Assets/boltshot.wav" id="6_e5od5"]
-[ext_resource type="AudioStream" uid="uid://on2r3t4gp14c" path="res://PlayerControllers/Abilities/TrackerBoltGun/reload.mp3" id="7_aenwx"]
+[ext_resource type="AudioStream" uid="uid://bcai1tevee2ph" path="res://PlayerControllers/Abilities/TrackerBoltGun/reload.mp3" id="7_aenwx"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_oletv"]
 resource_name = "Material"
@@ -133,6 +133,18 @@ tracks/3/keys = {
 "update": 1,
 "values": [false]
 }
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("boltgun/Cube_002:visible")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
 
 [sub_resource type="Animation" id="Animation_r0p3f"]
 resource_name = "reload"
@@ -185,6 +197,18 @@ tracks/3/keys = {
 "update": 1,
 "values": [false, true]
 }
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("boltgun/Cube_002:visible")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0.36666667),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
 
 [sub_resource type="Animation" id="Animation_2e8bx"]
 resource_name = "shoot"
@@ -220,6 +244,9 @@ _data = {
 &"reload": SubResource("Animation_r0p3f"),
 &"shoot": SubResource("Animation_2e8bx")
 }
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_aenwx"]
+albedo_color = Color(0.1, 0.1, 0.1, 1)
 
 [node name="BoltGun" type="Node3D" unique_id=1600695075 node_paths=PackedStringArray("weapon_mesh", "raycasts", "visual_hand")]
 script = ExtResource("1_76wo1")
@@ -304,3 +331,9 @@ transform = Transform3D(70.71066, 1.4696834e-05, -43.309433, 70.71066, 1.5258789
 mesh = SubResource("ArrayMesh_ayyx8")
 skeleton = NodePath("")
 surface_material_override/0 = ExtResource("6_6u03f")
+
+[node name="Cube_003" type="MeshInstance3D" parent="boltgun/Cube_002" unique_id=1728593831]
+transform = Transform3D(0.30497006, -1.1255082e-08, 3.12987e-16, -9.125288e-09, 0.30496782, 7.05083e-09, 2.9802322e-08, -2.7276684e-08, 0.30496937, 3.7252903e-09, -0.018531408, 5.5879354e-09)
+mesh = SubResource("ArrayMesh_ayyx8")
+skeleton = NodePath("")
+surface_material_override/0 = SubResource("StandardMaterial3D_aenwx")

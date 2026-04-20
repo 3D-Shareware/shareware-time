@@ -26,14 +26,19 @@ script = ExtResource("1_afaet")
 camera = NodePath("Camera3D")
 health = 88.0
 gravity = 11.0
-speed = 0.8
+air_acceleration = 0.12
+speed = 1.1
 visual_body = NodePath("MeshInstance3D2")
 visual_hand = NodePath("Hand")
+merc_UI_color = Color(0.76, 0.10639999, 0.10639999, 1)
 debug_mode = true
 abilities = [NodePath("JumpAbility"), NodePath("Smoke"), NodePath("SprintAbility"), NodePath("BoltGun"), NodePath("TrackerRifle")]
 
 [node name="SprintAbility" parent="." unique_id=699710493 instance=ExtResource("2_2wf3y")]
-AbilityDescription = "if you must go fast"
+speed_multiplier = 1.2
+fov_multiplier = 1.1
+transition_speed = 14.0
+AbilityDescription = "sprint"
 
 [node name="JumpAbility" parent="." unique_id=27473948 instance=ExtResource("3_u3mmg")]
 auto_bhop = true
@@ -58,26 +63,27 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.64104, 0)
 fov = 90.0
 
 [node name="Hand" type="CSGSphere3D" parent="." unique_id=427775565]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.25360978, 0.23060426, -0.48329479)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.49049026, -0.06305982, -0.48329479)
 radius = 0.09193548
 material = ExtResource("5_amjnl")
 
 [node name="ADS" parent="." unique_id=477706851 node_paths=PackedStringArray("guns", "camera") instance=ExtResource("6_w437u")]
 guns = [NodePath("../BoltGun"), NodePath("../TrackerRifle")]
 camera = NodePath("../Camera3D")
+AbilityDescription = "RMB to aim down sights."
 
 [node name="TrackerRifle" parent="." unique_id=1600695075 instance=ExtResource("7_gbrgr")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.044250637, 0.333, -0.27153152)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.044250637, 0.333, -0.49625033)
 visible = false
+AbilityDescription = "5 shot sniper. 80 dmg."
 
 [node name="BoltGun" parent="." unique_id=812748014 instance=ExtResource("8_biies")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5445492, 0)
-visible = false
 
 [node name="Smoke" parent="." unique_id=2020247024 instance=ExtResource("9_t8r43")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.6188444, 0)
 throw_strength = 3.3
-AbilityDescription = "Motion Detecting Smoke Grenade"
+AbilityDescription = "track mercs who pass this smoke."
 trigger_key = "3"
 
 [node name="TrackerUI" type="Control" parent="." unique_id=1747036020]

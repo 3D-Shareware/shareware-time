@@ -49,7 +49,6 @@ func dequip():
 	if thrown == true: return
 	anim_player.play("dequip")
 	await anim_player.animation_finished
-	hide()
 
 @rpc("any_peer", "call_local", "reliable")
 func explode():
@@ -91,7 +90,11 @@ func _on_fuse_timer_timeout() -> void:
 
 func _on_detection_radius_body_entered(body: Node3D) -> void:
 	if body is Merc and !(body == get_parent()) and thrown:
-		$Grenade/DetectionRadius/Beep.play()
+		var tracker_bolt = load("res://PlayerControllers/Abilities/TrackerBoltGun/tracker_bolt.tscn").instantiate()
+		tracker_bolt.bleed_damage = 0
+		tracker_bolt.tracker = get_parent()
+		body.add_child(tracker_bolt)
+		
 		var max_speed = 4
 		clamp(body.velocity.x, 0, max_speed)
 		clamp(body.velocity.y, 0, max_speed)

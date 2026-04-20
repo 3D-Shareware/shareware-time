@@ -10,6 +10,8 @@ func take_damage(damage: float):
 	time_to_reset = 1
 	health -= damage
 	label_3d.text = str(health)
+	var attacker_id = multiplayer.get_remote_sender_id()
+	notify_kill_confirmed(attacker_id)
 
 func _process(delta):
 	time_to_reset -= delta

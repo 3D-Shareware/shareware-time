@@ -27,20 +27,25 @@ var _initial_mesh_rotation: Vector3
 # Add ONE RayCast3D here for a Pistol/Rifle, or add MULTIPLE for a Shotgun
 @export var raycasts: Array[RayCast3D] = [] 
 
-var ammo: int : set = set_ammo
+var ammo: int = 0 : set = set_ammo
 
 func set_ammo(value):
-	ammo = value
-	if ammo == 0:
-		$boltgun/Cube_002.visible = false
+	if value > 1:
+		ammo = 1
 	else:
-		$boltgun/Cube_002.visible = true
+		ammo = value
+	label.text = str(get_parent().bolts)
+	if ammo <= 0:
+		$boltgun/Cube_002.hide()
+		$VisualHand/boltgun/Cube_002.hide()
+	else:
+		$boltgun/Cube_002.show()
+		$VisualHand/boltgun/Cube_002.show()
 
 func _ready() -> void:
 	fire_attack_speed.wait_time = fire_speed
 	fire_attack_speed.one_shot = true
 	hide()
-	label.text = str(1)
 	
 	# --- NEW: Save the resting position of the visual mesh ---
 	if weapon_mesh:
@@ -60,7 +65,7 @@ func _process(delta: float) -> void:
 	if animation_player.is_playing() and animation_player.current_animation == "reload": 
 		return
 		
-	if Input.is_action_just_pressed("reload") and ammo < max_ammo:
+	if Input.is_action_just_pressed("reload") and ammo <= 0:
 		reload()
 
 	# 2. Handle Single vs Auto fire inputs
@@ -78,12 +83,13 @@ func _process(delta: float) -> void:
 		_apply_weapon_bob_and_tilt(delta)
 
 func reload():
+	if animation_player.is_playing(): return
 	if get_parent().bolts <= 0: return
+	if ammo > 0: return
 	animation_player.play("reload")
 	await animation_player.animation_finished
 	ammo = 1
 	get_parent().bolts -= 1
-	label.text = str(ammo)
 
 func shoot():
 	if ammo <= 0:
@@ -100,10 +106,6 @@ func shoot():
 	fire_attack_speed.start()
 	label.text = str(get_parent().bolts)
 	# 4. Fire every raycast in the array (1 for Pistol, Many for Shotgun)
-	if get_parent().bolts <= 0:
-		$boltgun/Cube_002.visible = false
-	else:
-		$boltgun/Cube_002.visible = true
 	_do_raycasts()
 
 func _do_raycasts() -> void:

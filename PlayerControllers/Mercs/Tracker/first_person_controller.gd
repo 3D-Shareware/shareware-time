@@ -11,12 +11,12 @@ func set_bolt(value):
 		UI.remove_bolts(diff)
 	else:
 		UI.add_bolts(diff)
-	boltgun.ammo += diff
+	print(value, diff, bolts)
 	bolts = value
 
 #nothing here! other than some basic ui and text stuff!
 func custom_process(delta : float): 
-	return
+	pass
 
 func custom_ready():
 	bolts = 1
