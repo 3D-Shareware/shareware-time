@@ -1,7 +1,6 @@
 [gd_scene format=3 uid="uid://27dxcrv3ostv"]
 
 [ext_resource type="Script" uid="uid://dogm3cno1tnmx" path="res://MapsAndGamemodes/Gamemodes/dm/dm.gd" id="1_wjog0"]
-[ext_resource type="Environment" uid="uid://b0wv4lj6oo8v8" path="res://MapsAndGamemodes/Maps/dm_grahhh/grahh_enviornment.tres" id="2_4wfj7"]
 [ext_resource type="PackedScene" uid="uid://dnqxl0h5xo3hc" path="res://MapsAndGamemodes/Maps/TestEnvironment/TestEnvironment.tscn" id="3_4wfj7"]
 
 [node name="sb_lobby" type="Node3D" unique_id=678425904 node_paths=PackedStringArray("spawn_points")]
@@ -9,7 +8,6 @@ script = ExtResource("1_wjog0")
 spawn_points = [NodePath("Marker3D"), NodePath("Marker3D2"), NodePath("Marker3D3")]
 gamemode_length = 900.0
 map_name = "sb_lobby"
-environment = ExtResource("2_4wfj7")
 
 [node name="PlayerSpawner" type="Marker3D" parent="." unique_id=2128248748]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.3790727, 0)
