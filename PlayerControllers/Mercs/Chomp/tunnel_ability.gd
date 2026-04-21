@@ -101,6 +101,8 @@ func _stop_sprint() -> void:
 	# cause damage after release
 	explode()
 	cooldown_timer.start(cooldown)
+	get_parent().friction *= 4
+	get_parent().air_acceleration /= 4
 	on_cooldown = true
 
 @rpc("any_peer", "call_local", "reliable")
@@ -114,3 +116,5 @@ func explode():
 
 func _on_cooldown_timer_timeout() -> void:
 	on_cooldown = false
+	get_parent().friction /= 4
+	get_parent().air_acceleration *= 4
