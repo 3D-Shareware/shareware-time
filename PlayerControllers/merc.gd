@@ -35,6 +35,7 @@ var health_bar : ProgressBar
 
 @export var gravity := 9.8
 @export var friction := .1
+@export var wall_friction_enabled := false
 @export var air_acceleration := .3
 @export var speed := 1.0
 @export var visual_body : Node3D
@@ -224,7 +225,7 @@ func _physics_process(delta: float) -> void:
 		velocity += (knockback_dir*knockback_pwr)
 		
 	else:
-		if is_on_wall(): 
+		if is_on_wall() && wall_friction_enabled == true: 
 			velocity = velocity.lerp(Vector3.ZERO, delta * 5) 
 		sv_airaccelerate(movement_dir, delta)
 	
