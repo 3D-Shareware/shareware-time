@@ -6,12 +6,14 @@
 
 [node name="Spiderman-Punch" type="Node3D" unique_id=683206933]
 script = ExtResource("1_jkf8s")
-damage = 80
-kick_damage = 160
+damage = 40
+kick_damage = 90
 cooldown = 0.4
+longer_cooldown = 0.8
 
 [node name="Punch" type="Area3D" parent="." unique_id=698293946]
 transform = Transform3D(-2.8237025e-07, 0, -3.1250217, 0, 4.317635, 0, 6.459879, 0, -1.3659903e-07, 0, 0, -1.716218)
+collision_mask = 3
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Punch" unique_id=121722895]
 shape = SubResource("SphereShape3D_tga8u")
