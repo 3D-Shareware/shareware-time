@@ -7,17 +7,17 @@ signal kill_confirmed(person_killed_id : int)
 signal health_changed(old: float, new: float)
 
 # Debug test environment import
-const TEST_ENVIRONMENT = preload("res://MapsAndGamemodes/Maps/TestEnvironment/TestEnvironment.tscn")
+const TEST_ENVIRONMENT := preload("res://MapsAndGamemodes/Maps/TestEnvironment/TestEnvironment.tscn")
 
 ## THIS THE BASE CLASS, DO NOT CHANGE AN OF THIS UNLESS ITS IN THE INSPECTOR
 const ABILITY_UI = preload("res://Misc/UI/ability_ui.tscn")
 const MERC_LABEL = preload("res://MultiplayerStuff/Client/MercLabel.tscn")
 const HEALTH_BAR = preload("res://Misc/UI/health_bar.tscn")
-var health_bar : ProgressBar
+var health_bar: ProgressBar
 
 @export var debug_mode : bool = false
 @export_category("REQUIRED CAMERA")
-@export var camera : Camera3D
+@export var camera: Camera3D
 
 @export_group("Universal Properties")
 @export var health :float = 100.0:
@@ -33,15 +33,15 @@ var health_bar : ProgressBar
 		# (they really shouldn't) - Connor
 		else: health = value
 
-@export var gravity := 9.8
-@export var friction := .1
-@export var wall_friction_enabled := false
-@export var air_acceleration := .3
-@export var speed := 1.0
-@export var visual_body : Node3D
-@export var visual_hand : Node3D
-@export var merc_UI_color : Color
-@export var camera_fov : float = 90.0
+@export var gravity: float = 9.8
+@export var friction: float = .1
+@export var wall_friction_enabled: bool = false
+@export var air_acceleration: float = .3
+@export var speed: float = 1.0
+@export var visual_body: Node3D
+@export var visual_hand: Node3D
+@export var merc_UI_color: Color
+@export var camera_fov: float = 90.0
 
 			#and more implicitones
 			#ex. position
@@ -53,15 +53,15 @@ var health_bar : ProgressBar
 @export var abilities : Array[Ability]
 #reminder abilities  can have their own ui
 
-var abilites_ui : AbilitiesUI
+var abilites_ui: AbilitiesUI
 var name_label_instance
 var target_position: Vector3 #what other people see
 var target_rotation: Vector3
 
-var can_move:bool = true
-var dead = false
+var can_move: bool = true
+var dead: bool = false
 var ability_ui 
-var max_health : float
+var max_health: float
 
 var team: String = "default":
 	set(value):
