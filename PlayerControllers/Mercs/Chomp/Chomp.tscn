@@ -23,7 +23,6 @@ camera = NodePath("Camera3D")
 health = 200.0
 air_acceleration = 3.0
 visual_body = NodePath("chomper_bodybrandc2")
-debug_mode = true
 abilities = [NodePath("JumpAbility"), NodePath("TornadoDashAbility"), NodePath("TunnelAbility"), NodePath("SpitAbility")]
 metadata/_custom_type_script = "uid://2ip0lrtrrhsr"
 
