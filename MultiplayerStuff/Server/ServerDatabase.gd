@@ -30,7 +30,8 @@ var Mercs : Dictionary [String, PackedScene] = {
 	'chomp' = load("res://PlayerControllers/Mercs/Chomp/Chomp.tscn"),
 	'cheif' = load("res://PlayerControllers/Mercs/Halo/MasterChief.tscn"),
 	'CherryBomber' = load("res://PlayerControllers/Mercs/CherryBomber/cherry_bomber.tscn"),
-	'Tracker' = load("res://PlayerControllers/Mercs/Tracker/FirstPersonController.tscn")
+	'Tracker' = load("res://PlayerControllers/Mercs/Tracker/FirstPersonController.tscn"),
+	'spiderman' = load("res://PlayerControllers/Mercs/Spiderman/SpiderMan.tscn")
 }
 
 var Characters : Dictionary [String, PackedScene] = {} 
