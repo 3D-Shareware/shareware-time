@@ -1,30 +1,18 @@
-extends Merc
+extends "res://PlayerControllers/Abilities/MoneyBased/base_money_user.gd"
 
-signal cash_updated(new_cash: float)
-@export var cash: float = 1000.0:
-	set(m):
-		var tmp: float = max(0, min(m, 9999))
-		if tmp != cash:
-			cash = tmp
-			cash_updated.emit(cash)
+const GoldShaderPreload := preload("res://PlayerControllers/Mercs/YetAnotherMerc/gold.gdshader")
+var GoldMaterial = ShaderMaterial.new()
 
-@onready var cash_using_abilities: Array = [
-		$MoneyGun,
-		$MoneyShotgun,
-		$MoneyMachineGun,
-		$MoneyGrenade,
-		$JumpAbility,
-		$SprintAbility
-	]:
-	get: return cash_using_abilities.duplicate()
-	set(_n): return
-
-func custom_ready() -> void:
-	for ability in cash_using_abilities:
-		if ability.has_method("_connect_cash"): ability._connect_cash(self)
-		if ability.has_signal("fired"): ability.fired.connect(func(cost: float) -> void: cash -= cost)
+func money_custom_ready() -> void:
+	# Hopefully this makes the mesh only invisible to me
+	$MeshInstance3D.visible = !is_multiplayer_authority()
+	GoldMaterial.shader = GoldShaderPreload
 	
-	return
+	var to_visit: Array[Variant] = self.abilities.duplicate()
+	while to_visit.size() > 0:
+		var cur: Variant = to_visit.pop_back()
+		to_visit += cur.get_children()
+		if cur is MeshInstance3D:
+			(cur as MeshInstance3D).set_surface_override_material(0, GoldMaterial)
 
-func custom_process(_delta: float) -> void:
 	return

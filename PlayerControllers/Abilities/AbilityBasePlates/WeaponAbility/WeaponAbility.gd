@@ -1,5 +1,7 @@
 @abstract class_name WeaponAbility extends Ability
 
+var currently_active = false
+
 @abstract func shoot()
 @abstract func equip()
 @abstract func dequip()

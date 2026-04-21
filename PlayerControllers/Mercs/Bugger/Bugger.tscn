@@ -9,6 +9,7 @@
 height = 2.427246
 
 [node name="Bugger" type="CharacterBody3D" unique_id=1512466377 node_paths=PackedStringArray("camera", "visual_body")]
+visible = false
 script = ExtResource("1_1jx3u")
 camera = NodePath("Camera3D")
 visual_body = NodePath(".")
@@ -29,6 +30,7 @@ transform = Transform3D(0.18030055, 0, 0.0016080585, 0, 0.1803077, 0, -0.0016080
 trigger_key = "E"
 
 [node name="SwingingRopeGrapple" parent="." unique_id=101568500 instance=ExtResource("4_expgn")]
+always_enabled_for_right_click = true
 trigger_key = "Q"
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=325162207]

@@ -1,5 +1,6 @@
-extends "res://PlayerControllers/Mercs/YetAnotherMerc/base_money_gun.gd"
+extends "res://PlayerControllers/Abilities/MoneyBased/base_money_gun.gd"
 
 func _ready() -> void:
-	cost_per_bullet = 5
 	super()
+	reward_per_kill = 0 ## Not actually zero. See `base_money_gun`'s implementation of the `reward_per_kill` property 
+	cost_per_activation = 5

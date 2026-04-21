@@ -1,5 +1,8 @@
 [gd_scene format=3 uid="uid://c0ilqo5um47eg"]
 
+[ext_resource type="Theme" uid="uid://bqxkokut137fe" path="res://Misc/UI/MainTheme.tres" id="1_hbq7f"]
+[ext_resource type="Script" uid="uid://ccjtmnb2foqw7" path="res://Misc/UI/health_bar.gd" id="1_tbmku"]
+
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_nweyp"]
 content_margin_left = 2.0
 content_margin_top = 2.0
@@ -30,15 +33,32 @@ corner_radius_bottom_left = 6
 corner_detail = 6
 
 [node name="HealthBar" type="ProgressBar" unique_id=178691564]
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-offset_left = 551.0
-offset_top = 8.0
-offset_right = -445.0
-offset_bottom = -700.0
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -273.0
+offset_right = 273.0
+offset_bottom = 21.0
 grow_horizontal = 2
-grow_vertical = 2
+size_flags_horizontal = 4
 theme_override_styles/background = SubResource("StyleBoxFlat_nweyp")
 theme_override_styles/fill = SubResource("StyleBoxFlat_hbq7f")
 show_percentage = false
+script = ExtResource("1_tbmku")
+
+[node name="Label" type="Label" parent="." unique_id=332308433]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -20.0
+offset_top = -21.0
+offset_right = 20.0
+grow_horizontal = 2
+grow_vertical = 0
+theme = ExtResource("1_hbq7f")
+theme_type_variation = &"HeaderSmall"
+text = "100.0"
+horizontal_alignment = 1

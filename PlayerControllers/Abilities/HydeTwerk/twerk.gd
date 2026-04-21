@@ -1,4 +1,5 @@
 extends Ability
+@onready var animation_player: AnimationPlayer = $"Dancing Twerk/AnimationPlayer"
 
 func activate():
-	merc.twerk()
+	animation_player.play("mixamo_com")

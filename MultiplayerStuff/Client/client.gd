@@ -23,5 +23,9 @@ func _ready() -> void:
 func _on_connection_success():
 	print('Yay! we are connected to server yayyy :D')
 	lobby_container.add_player_to_lobby('home', multiplayer.get_unique_id())
+	var my_name = get_meta("gamertag", "DefaultPlayer")
+	
+	ServerDatabase.request_name_change.rpc_id(1, my_name)
+	
 	#wait untill everyone is connected which implies everyone has their code and scenes set?
 	#I hope....

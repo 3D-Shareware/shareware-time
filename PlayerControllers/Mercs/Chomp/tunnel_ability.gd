@@ -28,9 +28,9 @@ var _merc_ref: Merc = null
 var on_cooldown : bool = false
 
 func _physics_process(delta: float) -> void:
+	if !chomper.visible: chomper.show()
 	if _merc_ref == null: 
 		return
-	
 	
 	# 1. Listen for key release if we are currently sprinting
 	if _is_sprinting:

@@ -1,0 +1,101 @@
+extends WeaponAbility
+
+@onready var hand: RemoteTransform3D = $Hand
+@onready var grenade: RigidBody3D = $Grenade
+@onready var fuse_timer: Timer = $FuseTimer
+@onready var cpu_particles_3d: CPUParticles3D = $Grenade/CPUParticles3D
+@onready var detection_radius: Area3D = $Grenade/DetectionRadius
+@onready var anim_player: AnimationPlayer = $AnimationPlayer
+
+@export var cool_down := 5.0
+@export var fuse_time := 4.0
+@export var throw_strength = 4.0
+@export var damage = 10.0
+
+var holding_about_to_throw : bool = false
+var thrown : bool = false
+
+func _process(_delta: float) -> void:
+	if !currently_active: return
+	if merc and merc.camera:
+		global_transform = merc.camera.global_transform
+	if Input.is_action_just_pressed("left_click") and not thrown:
+		holding_about_to_throw = true
+		anim_player.play("hold_to_throw")
+		fuse_timer.start(fuse_time)
+		
+	if Input.is_action_just_released("left_click") and holding_about_to_throw and !thrown:
+		holding_about_to_throw = false
+		thrown = true
+		shoot()
+
+ 
+func shoot():
+	# Detach the grenade from the hand and throw it
+	anim_player.play("throw")
+	await anim_player.animation_finished
+	hand.set_deferred("remote_path", null)
+	grenade.freeze = false
+	grenade.linear_velocity = Vector3.ZERO
+	grenade.apply_central_impulse(-merc.camera.global_basis.z * throw_strength) 
+	thrown = true
+
+func equip():
+	show()
+	anim_player.play("equip")
+	anim_player.queue("idle")
+	
+func dequip():
+	if thrown == true: return
+	anim_player.play("dequip")
+	await anim_player.animation_finished
+
+@rpc("any_peer", "call_local", "reliable")
+func explode():
+	# Only the authority should calculate and send damage
+	
+	# Everything below this runs locally for all clients (Visuals/Cleanup)
+	
+	$Grenade/FogVolume.visible = true
+	$AudioStreamPlayer3D.play()
+	
+	grenade.set_deferred("freeze", true)
+	$DurationTimer.start()
+	await $DurationTimer.timeout
+	print($DurationTimer.time_left)
+	
+	reset_grenade()
+
+func reset_grenade():
+	$Grenade/FogVolume.visible = false
+	#Kill leftover momentum so it doesn't fly off when un-frozen later
+	grenade.linear_velocity = Vector3.ZERO
+	grenade.angular_velocity = Vector3.ZERO
+	
+	grenade.global_transform = hand.global_transform
+	
+	#Re-link the RemoteTransform3D so the grenade follows the hand again
+	hand.set_deferred("remote_path", hand.get_path_to(grenade))
+	
+	grenade.visible = true
+	thrown = false
+	
+	#playing animations for smooth
+	equip()
+
+func _on_fuse_timer_timeout() -> void:
+	if grenade and is_multiplayer_authority():
+		explode.rpc()
+
+
+func _on_detection_radius_body_entered(body: Node3D) -> void:
+	if body is Merc and !(body == get_parent()) and thrown:
+		var tracker_bolt = load("res://PlayerControllers/Abilities/TrackerBoltGun/tracker_bolt.tscn").instantiate()
+		tracker_bolt.bleed_damage = 0
+		tracker_bolt.tracker = get_parent()
+		body.add_child(tracker_bolt)
+		
+		var max_speed = 4
+		clamp(body.velocity.x, 0, max_speed)
+		clamp(body.velocity.y, 0, max_speed)
+		clamp(body.velocity.z, 0, max_speed)

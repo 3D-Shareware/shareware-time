@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://ikvcp5jtjlhx"]
 
 [ext_resource type="Script" uid="uid://2ip0lrtrrhsr" path="res://PlayerControllers/merc.gd" id="1_8s5eu"]
-[ext_resource type="PackedScene" uid="uid://wmv3bnp7y8da" path="res://PlayerControllers/Mercs/Chomp/Chester Chomper/chomper_bodybrandc.dae" id="2_5i05u"]
+[ext_resource type="PackedScene" uid="uid://b3pep67aww7w6" path="res://PlayerControllers/Mercs/Chomp/Chester Chomper/lowreschomp.fbx" id="2_vb530"]
 [ext_resource type="PackedScene" uid="uid://b36uuh56645j5" path="res://PlayerControllers/Abilities/Jump/JumpAbility.tscn" id="3_l7mj4"]
 [ext_resource type="Script" uid="uid://64ya1kgkqc3y" path="res://PlayerControllers/Mercs/Chomp/tunnel_ability.gd" id="5_77k30"]
 [ext_resource type="Script" uid="uid://crgo3vu87eqt6" path="res://PlayerControllers/Mercs/Chomp/spit_ability.gd" id="6_t4tc8"]
@@ -19,6 +19,7 @@ collision_layer = 2
 collision_mask = 3
 floor_snap_length = 1.0
 script = ExtResource("1_8s5eu")
+debug_mode = true
 camera = NodePath("Camera3D")
 health = 200.0
 air_acceleration = 3.0

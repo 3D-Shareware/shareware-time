@@ -42,5 +42,5 @@ func activate() -> void:
 	current_merc = merc
 	# If this is a brand NEW press, OR if they are allowed to hold it down:
 	if !was_held_last_frame or auto_bhop:
-		# Fill the jump buffer! 
+		# Fill the jump buffer!
 		current_buffer = jump_buffer_time

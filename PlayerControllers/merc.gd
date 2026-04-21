@@ -1,12 +1,13 @@
 class_name Merc extends CharacterBody3D
 
 signal died(_self, killer_id: int) #Server will disable input on character
+## @deprecated: Use `health_changed` and look for when `new < old`
 signal took_damage
 signal kill_confirmed(person_killed_id : int)
+signal health_changed(old: float, new: float)
 
 # Debug test environment import
 const TEST_ENVIRONMENT = preload("res://MapsAndGamemodes/Maps/TestEnvironment/TestEnvironment.tscn")
-
 
 ## THIS THE BASE CLASS, DO NOT CHANGE AN OF THIS UNLESS ITS IN THE INSPECTOR
 const ABILITY_UI = preload("res://Misc/UI/ability_ui.tscn")
@@ -14,14 +15,23 @@ const MERC_LABEL = preload("res://MultiplayerStuff/Client/MercLabel.tscn")
 const HEALTH_BAR = preload("res://Misc/UI/health_bar.tscn")
 var health_bar : ProgressBar
 
-@export_category("REQUIRED OBJECTS")
+@export var debug_mode : bool = false
+@export_category("REQUIRED CAMERA")
 @export var camera : Camera3D
 
 @export_group("Universal Properties")
 @export var health :float = 100.0:
 	set(value):
-		health = value
-		if health_bar: health_bar.value = value
+		if health_bar: health_bar.value = clamp(value, 0, max_health)
+		if value != health:
+			var old := health
+			health = value
+			health_changed.emit(old, health)
+		
+		# TODO: Figure out if this is necessary. I included it just to make sure I'm 
+		# not breaking anyone else's stuff just in case they rely on this behavior 
+		# (they really shouldn't) - Connor
+		else: health = value
 
 @export var gravity := 9.8
 @export var friction := .1
@@ -31,7 +41,12 @@ var health_bar : ProgressBar
 @export var visual_hand : Node3D
 @export var merc_UI_color : Color
 @export var camera_fov : float = 90.0
-@export var debug_mode : bool = false
+
+			#and more implicitones
+			#ex. position
+			#scale
+			#velocity
+			#is_on_floor()
 
 
 @export var abilities : Array[Ability]
@@ -42,9 +57,17 @@ var name_label_instance
 var target_position: Vector3 #what other people see
 var target_rotation: Vector3
 
+var can_move:bool = true
 var dead = false
 var ability_ui 
-var team: String = "default"
+var max_health : float
+
+var team: String = "default":
+	set(value):
+		team = value
+		# Automatically update the color whenever the team changes
+		if name_label_instance and TEAM_COLORS.has(team):
+			name_label_instance.modulate = TEAM_COLORS[team]
 var player_teams: Dictionary = {}
 
 
@@ -55,7 +78,7 @@ const TEAM_COLORS = {
 }
 
 func _ready() -> void:
-	
+	max_health = health
 	# ==========================================
 	# DEBUG MODE SETUP
 	# ==========================================
@@ -74,26 +97,6 @@ func _ready() -> void:
 		add_child(debug_environment)
 		debug_environment.top_level = true
 		
-		## 2. Spawn a debug floor
-		#var debug_floor = CSGBox3D.new()
-		#debug_floor.size = Vector3(100, 1, 100) # Big platform
-		#debug_floor.use_collision = true
-		#debug_floor.top_level = true # Prevents the floor from moving WITH the player
-		#debug_floor.global_position = global_position - Vector3(0, 1, 0)
-		#
-		## Optional: Add a checkerboard or basic color so you can see movement
-		#var mat = StandardMaterial3D.new()
-		#mat.albedo_color = Color.DARK_GRAY
-		#debug_floor.material = mat
-		#
-		#add_child(debug_floor)
-		#
-		## 3. Add a sun so the scene isn't pitch black
-		#var debug_light = DirectionalLight3D.new()
-		#debug_light.top_level = true
-		#debug_light.rotation_degrees = Vector3(-45, 45, 0)
-		#add_child(debug_light)
-		#
 		print("--- DEBUG MODE ACTIVE: Local Server & Floor Generated ---")
 
 	# ==========================================
@@ -107,12 +110,15 @@ func _ready() -> void:
 	name_label_instance = MERC_LABEL.instantiate()
 	add_child(name_label_instance)
 	
-
-	# Position it slightly above the player (Adjust the Y value based on your model height)
 	name_label_instance.position = Vector3(0, 1.6, 0) 
 	
+	var parent_gamemode = get_parent()
+	if parent_gamemode and "master_team_database" in parent_gamemode:
+		sync_team_database(parent_gamemode.master_team_database)
 	# Pass the player's network ID into the label so it knows whose name to grab
 	name_label_instance.setup(name.to_int())
+	if TEAM_COLORS.has(team):
+		name_label_instance.modulate = TEAM_COLORS[team]
 	
 	if is_multiplayer_authority():
 		var map = get_parent()
@@ -120,6 +126,7 @@ func _ready() -> void:
 			camera.environment = map.environment
 		
 		camera.make_current()
+		if camera: camera.fov = camera_fov
 		get_tree().physics_frame.connect(check_abilities)
 		custom_ready()
 		abilites_ui = ABILITY_UI.instantiate()
@@ -127,8 +134,8 @@ func _ready() -> void:
 		abilites_ui.generate_ui(self)
 		health_bar = HEALTH_BAR.instantiate()
 		add_child(health_bar)
+		health_bar.health = health
 		health_bar.max_value = health
-		health_bar.value = health
 		
 		if visual_body:
 			visual_body.hide()
@@ -137,7 +144,9 @@ func _ready() -> void:
 		
 		show_visual_body_to_world.rpc()
 		name_label_instance.hide() #hide it local
+		
 		Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
+
 
 @rpc("any_peer","call_remote","reliable")
 func show_visual_body_to_world():
@@ -153,23 +162,27 @@ func _setup_synchronizer() -> void:
 	var config = SceneReplicationConfig.new()
 	
 	# --- ON CHANGE PROPERTIES (Zero Bandwidth Cost unless modified) ---
-	var static_props = [":health", ":gravity", ":friction", ":air_acceleration", ":speed"]
+	var static_props = [":health", ":gravity", ":friction", ":air_acceleration", ":speed", ":team"]
 	for prop in static_props:
 		var path = NodePath(prop)
 		config.add_property(path)
 		# Only send a packet if the value actually changes
 		config.property_set_replication_mode(path, SceneReplicationConfig.REPLICATION_MODE_ON_CHANGE)
 	
-	## --- ALWAYS PROPERTIES (Costs bandwidth, required for standard multiplayer) ---
-	#var dynamic_props = [":position", ":rotation"]
-	#for prop in dynamic_props:
-		#var path = NodePath(prop)
-		#config.add_property(path)
-		## Send a packet every network tick
-		#config.property_set_replication_mode(path, SceneReplicationConfig.REPLICATION_MODE_ALWAYS)
-	#
 	synchronizer.replication_config = config
 	add_child(synchronizer)
+
+
+#handling knockback. i wish i could stuff it at the bottom :(
+#use this by rpc id'ing it, just like applying damage.
+var knockback_dir : Vector3 = Vector3(0,0,0)
+var knockback_pwr := 0
+var knockback_decay := 0.3
+
+func apply_knockback(vec:Vector3, power:float, decay:float):
+	knockback_dir = vec
+	knockback_pwr = power
+	knockback_decay = decay
 
 func _physics_process(delta: float) -> void:
 	if not is_multiplayer_authority(): 
@@ -190,11 +203,11 @@ func _physics_process(delta: float) -> void:
 		return # Skip all the local movement code below
 	
 	if dead: return
-	if camera: camera.fov = camera_fov
+	
 	
 	var input = Vector2.ZERO
 	
-	if ClientUI.chat_input.text == "":
+	if ClientUI.chat_input.text == "" and can_move:
 		input.x = float(Input.is_physical_key_pressed(KEY_D)) - float(Input.is_physical_key_pressed(KEY_A))
 		input.y = float(Input.is_physical_key_pressed(KEY_S)) - float(Input.is_physical_key_pressed(KEY_W))
 	
@@ -207,11 +220,15 @@ func _physics_process(delta: float) -> void:
 		var friction_dir = transform.basis * Vector3(current_friction.x, 0, current_friction.y)
 		velocity += Vector3(current_friction.x, 0, current_friction.y)
 		velocity += Vector3(movement_dir.x, 0, movement_dir.z)
-	
+		
+		velocity += (knockback_dir*knockback_pwr)
+		
 	else:
 		if is_on_wall(): 
 			velocity = velocity.lerp(Vector3.ZERO, delta * 5) 
 		sv_airaccelerate(movement_dir, delta)
+	
+	knockback_pwr *= knockback_decay
 
 	velocity.y -= gravity * delta
 	custom_process(delta)
@@ -257,7 +274,7 @@ func _input(event: InputEvent) -> void:
 func check_abilities() -> void:
 	if abilities.size() <= 0: return
 	for i in abilities:
-		if i == null: return
+		if i == null: continue
 		if !i.is_multiplayer_authority():
 			i.set_multiplayer_authority(int(name), true)
 		if i.abilities !=abilities: i.abilities = abilities
@@ -357,7 +374,6 @@ func receive_pos_from_server(pos: Vector3, rot: Vector3):
 	# Don't move them yet! Just update the target.
 	target_position = pos
 	target_rotation = rot
-
 @rpc("any_peer", "call_remote", "reliable")
 func take_damage(damage: float):
 	if !is_multiplayer_authority(): return
@@ -375,9 +391,7 @@ func take_damage(damage: float):
 	
 	# TELL EVERYONE TO FLASH THIS PLAYER YELLOW
 	_sync_flash_damage.rpc() 
-	print(dead, health, is_multiplayer_authority())
 	if health <= 0 and not dead and is_multiplayer_authority():
-		print('DIED')
 		dead = true
 		death_effects.rpc()
 		die.rpc_id(1, attacker_id)
@@ -389,8 +403,7 @@ func take_damage(damage: float):
 func _sync_flash_damage() -> void:
 	if not visual_body: return
 	
-	# 1. Create a bright, unshaded yellow material
-# 1. Create a semi-transparent yellow material
+	# 1. Create a semi-transparent yellow material
 	var flash_mat = StandardMaterial3D.new()
 	# The 4th number (0.4) is the alpha/opacity. 0.0 is invisible, 1.0 is solid.
 	flash_mat.albedo_color = Color(1.0, 1.0, 0.0, 0.4) 
@@ -401,8 +414,10 @@ func _sync_flash_damage() -> void:
 	_apply_overlay_recursive(visual_body, flash_mat)
 	
 	# 3. Wait for the flash duration
-	await get_tree().create_timer(0.15).timeout
+	var tween = create_tween()
+	tween.tween_interval(.15)
 	
+	#if not visual_body: return
 	# 4. Strip the overlay off everything
 	if is_instance_valid(visual_body):
 		_apply_overlay_recursive(visual_body, null)
@@ -417,6 +432,8 @@ func _apply_overlay_recursive(current_node: Node, mat: Material) -> void:
 	for child in current_node.get_children():
 		_apply_overlay_recursive(child, mat)
 
+
+
 @rpc("any_peer", "call_local")
 func death_effects():
 	pass
@@ -426,8 +443,9 @@ func die(killer_id: int = 0):
 	emit_signal("died", self, killer_id)
 
 #emits when you kill a player
-@rpc("authority","call_remote","reliable")
+@rpc("any_peer","call_remote","reliable")
 func notify_kill_confirmed(id : int = 0): 
+	#was not working because players had the authority`
 	kill_confirmed.emit(id)
 
 func custom_process(delta : float):

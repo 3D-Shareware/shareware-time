@@ -207,7 +207,6 @@ visual_hand = NodePath("Grenade/MeshInstance3D")
 trigger_key = "G"
 
 [node name="Grenade" type="RigidBody3D" parent="." unique_id=2084771126]
-transform = Transform3D(1, 0, 0, 0, 0.6997382, 0.71439934, 0, -0.71439934, 0.6997382, 0.42329928, -0.056609645, -0.9350784)
 top_level = true
 collision_layer = 0
 collision_mask = 3

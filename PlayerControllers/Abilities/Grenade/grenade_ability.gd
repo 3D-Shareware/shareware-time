@@ -9,7 +9,7 @@ extends WeaponAbility
 
 @export var cool_down := 5.0
 @export var fuse_time := 4.0
-@export var throw_strength = 5.0
+@export var throw_strength = 12.0
 @export var damage = 70.0
 
 var holding_about_to_throw : bool = false
@@ -17,6 +17,8 @@ var thrown : bool = false
 
 func _process(_delta: float) -> void:
 	if !currently_active: return
+	if merc and merc.camera:
+		global_transform = merc.camera.global_transform
 	if Input.is_action_just_pressed("left_click") and not thrown:
 		holding_about_to_throw = true
 		anim_player.play("hold_to_throw")
@@ -32,8 +34,10 @@ func shoot():
 	# Detach the grenade from the hand and throw it
 	anim_player.play("throw")
 	await anim_player.animation_finished
+	
 	hand.set_deferred("remote_path", null)
 	grenade.freeze = false
+	grenade.linear_velocity = Vector3.ZERO
 	grenade.apply_central_impulse(-merc.camera.global_basis.z * throw_strength) 
 
 func equip():
@@ -44,14 +48,14 @@ func equip():
 func dequip():
 	anim_player.play("dequip")
 	await anim_player.animation_finished
-	hide()
+	#hide()
 
 @rpc("any_peer", "call_local", "reliable")
 func explode():
 	# Only the authority should calculate and send damage
 	if is_multiplayer_authority():
 		for i in explosion_radius.get_overlapping_bodies():
-			if i != null and i is Merc:
+			if i != null and i != self and i is Merc:
 				i.take_damage.rpc_id(i.name.to_int(), damage) 
 	
 	# Everything below this runs locally for all clients (Visuals/Cleanup)

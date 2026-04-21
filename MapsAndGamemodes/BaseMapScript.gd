@@ -32,8 +32,6 @@ func _enter_tree() -> void:
 	if !multiplayer.is_server(): return
 	call_deferred("_finalize_setup")
 
-
-
 func _finalize_setup() -> void:
 	is_map_ready = true
 	map_ready.emit() # Tell the Lobby: "Send me the players!"
@@ -70,6 +68,7 @@ func _spawn_player(spawn_data:Dictionary):
 	merc_real.position = spawn_data["position"]
 	
 	merc_real.died.connect(player_died)
+	merc_real.died.connect(kill_confirmed)
 	return merc_real #DONT FOGET THIS BASTAD
 
 func get_lobby_player_ids(): return int(name)
@@ -91,6 +90,20 @@ func _disconnected_player(peer_id : int):
 		print("Player ", peer_id, " removed successfully.")
 	else:
 		print("Could not find player to remove: ", peer_id)
+
+func kill_confirmed(merc: Merc, killer_id: int = 0):
+	if not multiplayer.is_server(): return
+	
+	var victim_id = merc.name.to_int()
+	
+	# If there was a killer, and it wasn't a suicide (like falling off the map)
+	if killer_id != 0 and killer_id != victim_id:
+		var killer_node = get_node_or_null(str(killer_id))
+		
+		# Ping the killer's specific client so they get immediate visual/audio feedback
+		if killer_node and killer_node.has_method("notify_kill_confirmed"):
+			killer_node.notify_kill_confirmed.rpc_id(killer_id, victim_id)
+
 @abstract func start_gamemode()
 @abstract func player_died(merc : Merc, killer_id: int = 0)
 @abstract func _on_player_joined(player_id: int)

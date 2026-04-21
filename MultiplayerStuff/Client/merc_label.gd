@@ -8,7 +8,7 @@ func _ready() -> void:
 	billboard = BaseMaterial3D.BILLBOARD_ENABLED
 	
 	# Optional: Prevents the label from clipping into walls/ceilings
-	no_depth_test = true 
+	no_depth_test = false 
 	
 	# 2. Listen to the global database for any changes
 	if ServerDatabase.has_signal("players_updated"):
