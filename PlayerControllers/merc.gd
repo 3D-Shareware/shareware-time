@@ -80,6 +80,7 @@ const TEAM_COLORS = {
 
 func _ready() -> void:
 	max_health = health
+	set_collision_layer_value(2, true)
 	# ==========================================
 	# DEBUG MODE SETUP
 	# ==========================================
@@ -180,10 +181,19 @@ var knockback_dir : Vector3 = Vector3(0,0,0)
 var knockback_pwr := 0
 var knockback_decay := 0.3
 
+@rpc("any_peer", "call_remote", "reliable")
 func apply_knockback(vec:Vector3, power:float, decay:float):
 	knockback_dir = vec
 	knockback_pwr = power
 	knockback_decay = decay
+
+@rpc("any_peer", "call_remote", "reliable")
+func disable_movement():
+	can_move = false
+
+@rpc("any_peer", "call_remote", "reliable")
+func enable_movement():
+	can_move = true
 
 func _physics_process(delta: float) -> void:
 	if not is_multiplayer_authority(): 
@@ -351,7 +361,7 @@ func _sync_add_ability(ability_path: NodePath) -> void:
 	if abilites_ui and abilites_ui.has_method("generate_ui"):
 		abilites_ui.generate_ui(self)
 	
-	ability_node.activate(abilities, self)
+	ability_node.activate()
 
 @rpc("any_peer", "call_local", "reliable")
 func _sync_remove_ability(ability_path: NodePath) -> void:
