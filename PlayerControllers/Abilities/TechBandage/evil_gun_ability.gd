@@ -1,10 +1,9 @@
 extends WeaponAbility
 
-@onready var animation_player: AnimationPlayer = $buffer/AnimationPlayer
-@onready var tracer_effect: Node3D = $buffer/TracerEffect
-@onready var fire_attack_speed: Timer = $buffer/FireAttackSpeed
-@onready var crosshair_002: Sprite2D = $buffer/Crosshair002
-@onready var label: Label = $buffer/Crosshair002/Label
+@onready var animation_player: AnimationPlayer = $AnimationPlayer
+@onready var fire_attack_speed: Timer = $FireAttackSpeed
+@onready var crosshair_002: Sprite2D = $Crosshair002
+@onready var label: Label = $Label
 var equipped = false
 
 @export_category("Weapon Stats")
@@ -27,15 +26,12 @@ var _initial_mesh_rotation: Vector3
 # Add ONE RayCast3D here for a Pistol/Rifle, or add MULTIPLE for a Shotgun
 @export var raycasts: Array[RayCast3D] = [] 
 
-var ammo: int
+var ammo: int = 1 
 
 func _ready() -> void:
-	ammo = max_ammo
 	fire_attack_speed.wait_time = fire_speed
 	fire_attack_speed.one_shot = true
 	hide()
-	$buffer/Crosshair002.hide()
-	label.text = str(ammo) + "/" + str(max_ammo)
 	
 	# --- NEW: Save the resting position of the visual mesh ---
 	if weapon_mesh:
@@ -43,18 +39,23 @@ func _ready() -> void:
 		_initial_mesh_rotation = weapon_mesh.rotation
 
 func _process(delta: float) -> void:
+	
+	
 	if !is_multiplayer_authority(): return
 	if !currently_active: return
 	
-	#crosshair_002.visible = visible
+	if ammo > 0:
+		$MeshInstance3D.visible = visible
+		crosshair_002.visible = visible
+		#$Label.visible = visible
+	else:
+		$MeshInstance3D.visible = false
 	global_transform = merc.camera.global_transform
 	
 	# Don't allow shooting or reloading while already reloading
 	if animation_player.is_playing() and animation_player.current_animation == "reload": 
 		return
 		
-	if Input.is_action_just_pressed("reload") and ammo < max_ammo:
-		reload()
 
 	# 2. Handle Single vs Auto fire inputs
 	var trigger_pulled: bool = false
@@ -71,10 +72,13 @@ func _process(delta: float) -> void:
 		_apply_weapon_bob_and_tilt(delta)
 
 func reload():
+	if animation_player.is_playing(): return
+	if get_parent().bandages <= 0: return
+	if ammo > 0: return
 	animation_player.play("reload")
 	await animation_player.animation_finished
-	ammo = max_ammo
-	label.text = str(ammo) + "/" + str(max_ammo)
+	ammo = 1
+	get_parent().bandages -= 1
 
 func shoot():
 	if ammo <= 0:
@@ -82,14 +86,13 @@ func shoot():
 		return
 	
 	# Consume 1 ammo per trigger pull (even if it's a shotgun firing 8 pellets)
-	ammo = clamp(ammo - 1, 0, max_ammo)
+	ammo -= 1
 	
-	$buffer/AudioStreamPlayer3D.play()
+	$AudioStreamPlayer3D.play()
 	# Restart animation and start the cooldown timer
 	animation_player.stop() 
 	animation_player.play("shoot")
 	fire_attack_speed.start()
-	label.text = str(ammo) + "/" + str(max_ammo)
 	# 4. Fire every raycast in the array (1 for Pistol, Many for Shotgun)
 	_do_raycasts()
 
@@ -99,24 +102,22 @@ func _do_raycasts() -> void:
 		
 		# Force update so the raycast is perfectly aligned with the camera this frame
 		rc.force_raycast_update()
-
 		if rc.is_colliding():
 			var person_hit = rc.get_collider()
 			if person_hit != null and person_hit is Merc:
-				person_hit.take_damage.rpc_id(int(person_hit.name), damage)
-				person_hit.apply_knockback.rpc_id(int(person_hit.name), -(get_parent().position-person_hit.position).normalized(), 90, 0.91)
+				person_hit.take_damage.rpc_id(int(person_hit.name), -damage)
+				var tracker_bolt = load("res://PlayerControllers/Abilities/TechBandage/tracker_bolt.tscn").instantiate()
+				tracker_bolt.tracker = get_parent()
+				person_hit.add_child(tracker_bolt)
 				
 			# Spawn tracer at hit point
-			tracer_effect._create_tracer_effect.rpc(tracer_effect.global_position, rc.get_collision_point())
 		else:
 			# Spawn tracer fading off into the distance if they missed
 			var miss_point = rc.global_transform * rc.target_position
-			tracer_effect._create_tracer_effect.rpc(tracer_effect.global_position, miss_point)
 
 func equip():
 	equipped = true
 	show()
-	crosshair_002.show()
 	show_visual_hand.rpc(true)
 
 @rpc("any_peer","call_remote","reliable")
@@ -128,6 +129,7 @@ func dequip():
 	equipped = false
 	hide()
 	crosshair_002.hide()
+	$Label.hide()
 	show_visual_hand.rpc(false)
 
 # ==========================================
