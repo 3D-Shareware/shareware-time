@@ -2,6 +2,7 @@
 
 [ext_resource type="Script" uid="uid://by2qbhuc53ljj" path="res://PlayerControllers/Abilities/EvilGun/evil_gun_ability.gd" id="1_p1o0t"]
 [ext_resource type="Texture2D" uid="uid://7t25cg31su6k" path="res://MapsAndGamemodes/Maps/dm_grahhh/assets/blahhh_0.png" id="2_8foco"]
+[ext_resource type="Material" uid="uid://ej07qv6yq17u" path="res://PlayerControllers/Abilities/DefuseBomb/explosivematerial.tres" id="3_qqgut"]
 [ext_resource type="Material" uid="uid://bj31ogvo4qulj" path="res://PlayerControllers/Abilities/DefuseBomb/bombmaterial.tres" id="3_r4gtw"]
 [ext_resource type="FontFile" uid="uid://bxfv5oguicmee" path="res://Misc/UI/fonts/GothicA1-Light.ttf" id="4_r4gtw"]
 [ext_resource type="AudioStream" uid="uid://bpb8bmowhnkgd" path="res://PlayerControllers/Abilities/DefuseBomb/plant.mp3" id="5_qqgut"]
@@ -38,27 +39,6 @@ _surfaces = [{
 }]
 blend_shape_mode = 0
 shadow_mesh = SubResource("ArrayMesh_xlgcv")
-
-[sub_resource type="FastNoiseLite" id="FastNoiseLite_t045v"]
-seed = 7
-
-[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_yc6t5"]
-noise = SubResource("FastNoiseLite_t045v")
-
-[sub_resource type="FastNoiseLite" id="FastNoiseLite_vjj8m"]
-
-[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_x3vk3"]
-noise = SubResource("FastNoiseLite_vjj8m")
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_lje5x"]
-albedo_color = Color(0.63, 0.63, 0.63, 1)
-metallic = 0.48
-roughness_texture = SubResource("NoiseTexture2D_x3vk3")
-emission_enabled = true
-bent_normal_enabled = true
-bent_normal_texture = SubResource("NoiseTexture2D_yc6t5")
-subsurf_scatter_enabled = true
-subsurf_scatter_strength = 0.18
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_6kgh1"]
 
@@ -155,16 +135,6 @@ _surfaces = [{
 }]
 blend_shape_mode = 0
 shadow_mesh = SubResource("ArrayMesh_c4shw")
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_rxs5t"]
-albedo_color = Color(0.45724997, 0.59, 0.4425, 1)
-metallic = 0.48
-roughness_texture = SubResource("NoiseTexture2D_x3vk3")
-emission_enabled = true
-bent_normal_enabled = true
-bent_normal_texture = SubResource("NoiseTexture2D_yc6t5")
-subsurf_scatter_enabled = true
-subsurf_scatter_strength = 0.18
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_i0gk5"]
 
@@ -402,28 +372,28 @@ upper_fade = 1.3784376
 [node name="fingers" type="Node3D" parent="bomb" unique_id=1183131638]
 
 [node name="finger" type="MeshInstance3D" parent="bomb/fingers" unique_id=1700901070]
-transform = Transform3D(20.684164, 0, 0, 0, -2.4657445e-06, 20.684162, 0, -20.684162, -2.4657445e-06, -0.39444578, 0.33035251, 0.3937012)
+transform = Transform3D(20.684164, 0, 0, 0, -1.9073486e-06, 20.684162, 0, -20.684162, -1.9073486e-06, -0.39386034, 0.33035254, 0.39370117)
 mesh = SubResource("ArrayMesh_h24ky")
 skeleton = NodePath("")
-surface_material_override/0 = SubResource("StandardMaterial3D_lje5x")
+surface_material_override/0 = ExtResource("3_qqgut")
 
 [node name="finger_001" type="MeshInstance3D" parent="bomb/fingers" unique_id=1246743809]
 transform = Transform3D(20.684164, 0, 0, 0, -2.4657445e-06, 20.684162, 0, -20.684162, -2.4657445e-06, -0.39444578, 0.33035251, -0.40294564)
 mesh = SubResource("ArrayMesh_jfad8")
 skeleton = NodePath("")
-surface_material_override/0 = SubResource("StandardMaterial3D_lje5x")
+surface_material_override/0 = ExtResource("3_qqgut")
 
 [node name="finger_002" type="MeshInstance3D" parent="bomb/fingers" unique_id=1886500280]
 transform = Transform3D(20.684164, 0, 0, 0, -2.4657445e-06, 20.684162, 0, -20.684162, -2.4657445e-06, 0.39608184, 0.33035251, -0.40294564)
 mesh = SubResource("ArrayMesh_n4nhb")
 skeleton = NodePath("")
-surface_material_override/0 = SubResource("StandardMaterial3D_lje5x")
+surface_material_override/0 = ExtResource("3_qqgut")
 
 [node name="finger_003" type="MeshInstance3D" parent="bomb/fingers" unique_id=649337528]
 transform = Transform3D(20.684164, 0, 0, 0, -2.4657445e-06, 20.684162, 0, -20.684162, -2.4657445e-06, 0.39608184, 0.33035251, 0.3937012)
 mesh = SubResource("ArrayMesh_3q66f")
 skeleton = NodePath("")
-surface_material_override/0 = SubResource("StandardMaterial3D_rxs5t")
+surface_material_override/0 = ExtResource("3_qqgut")
 
 [node name="palm" type="Node3D" parent="bomb" unique_id=354404539]
 
@@ -434,7 +404,7 @@ skeleton = NodePath("")
 surface_material_override/0 = ExtResource("3_r4gtw")
 
 [node name="SpotLight3D" type="SpotLight3D" parent="bomb/palm/palm" unique_id=2127056367]
-transform = Transform3D(-4.371139e-08, -0.24868982, 0.96858317, 0, 0.96858317, 0.24868982, -1, 1.0870577e-08, -4.2338115e-08, 0, 0, 0.001)
+transform = Transform3D(-4.371139e-08, -8.742278e-08, -1, 0, -1, 8.742278e-08, -1, 3.821371e-15, 4.371139e-08, 0, 0, 0.001)
 light_color = Color(1, 0, 0, 1)
 light_indirect_energy = 3.553
 light_volumetric_fog_energy = 2.872
@@ -460,6 +430,7 @@ outline_size = 8
 
 [node name="Sprite3D" type="Sprite3D" parent="bomb/palm/spinningpalm" unique_id=1722352821]
 transform = Transform3D(0.001330341, -0.000698017, -0.0004853012, 0.00086965214, 0.0020935256, -0.0015187664, 1.4889523e-05, 1.4412988e-05, 0.0033484711, -0.0040406357, -0.005320834, 0.0025390123)
+modulate = Color(1, 1, 1, 0.45490196)
 pixel_size = 0.009427
 shaded = true
 alpha_antialiasing_mode = 1
