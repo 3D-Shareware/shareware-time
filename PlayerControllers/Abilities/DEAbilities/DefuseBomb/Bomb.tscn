@@ -1,11 +1,11 @@
 [gd_scene format=4 uid="uid://nhp4lghbjo31"]
 
-[ext_resource type="Script" uid="uid://by2qbhuc53ljj" path="res://PlayerControllers/Abilities/EvilGun/evil_gun_ability.gd" id="1_p1o0t"]
+[ext_resource type="Script" uid="uid://co4gkxh1je7gk" path="res://PlayerControllers/Abilities/DEAbilities/DefuseBomb/bomb.gd" id="1_r4gtw"]
 [ext_resource type="Texture2D" uid="uid://7t25cg31su6k" path="res://MapsAndGamemodes/Maps/dm_grahhh/assets/blahhh_0.png" id="2_8foco"]
-[ext_resource type="Material" uid="uid://bj31ogvo4qulj" path="res://PlayerControllers/Abilities/DefuseBomb/bombmaterial.tres" id="3_r4gtw"]
+[ext_resource type="Material" uid="uid://bj31ogvo4qulj" path="res://PlayerControllers/Abilities/DEAbilities/DefuseBomb/bombmaterial.tres" id="3_r4gtw"]
 [ext_resource type="FontFile" uid="uid://bxfv5oguicmee" path="res://Misc/UI/fonts/GothicA1-Light.ttf" id="4_r4gtw"]
-[ext_resource type="AudioStream" uid="uid://bpb8bmowhnkgd" path="res://PlayerControllers/Abilities/DefuseBomb/plant.mp3" id="5_qqgut"]
-[ext_resource type="Texture2D" uid="uid://dgk8egylyylkq" path="res://PlayerControllers/Abilities/DefuseBomb/image-removebg-preview(10).png" id="5_t045v"]
+[ext_resource type="AudioStream" uid="uid://bpb8bmowhnkgd" path="res://PlayerControllers/Abilities/DEAbilities/DefuseBomb/plant.mp3" id="5_qqgut"]
+[ext_resource type="Texture2D" uid="uid://dgk8egylyylkq" path="res://PlayerControllers/Abilities/DEAbilities/DefuseBomb/image-removebg-preview(10).png" id="5_t045v"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_n6e4m"]
 
@@ -234,12 +234,23 @@ _surfaces = [{
 blend_shape_mode = 0
 shadow_mesh = SubResource("ArrayMesh_mqoow")
 
+[sub_resource type="BoxShape3D" id="BoxShape3D_r4gtw"]
+size = Vector3(1.28656, 1.1209717, 1.3535156)
+
+[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_bd5au"]
+properties/0/path = NodePath(".:position")
+properties/0/spawn = true
+properties/0/replication_mode = 2
+properties/1/path = NodePath(".:rotation")
+properties/1/spawn = true
+properties/1/replication_mode = 2
+
 [sub_resource type="Animation" id="Animation_angkb"]
 length = 0.001
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("bomb/palm/spinningpalm/Label3D:visible")
+tracks/0/path = NodePath("bomb/palm/spinningpalm/DefuseTimer:visible")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
@@ -296,9 +307,85 @@ tracks/4/keys = {
 "update": 1,
 "values": [false]
 }
+tracks/5/type = "value"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath("bomb:rotation")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0.9583253, 0, 0)]
+}
+tracks/6/type = "value"
+tracks/6/imported = false
+tracks/6/enabled = true
+tracks/6/path = NodePath("bomb:position")
+tracks/6/interp = 1
+tracks/6/loop_wrap = true
+tracks/6/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, -0.35789844, -1.3540034)]
+}
+
+[sub_resource type="Animation" id="Animation_r4gtw"]
+resource_name = "dequip"
+length = 0.6705
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("bomb:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0.03333333, 0.49999997),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector3(0.80700636, -1.2017539, -0.4203116), Vector3(0.13166164, 0.933576, 1.2886964)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("bomb:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0.03333333, 0.46666667),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector3(1.4453976, -0.873229, -2.2667933), Vector3(1.7126286, -1.9781165, -1.1581482)]
+}
 
 [sub_resource type="Animation" id="Animation_p1o0t"]
 resource_name = "equip"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("bomb:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.38, 0.5),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector3(0.13166164, 0.933576, 1.2886964), Vector3(0.7994422, -1.2158315, -0.4317279), Vector3(0.80700636, -1.2017539, -0.4203116)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("bomb:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.38, 0.5),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector3(1.7126286, -1.9781165, -1.1581482), Vector3(1.4453976, -0.8276164, -2.2667933), Vector3(1.4453976, -0.873229, -2.2667933)]
+}
 
 [sub_resource type="Animation" id="Animation_m5ulp"]
 resource_name = "plant"
@@ -306,7 +393,7 @@ length = 2.5
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("bomb/palm/spinningpalm/Label3D:visible")
+tracks/0/path = NodePath("bomb/palm/spinningpalm/DefuseTimer:visible")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
@@ -367,23 +454,17 @@ tracks/4/keys = {
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_angkb"]
 _data = {
 &"RESET": SubResource("Animation_angkb"),
+&"dequip": SubResource("Animation_r4gtw"),
 &"equip": SubResource("Animation_p1o0t"),
 &"plant": SubResource("Animation_m5ulp")
 }
 
-[node name="Bomb" type="Node3D" unique_id=1600695075 node_paths=PackedStringArray("weapon_mesh", "raycasts", "visual_hand")]
-script = ExtResource("1_p1o0t")
-max_ammo = 1
-damage = 0.0
-fire_speed = 0.0
-weapon_mesh = NodePath("bomb")
-raycasts = [null]
-AbilityDescription = "Plant the Bomb"
-visual_hand = NodePath("VisualHand")
-trigger_key = "1"
+[node name="Bomb" type="Node3D" unique_id=1600695075]
+script = ExtResource("1_r4gtw")
+trigger_key = "5"
 
-[node name="bomb" type="Node3D" parent="." unique_id=1341440860]
-transform = Transform3D(1, 0, 0, 0, 0.57489103, -0.81823, 0, 0.81823, 0.57489103, 0, -0.35789844, -1.3540034)
+[node name="bomb" type="StaticBody3D" parent="." unique_id=1844621931]
+transform = Transform3D(1, 0, 0, 0, 0.57489115, -0.81823, 0, 0.81823015, 0.57489103, 0, -0.35789844, -1.3540034)
 
 [node name="Decal" type="Decal" parent="bomb" unique_id=837029761]
 transform = Transform3D(1, 0, 0, 0, -8.940697e-08, 1, 0, -1, -8.940697e-08, -0.20732254, 0.6980908, 0.31367236)
@@ -450,7 +531,7 @@ mesh = SubResource("ArrayMesh_qcq4n")
 skeleton = NodePath("")
 surface_material_override/0 = ExtResource("3_r4gtw")
 
-[node name="Label3D" type="Label3D" parent="bomb/palm/spinningpalm" unique_id=486757335]
+[node name="DefuseTimer" type="Label3D" parent="bomb/palm/spinningpalm" unique_id=486757335]
 transform = Transform3D(0.017238637, 0, 0, 0, 0.024211865, 3.7252903e-09, 0, -2.3283064e-10, 0.0033564141, 0.00012390503, 0.002327418, 0.0025939578)
 visible = false
 modulate = Color(1, 0, 0, 1)
@@ -466,6 +547,14 @@ alpha_antialiasing_mode = 1
 texture_filter = 1
 texture = ExtResource("5_t045v")
 
+[node name="BombCollisionShape" type="CollisionShape3D" parent="bomb" unique_id=181307900]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.009918213, 0.06048596, 0.0029296875)
+shape = SubResource("BoxShape3D_r4gtw")
+disabled = true
+
+[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="bomb" unique_id=568046422]
+replication_config = SubResource("SceneReplicationConfig_bd5au")
+
 [node name="VisualHand" type="Marker3D" parent="." unique_id=295525846]
 transform = Transform3D(0.12, 0, 0, 0, 0.12, 0, 0, 0, 0.12, 0, 0, 0)
 
@@ -476,3 +565,7 @@ libraries/ = SubResource("AnimationLibrary_angkb")
 stream = ExtResource("5_qqgut")
 volume_db = -4.8
 max_db = -10.5
+
+[node name="PlantRaycast" type="RayCast3D" parent="." unique_id=542495229]
+target_position = Vector3(0, 0, -5)
+collision_mask = 32768

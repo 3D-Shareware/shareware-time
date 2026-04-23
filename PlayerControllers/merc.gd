@@ -80,6 +80,7 @@ const TEAM_COLORS = {
 
 func _ready() -> void:
 	max_health = health
+	set_collision_layer_value(2, true)
 	# ==========================================
 	# DEBUG MODE SETUP
 	# ==========================================
@@ -351,7 +352,7 @@ func _sync_add_ability(ability_path: NodePath) -> void:
 	if abilites_ui and abilites_ui.has_method("generate_ui"):
 		abilites_ui.generate_ui(self)
 	
-	ability_node.activate(abilities, self)
+	ability_node.activate()
 
 @rpc("any_peer", "call_local", "reliable")
 func _sync_remove_ability(ability_path: NodePath) -> void:
