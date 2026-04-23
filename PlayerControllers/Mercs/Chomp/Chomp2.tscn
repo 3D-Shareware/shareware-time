@@ -18,6 +18,10 @@ collision_mask = 3
 script = ExtResource("1_4ft2a")
 debug_mode = true
 camera = NodePath("Camera3D")
+health = 200.0
+friction = 0.09
+air_acceleration = 0.6
+speed = 2.0
 abilities = [NodePath("JumpAbility"), NodePath("TornadoDashAbility"), NodePath("TunnelAbility"), NodePath("SpitAbility")]
 metadata/_custom_type_script = "uid://2ip0lrtrrhsr"
 
@@ -38,6 +42,7 @@ trigger_key = "Space"
 
 [node name="TornadoDashAbility" type="Node3D" parent="." unique_id=2005580396]
 script = ExtResource("4_n07ey")
+speed_multiplier = 3.0
 AbilityDescription = "TORNADO"
 trigger_key = "Shift"
 
@@ -51,6 +56,8 @@ shape = SubResource("SphereShape3D_gtajd")
 
 [node name="TunnelAbility" type="Node3D" parent="." unique_id=1210614259]
 script = ExtResource("5_mv8cc")
+speed_multiplier = 1.7
+AbilityDescription = "DIG CHOMP"
 trigger_key = "2"
 
 [node name="CooldownTimer" type="Timer" parent="TunnelAbility" unique_id=2027465173]
@@ -65,6 +72,7 @@ shape = SubResource("SphereShape3D_gtajd")
 
 [node name="SpitAbility" type="Node3D" parent="." unique_id=934750461]
 script = ExtResource("6_7rij6")
+AbilityDescription = "GLOOP"
 trigger_key = "1"
 
 [node name="Timer" type="Timer" parent="SpitAbility" unique_id=2022094418]
